@@ -24,6 +24,6 @@ I own nothing of the original resources. I own the Java files I programmed. They
 
 Google Drive has the JDK (for Windows x64, 64bit) and also the original MP4 cutscenes available: https://drive.google.com/drive/folders/110sPxB1HPm08zQFlkPZfCN3-ZpUfN7zv 
 
-No matter what GitHub informs you, this is made 100-percently with the Java programming language. "Shell" and "Html" probably come from the "Java Media Framework" library that has been used.
+No matter what GitHub informs you, this is made 100-percently with the Java programming language. "Shell" and "Html" come from the "Java Media Framework" library that has been used.
 
 If a video cutscene does not start, please move the mouse cursor on the window. The visuals depend on your own computer. The speed of the graphic objects might be extremely slow or fast, depending on the computer.
