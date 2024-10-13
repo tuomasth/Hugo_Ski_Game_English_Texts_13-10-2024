@@ -2,7 +2,7 @@
 
 Instructions:
 
-1) Install the newest JDK from Oracle. https://www.oracle.com/java/technologies/downloads/#jdk23-windows
+1) Install the newest JDK from Oracle. https://www.oracle.com/java/technologies/downloads/
 2) Choose the Code button -> download ZIP.
 3) Extract the Zip to a folder you want.
 4) Double-click "run.bat or "HugoHiihto.jar". The game should start up if you have a correct JDK. The file "run.bat" has the command "java -jar HugoHiihto.jar". The Operating System might warn you of executing unknown exe and bat files.
