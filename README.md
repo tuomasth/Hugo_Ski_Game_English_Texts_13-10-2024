@@ -21,6 +21,13 @@ Recommended Java Development Kit version: 23 or newer. The folders "lib" and "sr
 
 "ITE Media" / "5th Planet Games" owns the original Hugo series. Thank the original creators for the Hugo franchise! Some graphics, musics and videos have been copied from the original Hugo series. 
 I own nothing of the original resources. I own the Java files I programmed. They are open-source and can be edited by anyone. 
+New in v1.1, for example: 
+- Commodore 64 music by Jens-Christian Huus
+- Old phone sounds with 4 and 6
+- English texts
+- A cheat code with 12 numbers
+- Several bug fixes
+- Smaller files, a bit more animation etc.
 
 Google Drive has the JDK (for Windows x64, 64bit) and also the original MP4 cutscenes available: https://drive.google.com/drive/folders/110sPxB1HPm08zQFlkPZfCN3-ZpUfN7zv 
 
