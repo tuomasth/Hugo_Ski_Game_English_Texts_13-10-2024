@@ -26,7 +26,6 @@ New in v1.1, for example:
 - Old phone sounds with 4 and 6
 - English texts
 - A cheat code with 12 numbers
-- Several bug fixes
 - Smaller files, a bit more animation etc.
 
 Google Drive has the JDK (for Windows x64, 64bit) and also the original MP4 cutscenes available: https://drive.google.com/drive/folders/110sPxB1HPm08zQFlkPZfCN3-ZpUfN7zv 
