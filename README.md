@@ -12,7 +12,7 @@ The game was tested with Windows 11 only.
 
 ------
 
-Version 1.1 (13.10.2024) - English texts, Finnish voice acting, 
+Version 1.1 (2024) - English texts, Finnish voice acting, 
 Java skiing game - Hugo the Troll fan game, 
 I do not own the Hugo franchise - support the official releases!
 
