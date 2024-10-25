@@ -1,5 +1,7 @@
 # Hugo_Ski_Game_English_Texts_13-10-2024
 
+RECOMMENDED FOR WINDOWS WITH JAVA
+
 Instructions:
 
 1) Install the newest JDK from Oracle. https://www.oracle.com/java/technologies/downloads/
@@ -9,6 +11,7 @@ Instructions:
 
 On Linux, you might have to make the JAR file executable first: https://askubuntu.com/questions/270172/how-can-i-make-a-jar-file-executable
 The game was tested with Windows 11 only.
+On Linux, the JAR file(s) might not work correctly. The user should make a JAR file themselves with NetBeans IDE, for example.
 
 ------
 
