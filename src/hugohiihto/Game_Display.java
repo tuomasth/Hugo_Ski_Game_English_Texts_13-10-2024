@@ -189,13 +189,13 @@ public final class Game_Display extends JPanel{
     static Clip clipH = null; // music or sound, skiing
         // twistedwave.com sound edit tool is a helpful example tool when editing .wav or .aiff files 
     static Clip clipMoney = null;
-    static File fileMoney = new File("./src/hugohiihto/money.wav");
+    static File fileMoney = new File("res/money.wav");
     static Clip clipScore = null;
-    static File fileScore = new File("./src/hugohiihto/points_score.wav");
+    static File fileScore = new File("res/points_score.wav");
     
-    static File fileGameMusic0 = new File("./src/hugohiihto/music-ps1hugo2menu.wav");
-    static File fileGameMusic1 = new File("./src/hugohiihto/music-djhugopopcorn.wav");
-    static File fileGameMusic2 = new File("./src/hugohiihto/music_credits.wav");
+    static File fileGameMusic0 = new File("res/music-ps1hugo2menu.wav");
+    static File fileGameMusic1 = new File("res/music-djhugopopcorn.wav");
+    static File fileGameMusic2 = new File("res/music_credits.wav");
     // 2 other musics but they go straight to "clip" use.
                             //  Hugo 2 PlayStation 1 title/menu 
                             //  Popcorn Slotmachine featuring Gemini 7 (1993 Finnish DJ Hugo charity CD tr 8) 
@@ -452,14 +452,14 @@ public final class Game_Display extends JPanel{
     
     static int number_of_lives = 4;
     Clip clipChangeGrid = null;
-    File fileChangeGrid = new File("./src/hugohiihto/ski_track_change.wav");
+    File fileChangeGrid = new File("res/ski_track_change.wav");
     Clip clipChangeGrid4 = null;
-    File fileChangeGrid4 = new File("./src/hugohiihto/button4sound.wav");
+    File fileChangeGrid4 = new File("res/button4sound.wav");
     Clip clipChangeGrid6 = null;
-    File fileChangeGrid6 = new File("./src/hugohiihto/button6sound.wav");
+    File fileChangeGrid6 = new File("res/button6sound.wav");
     
     Clip clipCorrect = null;
-    File fileCorrect = new File("./src/hugohiihto/correct_selection.wav");
+    File fileCorrect = new File("res/correct_selection.wav");
     
     /**
      * Game reset call.
@@ -677,8 +677,8 @@ public final class Game_Display extends JPanel{
             else if((double)game_state > 0.9 && (double)game_state < 1.1) {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     
-                    videoimg = new ImageIcon("./src/hugohiihto/scylla_intro_s.gif").getImage();
-                    videoimg = new ImageIcon("./src/hugohiihto/start_hoplaa_s.gif").getImage();
+                    videoimg = new ImageIcon("res/scylla_intro_s.gif").getImage();
+                    videoimg = new ImageIcon("res/start_hoplaa_s.gif").getImage();
                     videoimg.setAccelerationPriority((float)1.0); // from 0-> lowest to 1-> highest 
                     
                     
@@ -1430,7 +1430,7 @@ public final class Game_Display extends JPanel{
         }
         if((double)gameState < 0.1) {
             
-            ImageIcon theVeryFirst_icon = new ImageIcon("./src/hugohiihto/_the_very_1st_texts.png");
+            ImageIcon theVeryFirst_icon = new ImageIcon("res/_the_very_1st_texts.png");
             int wi = (int) d.getWidth();
             int he = (int) d.getHeight()-35;
             theVeryFirst_icon.setImage(theVeryFirst_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
@@ -1446,7 +1446,7 @@ public final class Game_Display extends JPanel{
             }
             
             if(HugoHiihto.currentStateAtTheLevel >= 71 && HugoHiihto.gameOver == false) {
-                ImageIcon credits_icon = new ImageIcon("./src/hugohiihto/credits_screen.png");
+                ImageIcon credits_icon = new ImageIcon("res/credits_screen.png");
                 int wi = (int) d.getWidth()-2;
                 int he = (int) d.getHeight()-37;
                 credits_icon.setImage(credits_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
@@ -1456,7 +1456,7 @@ public final class Game_Display extends JPanel{
                 setFocusable(true);
             }
             else {
-                ImageIcon title_icon = new ImageIcon("./src/hugohiihto/title_screen.png");
+                ImageIcon title_icon = new ImageIcon("res/title_screen.png");
                 int wi = (int) d.getWidth()-15;
                 int he = (int) d.getHeight()-20;
                 title_icon.setImage(title_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
@@ -1474,76 +1474,76 @@ public final class Game_Display extends JPanel{
                 String pathSound = "";
                 switch(video) {
                     case 0 ->  { 
-                        //pathGif = "./src/hugohiihto/scylla_intro.gif";
-                        pathSound = "./src/hugohiihto/scylla_intro.aiff";
+                        //pathGif = "res/scylla_intro.gif";
+                        pathSound = "res/scylla_intro.aiff";
                     }
                     case 1 ->  {
-                        //pathGif = "./src/hugohiihto/start_hoplaa.gif";
-                        pathSound = "./src/hugohiihto/start_hoplaa.aiff";
+                        //pathGif = "res/start_hoplaa.gif";
+                        pathSound = "res/start_hoplaa.aiff";
                     }
                     case 2 ->  {
-                        //pathGif = "./src/hugohiihto/scylla_button_press.gif";
-                        pathSound = "./src/hugohiihto/scylla_button_press.aiff";
+                        //pathGif = "res/scylla_button_press.gif";
+                        pathSound = "res/scylla_button_press.aiff";
                     }
                     case 3 ->  {
-                        //pathGif = "./src/hugohiihto/scylla0.gif";
-                        pathSound = "./src/hugohiihto/scylla0.aiff";
+                        //pathGif = "res/scylla0.gif";
+                        pathSound = "res/scylla0.aiff";
                     }
                     case 4 ->  {
-                        //pathGif = "./src/hugohiihto/remember2forKey_intro.gif";
-                        pathSound = "./src/hugohiihto/remember2forKey_intro.aiff";
+                        //pathGif = "res/remember2forKey_intro.gif";
+                        pathSound = "res/remember2forKey_intro.aiff";
                     }
                     case 5 ->  {
-                        //pathGif = "./src/hugohiihto/remember2forKey_win.gif";
-                        pathSound = "./src/hugohiihto/remember2forKey_win.aiff";
+                        //pathGif = "res/remember2forKey_win.gif";
+                        pathSound = "res/remember2forKey_win.aiff";
                     }
                     case 6 ->  {
-                        //pathGif = "./src/hugohiihto/remember2forKey_fail.gif";
-                        pathSound = "./src/hugohiihto/remember2forKey_fail.aiff";
+                        //pathGif = "res/remember2forKey_fail.gif";
+                        pathSound = "res/remember2forKey_fail.aiff";
                     }
                     case 7 ->  {
-                        //pathGif = "./src/hugohiihto/screentalk_finish_line.gif";
-                        pathSound = "./src/hugohiihto/screentalk_finish_line.aiff";
+                        //pathGif = "res/screentalk_finish_line.gif";
+                        pathSound = "res/screentalk_finish_line.aiff";
                     }
                     case 8 ->  {
-                        //pathGif = "./src/hugohiihto/screentalk_heraa_pahvi.gif";
-                        pathSound = "./src/hugohiihto/screentalk_heraa_pahvi.aiff";
+                        //pathGif = "res/screentalk_heraa_pahvi.gif";
+                        pathSound = "res/screentalk_heraa_pahvi.aiff";
                     }
                     case 9 ->  {
-                        //pathGif = "./src/hugohiihto/screentalk_viimeista_viedaan.gif";
-                        pathSound = "./src/hugohiihto/screentalk_viimeista_viedaan.aiff";
+                        //pathGif = "res/screentalk_viimeista_viedaan.gif";
+                        pathSound = "res/screentalk_viimeista_viedaan.aiff";
                     }
                     case 10 ->  {
-                        //pathGif = "./src/hugohiihto/screentalk_game_over.gif";
-                        pathSound = "./src/hugohiihto/screentalk_game_over.aiff";
+                        //pathGif = "res/screentalk_game_over.gif";
+                        pathSound = "res/screentalk_game_over.aiff";
                     }
                     case 11 ->  {
-                        //pathGif = "./src/hugohiihto/scylla1.gif";
-                        pathSound = "./src/hugohiihto/scylla1.aiff";
+                        //pathGif = "res/scylla1.gif";
+                        pathSound = "res/scylla1.aiff";
                     }
                     case 12 ->  {
-                        //pathGif = "./src/hugohiihto/scylla2.gif";
-                        pathSound = "./src/hugohiihto/scylla2.aiff";
+                        //pathGif = "res/scylla2.gif";
+                        pathSound = "res/scylla2.aiff";
                     }
                     case 13 ->  {
-                        //pathGif = "./src/hugohiihto/scylla3.gif";
-                        pathSound = "./src/hugohiihto/scylla3.aiff";
+                        //pathGif = "res/scylla3.gif";
+                        pathSound = "res/scylla3.aiff";
                     }
                     case 14 ->  {
-                        //pathGif = "./src/hugohiihto/loselife_snowman.gif";
-                        pathSound = "./src/hugohiihto/loselife_snowman.aiff";
+                        //pathGif = "res/loselife_snowman.gif";
+                        pathSound = "res/loselife_snowman.aiff";
                     }
                     case 15 ->  {
-                        //pathGif = "./src/hugohiihto/loselife_snowball.gif";
-                        pathSound = "./src/hugohiihto/loselife_snowball.aiff";
+                        //pathGif = "res/loselife_snowball.gif";
+                        pathSound = "res/loselife_snowball.aiff";
                     }
                     case 16 ->  {
-                        //pathGif = "./src/hugohiihto/loselife_bomb.gif";
-                        pathSound = "./src/hugohiihto/loselife_bomb.aiff";
+                        //pathGif = "res/loselife_bomb.gif";
+                        pathSound = "res/loselife_bomb.aiff";
                     }
                     case 17 ->  {
-                        //pathGif = "./src/hugohiihto/loselife_beaver.gif";
-                        pathSound = "./src/hugohiihto/loselife_beaver.aiff";
+                        //pathGif = "res/loselife_beaver.gif";
+                        pathSound = "res/loselife_beaver.aiff";
                     }
                 } // Important! Do not change the file names. Any renaming will cause problems. 
                 
@@ -1575,8 +1575,8 @@ public final class Game_Display extends JPanel{
         }
         if((double)gameState > 2.9 && (double)gameState < 3.1) {
             repaint();
-            ImageIcon west = new ImageIcon("./src/hugohiihto/hugo_ski_L.gif");
-            ImageIcon east = new ImageIcon("./src/hugohiihto/hugo_ski_R.gif");
+            ImageIcon west = new ImageIcon("res/hugo_ski_L.gif");
+            ImageIcon east = new ImageIcon("res/hugo_ski_R.gif");
 
                 w_width = 110;
                 west.setImage(west.getImage().getScaledInstance(w_width, w_height, Image.SCALE_DEFAULT));
@@ -1595,7 +1595,7 @@ public final class Game_Display extends JPanel{
                 sprite_R2 = east.getImage();
             
 
-            ImageIcon j = new ImageIcon("./src/hugohiihto/background1.gif");
+            ImageIcon j = new ImageIcon("res/background1.gif");
             int wi = (int) d.getWidth()-10;
             int he = (int) d.getHeight()-35;
             j.setImage(j.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
@@ -1611,7 +1611,7 @@ public final class Game_Display extends JPanel{
             // decoration graphics: trees, cloud(s) etc. 
             cloud_x_position = (int) ((int) d.getWidth()/3);
             cloud_y_position = (int) ((int) d.getHeight()/25);
-            ImageIcon cloudicon = new ImageIcon("./src/hugohiihto/cloud.png");
+            ImageIcon cloudicon = new ImageIcon("res/cloud.png");
             int cloudiconw = cloudicon.getIconWidth();
             int cloudiconh = cloudicon.getIconHeight();
             cloudicon.setImage(cloudicon.getImage().getScaledInstance(cloudiconw, cloudiconh, Image.SCALE_DEFAULT));
@@ -1619,7 +1619,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree1_x_position = (d.width/5)-40;
             possibleTree1_y_position = (d.height/17)+20;
-            possibleTree1icon = new ImageIcon("./src/hugohiihto/trees2.PNG");
+            possibleTree1icon = new ImageIcon("res/trees2.png");
             possibleTree1iconw = possibleTree1icon.getIconWidth();
             possibleTree1iconh = possibleTree1icon.getIconHeight();
             possibleTree1icon.setImage(possibleTree1icon.getImage()
@@ -1628,7 +1628,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree2_x_position = (d.width/5)-40;
             possibleTree2_y_position = (d.height/17)+20;
-            possibleTree2icon = new ImageIcon("./src/hugohiihto/trees0.PNG");
+            possibleTree2icon = new ImageIcon("res/trees0.png");
             possibleTree2iconw = possibleTree2icon.getIconWidth();
             possibleTree2iconh = possibleTree2icon.getIconHeight();
             possibleTree2icon.setImage(possibleTree2icon.getImage()
@@ -1637,7 +1637,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree3_x_position = (d.width/5)-40;
             possibleTree3_y_position = (d.height/17)+20;
-            possibleTree3icon = new ImageIcon("./src/hugohiihto/trees1.PNG");
+            possibleTree3icon = new ImageIcon("res/trees1.png");
             possibleTree3iconw = possibleTree3icon.getIconWidth();
             possibleTree3iconh = possibleTree3icon.getIconHeight();
             possibleTree3icon.setImage(possibleTree3icon.getImage()
@@ -1646,7 +1646,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree4_x_position = (int) ((int) d.getWidth()/2)+70;
             possibleTree4_y_position = (int) ((int) d.getHeight()/4)-90;
-            possibleTree4icon = new ImageIcon("./src/hugohiihto/trees2.PNG");
+            possibleTree4icon = new ImageIcon("res/trees2.png");
             possibleTree4iconw = possibleTree4icon.getIconWidth();
             possibleTree4iconh = possibleTree4icon.getIconHeight();
             possibleTree4icon.setImage(possibleTree4icon.getImage()
@@ -1655,7 +1655,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree5_x_position = (int) ((int) d.getWidth()/2)+70;
             possibleTree5_y_position = (int) ((int) d.getHeight()/4)-90;
-            possibleTree5icon = new ImageIcon("./src/hugohiihto/trees0.PNG");
+            possibleTree5icon = new ImageIcon("res/trees0.png");
             possibleTree5iconw = possibleTree5icon.getIconWidth();
             possibleTree5iconh = possibleTree5icon.getIconHeight();
             possibleTree5icon.setImage(possibleTree5icon.getImage()
@@ -1664,7 +1664,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree6_x_position = (int) ((int) d.getWidth()/2)+70;
             possibleTree6_y_position = (int) ((int) d.getHeight()/4)-90;
-            possibleTree6icon = new ImageIcon("./src/hugohiihto/trees1.PNG");
+            possibleTree6icon = new ImageIcon("res/trees1.png");
             possibleTree6iconw = possibleTree6icon.getIconWidth();
             possibleTree6iconh = possibleTree6icon.getIconHeight();
             possibleTree6icon.setImage(possibleTree6icon.getImage()
@@ -1673,7 +1673,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree7_x_position = (int) ((int) d.getWidth()/2)+72;
             possibleTree7_y_position = (int) ((int) d.getHeight()/4)-92;
-            possibleTree7icon = new ImageIcon("./src/hugohiihto/trees2.PNG");
+            possibleTree7icon = new ImageIcon("res/trees2.png");
             possibleTree7iconw = possibleTree7icon.getIconWidth();
             possibleTree7iconh = possibleTree7icon.getIconHeight();
             possibleTree7icon.setImage(possibleTree7icon.getImage()
@@ -1682,7 +1682,7 @@ public final class Game_Display extends JPanel{
             
             possibleTree8_x_position = (d.width/5)-42;
             possibleTree8_y_position = (d.height/17)+22;
-            possibleTree8icon = new ImageIcon("./src/hugohiihto/trees1.PNG");
+            possibleTree8icon = new ImageIcon("res/trees1.png");
             possibleTree8iconw = possibleTree8icon.getIconWidth();
             possibleTree8iconh = possibleTree8icon.getIconHeight();
             possibleTree8icon.setImage(possibleTree8icon.getImage()
@@ -1692,7 +1692,7 @@ public final class Game_Display extends JPanel{
             
             hugolife1_x_position = (int) ((int) d.getWidth()/55);
             hugolife1_y_position = (int) ((int) d.getHeight()/1.3);
-            ImageIcon life1 = new ImageIcon("./src/hugohiihto/hugo_life.png");
+            ImageIcon life1 = new ImageIcon("res/hugo_life.png");
             int life1w = life1.getIconWidth();
             int life1h = life1.getIconHeight();
             life1.setImage(life1.getImage().getScaledInstance(life1w, life1h, Image.SCALE_DEFAULT));
@@ -1700,7 +1700,7 @@ public final class Game_Display extends JPanel{
 
             hugolife2_x_position = (int) ((int) d.getWidth()/55) +80;
             hugolife2_y_position = (int) ((int) d.getHeight()/1.3);
-            ImageIcon life2 = new ImageIcon("./src/hugohiihto/hugo_life.png");
+            ImageIcon life2 = new ImageIcon("res/hugo_life.png");
             int life2w = life2.getIconWidth();
             int life2h = life2.getIconHeight();
             life2.setImage(life2.getImage().getScaledInstance(life2w, life2h, Image.SCALE_DEFAULT));
@@ -1708,7 +1708,7 @@ public final class Game_Display extends JPanel{
 
             hugolife3_x_position = (int) ((int) d.getWidth()/55) + 160;
             hugolife3_y_position = (int) ((int) d.getHeight()/1.3);
-            ImageIcon life3 = new ImageIcon("./src/hugohiihto/hugo_life.png");
+            ImageIcon life3 = new ImageIcon("res/hugo_life.png");
             int life3w = life3.getIconWidth();
             int life3h = life3.getIconHeight();
             life3.setImage(life3.getImage().getScaledInstance(life3w, life3h, Image.SCALE_DEFAULT));
@@ -1716,7 +1716,7 @@ public final class Game_Display extends JPanel{
 
             pause_x_position = (int) ((int) d.getWidth()/6);
             pause_y_position = (int) ((int) d.getHeight()/3);
-            ImageIcon pauseicon = new ImageIcon("./src/hugohiihto/pause.png");
+            ImageIcon pauseicon = new ImageIcon("res/pause.png");
             int pausew = pauseicon.getIconWidth();
             int pauseh = pauseicon.getIconHeight();
             pauseicon.setImage(pauseicon.getImage().getScaledInstance(pausew, pauseh, Image.SCALE_DEFAULT));
@@ -1724,7 +1724,7 @@ public final class Game_Display extends JPanel{
 
             scorebar_x_position = 0;
             scorebar_y_position = (int) ((int) d.getHeight()/1.35);
-            ImageIcon scorebaricon = new ImageIcon("./src/hugohiihto/score-life-bar.png");
+            ImageIcon scorebaricon = new ImageIcon("res/score-life-bar.png");
             int scorebarw = scorebaricon.getIconWidth();
             int scorebarh = scorebaricon.getIconHeight();
             scorebaricon.setImage(scorebaricon.getImage().getScaledInstance(scorebarw*5, scorebarh, Image.SCALE_DEFAULT));
@@ -1733,7 +1733,7 @@ public final class Game_Display extends JPanel{
         }
         if((double)gameState > 3.9 && (double)gameState < 4.1) {
 
-            ImageIcon io = new ImageIcon("./src/hugohiihto/cave_entrance00.PNG");
+            ImageIcon io = new ImageIcon("res/cave_entrance00.png");
             int wi = (int) d.getWidth()-10;
             int he = (int) d.getHeight()-35;
             io.setImage(io.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
@@ -1755,8 +1755,8 @@ public final class Game_Display extends JPanel{
                     
                     u1b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
                     u1b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
-                    ImageIcon u1bicon = new ImageIcon("./src/hugohiihto/num_select1.png");
-                    ImageIcon u1wicon = new ImageIcon("./src/hugohiihto/num_selected1.png");
+                    ImageIcon u1bicon = new ImageIcon("res/num_select1.png");
+                    ImageIcon u1wicon = new ImageIcon("res/num_selected1.png");
                     int u1we = u1bicon.getIconWidth();
                     int u1he = u1bicon.getIconHeight();
                     u1bicon.setImage(u1bicon.getImage().getScaledInstance(u1we, u1he, Image.SCALE_DEFAULT));
@@ -1770,8 +1770,8 @@ public final class Game_Display extends JPanel{
                     
                     u2b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
                     u2b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
-                    ImageIcon u2bicon = new ImageIcon("./src/hugohiihto/num_select2.png");
-                    ImageIcon u2wicon = new ImageIcon("./src/hugohiihto/num_selected2.png");
+                    ImageIcon u2bicon = new ImageIcon("res/num_select2.png");
+                    ImageIcon u2wicon = new ImageIcon("res/num_selected2.png");
                     int u2we = u2bicon.getIconWidth();
                     int u2he = u2bicon.getIconHeight();
                     u2bicon.setImage(u2bicon.getImage().getScaledInstance(u2we, u2he, Image.SCALE_DEFAULT));
@@ -1785,8 +1785,8 @@ public final class Game_Display extends JPanel{
                     
                     u3b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
                     u3b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
-                    ImageIcon u3bicon = new ImageIcon("./src/hugohiihto/num_select3.png");
-                    ImageIcon u3wicon = new ImageIcon("./src/hugohiihto/num_selected3.png");
+                    ImageIcon u3bicon = new ImageIcon("res/num_select3.png");
+                    ImageIcon u3wicon = new ImageIcon("res/num_selected3.png");
                     int u3we = u3bicon.getIconWidth();
                     int u3he = u3bicon.getIconHeight();
                     u3bicon.setImage(u3bicon.getImage().getScaledInstance(u3we, u3he, Image.SCALE_DEFAULT));
@@ -1800,8 +1800,8 @@ public final class Game_Display extends JPanel{
                     
                     d1b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
                     d1b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
-                    ImageIcon d1bicon = new ImageIcon("./src/hugohiihto/num_select1.png");
-                    ImageIcon d1wicon = new ImageIcon("./src/hugohiihto/num_selected1.png");
+                    ImageIcon d1bicon = new ImageIcon("res/num_select1.png");
+                    ImageIcon d1wicon = new ImageIcon("res/num_selected1.png");
                     int d1we = d1bicon.getIconWidth();
                     int d1he = d1bicon.getIconHeight();
                     d1bicon.setImage(d1bicon.getImage().getScaledInstance(d1we, d1he, Image.SCALE_DEFAULT));
@@ -1815,8 +1815,8 @@ public final class Game_Display extends JPanel{
                     
                     d2b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
                     d2b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
-                    ImageIcon d2bicon = new ImageIcon("./src/hugohiihto/num_select2.png");
-                    ImageIcon d2wicon = new ImageIcon("./src/hugohiihto/num_selected2.png");
+                    ImageIcon d2bicon = new ImageIcon("res/num_select2.png");
+                    ImageIcon d2wicon = new ImageIcon("res/num_selected2.png");
                     int d2we = d2bicon.getIconWidth();
                     int d2he = d2bicon.getIconHeight();
                     d2bicon.setImage(d2bicon.getImage().getScaledInstance(d2we, d2he, Image.SCALE_DEFAULT));
@@ -1830,8 +1830,8 @@ public final class Game_Display extends JPanel{
                     
                     d3b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
                     d3b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
-                    ImageIcon d3bicon = new ImageIcon("./src/hugohiihto/num_select3.png");
-                    ImageIcon d3wicon = new ImageIcon("./src/hugohiihto/num_selected3.png");
+                    ImageIcon d3bicon = new ImageIcon("res/num_select3.png");
+                    ImageIcon d3wicon = new ImageIcon("res/num_selected3.png");
                     int d3we = d3bicon.getIconWidth();
                     int d3he = d3bicon.getIconHeight();
                     d3bicon.setImage(d3bicon.getImage().getScaledInstance(d3we, d3he, Image.SCALE_DEFAULT));
@@ -1843,7 +1843,7 @@ public final class Game_Display extends JPanel{
                 if(thingsToRemember.charAt(i) == 'a' || thingsToRemember.charAt(i) == 'A') {
                     asterisk_x_position = (int) ((int) d.getWidth()/6)+(pos);
                     asterisk_y_position = (int) ((int) d.getHeight()/19)+(hei);
-                    ImageIcon asteriskicon = new ImageIcon("./src/hugohiihto/remember_A_asterisk.png");
+                    ImageIcon asteriskicon = new ImageIcon("res/remember_A_asterisk.png");
                     int asteriskw = asteriskicon.getIconWidth();
                     int asteriskh = asteriskicon.getIconHeight();
                     asteriskicon.setImage(asteriskicon.getImage().getScaledInstance(asteriskw, asteriskh, Image.SCALE_DEFAULT));
@@ -1852,7 +1852,7 @@ public final class Game_Display extends JPanel{
                 if(thingsToRemember.charAt(i) == 'b' || thingsToRemember.charAt(i) == 'B') {
                     bell_x_position = (int) ((int) d.getWidth()/6)+(pos);
                     bell_y_position = (int) ((int) d.getHeight()/19)+(hei);
-                    ImageIcon bellicon = new ImageIcon("./src/hugohiihto/remember_B_bell.png");
+                    ImageIcon bellicon = new ImageIcon("res/remember_B_bell.png");
                     int bellw = bellicon.getIconWidth();
                     int bellh = bellicon.getIconHeight();
                     bellicon.setImage(bellicon.getImage().getScaledInstance(bellw, bellh, Image.SCALE_DEFAULT));
@@ -1861,7 +1861,7 @@ public final class Game_Display extends JPanel{
                 if(thingsToRemember.charAt(i) == 'c' || thingsToRemember.charAt(i) == 'C') {
                     clock_x_position = (int) ((int) d.getWidth()/6)+(pos);
                     clock_y_position = (int) ((int) d.getHeight()/19)+(hei);
-                    ImageIcon clockicon = new ImageIcon("./src/hugohiihto/remember_C_clock.png");
+                    ImageIcon clockicon = new ImageIcon("res/remember_C_clock.png");
                     int clockw = clockicon.getIconWidth();
                     int clockh = clockicon.getIconHeight();
                     clockicon.setImage(clockicon.getImage().getScaledInstance(clockw, clockh, Image.SCALE_DEFAULT));
@@ -1870,7 +1870,7 @@ public final class Game_Display extends JPanel{
                 if(thingsToRemember.charAt(i) == 'd' || thingsToRemember.charAt(i) == 'D') {
                     diamond_x_position = (int) ((int) d.getWidth()/6)+(pos);
                     diamond_y_position = (int) ((int) d.getHeight()/19)+(hei);
-                    ImageIcon diamondicon = new ImageIcon("./src/hugohiihto/remember_D_diamond.png");
+                    ImageIcon diamondicon = new ImageIcon("res/remember_D_diamond.png");
                     int diamondw = diamondicon.getIconWidth();
                     int diamondh = diamondicon.getIconHeight();
                     diamondicon.setImage(diamondicon.getImage().getScaledInstance(diamondw, diamondh, Image.SCALE_DEFAULT));
@@ -1879,7 +1879,7 @@ public final class Game_Display extends JPanel{
                 if(thingsToRemember.charAt(i) == 'h' || thingsToRemember.charAt(i) == 'H') {
                     hashtag_x_position = (int) ((int) d.getWidth()/6)+(pos);
                     hashtag_y_position = (int) ((int) d.getHeight()/19)+(hei);
-                    ImageIcon hashtagicon = new ImageIcon("./src/hugohiihto/remember_H_hash.png");
+                    ImageIcon hashtagicon = new ImageIcon("res/remember_H_hash.png");
                     int hashtagw = hashtagicon.getIconWidth();
                     int hashtagh = hashtagicon.getIconHeight();
                     hashtagicon.setImage(hashtagicon.getImage().getScaledInstance(hashtagw, hashtagh, Image.SCALE_DEFAULT));
@@ -1888,7 +1888,7 @@ public final class Game_Display extends JPanel{
                 if(thingsToRemember.charAt(i) == 's' || thingsToRemember.charAt(i) == 'S') {
                     star_x_position = (int) ((int) d.getWidth()/6)+(pos);
                     star_y_position = (int) ((int) d.getHeight()/19)+(hei);
-                    ImageIcon staricon = new ImageIcon("./src/hugohiihto/remember_S_star.png");
+                    ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
                     int starw = staricon.getIconWidth();
                     int starh = staricon.getIconHeight();
                     staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
@@ -1903,7 +1903,7 @@ public final class Game_Display extends JPanel{
             //addKeyListener(new Game_Display.AL());// keyboard listener but do not uncomment these, should be called only once 
             setFocusable(true);
             
-            ImageIcon scoreBG = new ImageIcon("./src/hugohiihto/title_screen_nothing.png");
+            ImageIcon scoreBG = new ImageIcon("res/title_screen_nothing.png");
             int wi = (int) d.getWidth();
             int he = (int) d.getHeight();
             scoreBG.setImage(scoreBG.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
@@ -1911,7 +1911,7 @@ public final class Game_Display extends JPanel{
             
             star_x_position = (int) ((int) d.getWidth()/6);
             star_y_position = (int) ((int) d.getHeight()/19);
-            ImageIcon staricon = new ImageIcon("./src/hugohiihto/remember_S_star.png");
+            ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
             int starw = staricon.getIconWidth();
             int starh = staricon.getIconHeight();
             staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
@@ -1999,76 +1999,76 @@ public final class Game_Display extends JPanel{
                     String pathMP4 = "";
                     switch(video) {
                         case 0 ->  { 
-                            pathMP4 = "./src/hugohiihto/scylla_intro.mp4";
-                            //pathSound = "./src/hugohiihto/scylla_intro.aiff";
+                            pathMP4 = "res/scylla_intro.mp4";
+                            //pathSound = "res/scylla_intro.aiff";
                         }
                         case 1 ->  {
-                            pathMP4 = "./src/hugohiihto/start_hoplaa.mp4";
-                            //pathSound = "./src/hugohiihto/start_hoplaa.aiff";
+                            pathMP4 = "res/start_hoplaa.mp4";
+                            //pathSound = "res/start_hoplaa.aiff";
                         }
                         case 2 ->  {
-                            pathMP4 = "./src/hugohiihto/scylla_button_press.mp4";
-                            //pathSound = "./src/hugohiihto/scylla_button_press.aiff";
+                            pathMP4 = "res/scylla_button_press.mp4";
+                            //pathSound = "res/scylla_button_press.aiff";
                         }
                         case 3 ->  {
-                            pathMP4 = "./src/hugohiihto/scylla0.mp4";
-                            //pathSound = "./src/hugohiihto/scylla0.aiff";
+                            pathMP4 = "res/scylla0.mp4";
+                            //pathSound = "res/scylla0.aiff";
                         }
                         case 4 ->  {
-                            pathMP4 = "./src/hugohiihto/remember2forKey_intro.mp4";
-                            //pathSound = "./src/hugohiihto/remember2forKey_intro.aiff";
+                            pathMP4 = "res/remember2forKey_intro.mp4";
+                            //pathSound = "res/remember2forKey_intro.aiff";
                         }
                         case 5 ->  {
-                            pathMP4 = "./src/hugohiihto/remember2forKey_win.mp4";
-                            //pathSound = "./src/hugohiihto/remember2forKey_win.aiff";
+                            pathMP4 = "res/remember2forKey_win.mp4";
+                            //pathSound = "res/remember2forKey_win.aiff";
                         }
                         case 6 ->  {
-                            pathMP4 = "./src/hugohiihto/remember2forKey_fail.mp4";
-                            //pathSound = "./src/hugohiihto/remember2forKey_fail.aiff";
+                            pathMP4 = "res/remember2forKey_fail.mp4";
+                            //pathSound = "res/remember2forKey_fail.aiff";
                         }
                         case 7 ->  {
-                            pathMP4 = "./src/hugohiihto/screentalk_finish_line.mp4";
-                            //pathSound = "./src/hugohiihto/screentalk_finish_line.aiff";
+                            pathMP4 = "res/screentalk_finish_line.mp4";
+                            //pathSound = "res/screentalk_finish_line.aiff";
                         }
                         case 8 ->  {
-                            pathMP4 = "./src/hugohiihto/screentalk_heraa_pahvi.mp4";
-                            //pathSound = "./src/hugohiihto/screentalk_heraa_pahvi.aiff";
+                            pathMP4 = "res/screentalk_heraa_pahvi.mp4";
+                            //pathSound = "res/screentalk_heraa_pahvi.aiff";
                         }
                         case 9 ->  {
-                            pathMP4 = "./src/hugohiihto/screentalk_viimeista_viedaan.mp4";
-                            //pathSound = "./src/hugohiihto/screentalk_viimeista_viedaan.aiff";
+                            pathMP4 = "res/screentalk_viimeista_viedaan.mp4";
+                            //pathSound = "res/screentalk_viimeista_viedaan.aiff";
                         }
                         case 10 ->  {
-                            pathMP4 = "./src/hugohiihto/screentalk_game_over.mp4";
-                            //pathSound = "./src/hugohiihto/screentalk_game_over.aiff";
+                            pathMP4 = "res/screentalk_game_over.mp4";
+                            //pathSound = "res/screentalk_game_over.aiff";
                         }
                         case 11 ->  {
-                            pathMP4 = "./src/hugohiihto/scylla1.mp4";
-                            //pathSound = "./src/hugohiihto/scylla1.aiff";
+                            pathMP4 = "res/scylla1.mp4";
+                            //pathSound = "res/scylla1.aiff";
                         }
                         case 12 ->  {
-                            pathMP4 = "./src/hugohiihto/scylla2.mp4";
-                            //pathSound = "./src/hugohiihto/scylla2.aiff";
+                            pathMP4 = "res/scylla2.mp4";
+                            //pathSound = "res/scylla2.aiff";
                         }
                         case 13 ->  {
-                            pathMP4 = "./src/hugohiihto/scylla3.mp4";
-                            //pathSound = "./src/hugohiihto/scylla3.aiff";
+                            pathMP4 = "res/scylla3.mp4";
+                            //pathSound = "res/scylla3.aiff";
                         }
                         case 14 ->  {
-                            pathMP4 = "./src/hugohiihto/loselife_snowman.mp4";
-                            //pathSound = "./src/hugohiihto/loselife_snowman.aiff";
+                            pathMP4 = "res/loselife_snowman.mp4";
+                            //pathSound = "res/loselife_snowman.aiff";
                         }
                         case 15 ->  {
-                            pathMP4 = "./src/hugohiihto/loselife_snowball.mp4";
-                            //pathSound = "./src/hugohiihto/loselife_snowball.aiff";
+                            pathMP4 = "res/loselife_snowball.mp4";
+                            //pathSound = "res/loselife_snowball.aiff";
                         }
                         case 16 ->  {
-                            pathMP4 = "./src/hugohiihto/loselife_bomb.mp4";
-                            //pathSound = "./src/hugohiihto/loselife_bomb.aiff";
+                            pathMP4 = "res/loselife_bomb.mp4";
+                            //pathSound = "res/loselife_bomb.aiff";
                         }
                         case 17 ->  {
-                            pathMP4 = "./src/hugohiihto/loselife_beaver.mp4";
-                            //pathSound = "./src/hugohiihto/loselife_beaver.aiff";
+                            pathMP4 = "res/loselife_beaver.mp4";
+                            //pathSound = "res/loselife_beaver.aiff";
                         }
                     }
 
@@ -2086,76 +2086,76 @@ public final class Game_Display extends JPanel{
                     //String pathSound = ""; 
                     switch(video) {
                         case 0 ->  { 
-                            pathGif = "./src/hugohiihto/scylla_intro_s.gif";
-                            //pathSound = "./src/hugohiihto/scylla_intro.aiff";
+                            pathGif = "res/scylla_intro_s.gif";
+                            //pathSound = "res/scylla_intro.aiff";
                         }
                         case 1 ->  {
-                            pathGif = "./src/hugohiihto/start_hoplaa_s.gif";
-                            //pathSound = "./src/hugohiihto/start_hoplaa.aiff";
+                            pathGif = "res/start_hoplaa_s.gif";
+                            //pathSound = "res/start_hoplaa.aiff";
                         }
                         case 2 ->  {
-                            pathGif = "./src/hugohiihto/scylla_button_press_s.gif";
-                            //pathSound = "./src/hugohiihto/scylla_button_press.aiff";
+                            pathGif = "res/scylla_button_press_s.gif";
+                            //pathSound = "res/scylla_button_press.aiff";
                         }
                         case 3 ->  {
-                            pathGif = "./src/hugohiihto/scylla0_s.gif";
-                            //pathSound = "./src/hugohiihto/scylla0.aiff";
+                            pathGif = "res/scylla0_s.gif";
+                            //pathSound = "res/scylla0.aiff";
                         }
                         case 4 ->  {
-                            pathGif = "./src/hugohiihto/remember2forKey_intro_s.gif";
-                            //pathSound = "./src/hugohiihto/remember2forKey_intro.aiff";
+                            pathGif = "res/remember2forKey_intro_s.gif";
+                            //pathSound = "res/remember2forKey_intro.aiff";
                         }
                         case 5 ->  {
-                            pathGif = "./src/hugohiihto/remember2forKey_win_s.gif";
-                            //pathSound = "./src/hugohiihto/remember2forKey_win.aiff";
+                            pathGif = "res/remember2forKey_win_s.gif";
+                            //pathSound = "res/remember2forKey_win.aiff";
                         }
                         case 6 ->  {
-                            pathGif = "./src/hugohiihto/remember2forKey_fail_s.gif";
-                            //pathSound = "./src/hugohiihto/remember2forKey_fail.aiff";
+                            pathGif = "res/remember2forKey_fail_s.gif";
+                            //pathSound = "res/remember2forKey_fail.aiff";
                         }
                         case 7 ->  {
-                            pathGif = "./src/hugohiihto/screentalk_finish_line_s.gif";
-                            //pathSound = "./src/hugohiihto/screentalk_finish_line.aiff";
+                            pathGif = "res/screentalk_finish_line_s.gif";
+                            //pathSound = "res/screentalk_finish_line.aiff";
                         }
                         case 8 ->  {
-                            pathGif = "./src/hugohiihto/screentalk_heraa_pahvi_s.gif";
-                            //pathSound = "./src/hugohiihto/screentalk_heraa_pahvi.aiff";
+                            pathGif = "res/screentalk_heraa_pahvi_s.gif";
+                            //pathSound = "res/screentalk_heraa_pahvi.aiff";
                         }
                         case 9 ->  {
-                            pathGif = "./src/hugohiihto/screentalk_viimeista_viedaan_s.gif";
-                            //pathSound = "./src/hugohiihto/screentalk_viimeista_viedaan.aiff";
+                            pathGif = "res/screentalk_viimeista_viedaan_s.gif";
+                            //pathSound = "res/screentalk_viimeista_viedaan.aiff";
                         }
                         case 10 ->  {
-                            pathGif = "./src/hugohiihto/screentalk_game_over_s.gif";
-                            //pathSound = "./src/hugohiihto/screentalk_game_over.aiff";
+                            pathGif = "res/screentalk_game_over_s.gif";
+                            //pathSound = "res/screentalk_game_over.aiff";
                         }
                         case 11 ->  {
-                            pathGif = "./src/hugohiihto/scylla1_s.gif";
-                            //pathSound = "./src/hugohiihto/scylla1.aiff";
+                            pathGif = "res/scylla1_s.gif";
+                            //pathSound = "res/scylla1.aiff";
                         }
                         case 12 ->  {
-                            pathGif = "./src/hugohiihto/scylla2_s.gif";
-                            //pathSound = "./src/hugohiihto/scylla2.aiff";
+                            pathGif = "res/scylla2_s.gif";
+                            //pathSound = "res/scylla2.aiff";
                         }
                         case 13 ->  {
-                            pathGif = "./src/hugohiihto/scylla3_s.gif";
-                            //pathSound = "./src/hugohiihto/scylla3.aiff";
+                            pathGif = "res/scylla3_s.gif";
+                            //pathSound = "res/scylla3.aiff";
                         }
                         case 14 ->  {
-                            pathGif = "./src/hugohiihto/loselife_snowman_s.gif";
-                            //pathSound = "./src/hugohiihto/loselife_snowman.aiff";
+                            pathGif = "res/loselife_snowman_s.gif";
+                            //pathSound = "res/loselife_snowman.aiff";
                         }
                         case 15 ->  {
-                            pathGif = "./src/hugohiihto/loselife_snowball_s.gif";
-                            //pathSound = "./src/hugohiihto/loselife_snowball.aiff";
+                            pathGif = "res/loselife_snowball_s.gif";
+                            //pathSound = "res/loselife_snowball.aiff";
                         }
                         case 16 ->  {
-                            pathGif = "./src/hugohiihto/loselife_bomb_s.gif";
-                            //pathSound = "./src/hugohiihto/loselife_bomb.aiff";
+                            pathGif = "res/loselife_bomb_s.gif";
+                            //pathSound = "res/loselife_bomb.aiff";
                         }
                         case 17 ->  {
-                            pathGif = "./src/hugohiihto/loselife_beaver_s.gif";
-                            //pathSound = "./src/hugohiihto/loselife_beaver.aiff";
+                            pathGif = "res/loselife_beaver_s.gif";
+                            //pathSound = "res/loselife_beaver.aiff";
                         }
                     }   // Important! Do not change the file names. 
 
@@ -2428,64 +2428,64 @@ public final class Game_Display extends JPanel{
                 }
 
                 if(currentHazardOrMoney1.equals("M")) {
-                    path_of_hazard_1 = "./src/hugohiihto/money.png";
+                    path_of_hazard_1 = "res/money.png";
                 }
                 if(currentHazardOrMoney1.equals("8")) {
-                    path_of_hazard_1 = "./src/hugohiihto/enemy_snowman.png";
+                    path_of_hazard_1 = "res/enemy_snowman.png";
                 }
                 if(currentHazardOrMoney1.equals("o")) {
-                    path_of_hazard_1 = "./src/hugohiihto/enemy_snowball.png";
+                    path_of_hazard_1 = "res/enemy_snowball.png";
                 }
                 if(currentHazardOrMoney1.equals("Q")) {
-                    path_of_hazard_1 = "./src/hugohiihto/enemy_bomb.png";
+                    path_of_hazard_1 = "res/enemy_bomb.png";
                 }
                 if(currentHazardOrMoney1.equals("B")) {
-                    path_of_hazard_1 = "./src/hugohiihto/enemy_beaver_masi.png";
+                    path_of_hazard_1 = "res/enemy_beaver_masi.png";
                 }
                 if(currentHazardOrMoney2.equals("M")) {
-                    path_of_hazard_2 = "./src/hugohiihto/money.png";
+                    path_of_hazard_2 = "res/money.png";
                 }
                 if(currentHazardOrMoney2.equals("8")) {
-                    path_of_hazard_2 = "./src/hugohiihto/enemy_snowman.png";
+                    path_of_hazard_2 = "res/enemy_snowman.png";
                 }
                 if(currentHazardOrMoney2.equals("o")) {
-                    path_of_hazard_2 = "./src/hugohiihto/enemy_snowball.png";
+                    path_of_hazard_2 = "res/enemy_snowball.png";
                 }
                 if(currentHazardOrMoney2.equals("Q")) {
-                    path_of_hazard_2 = "./src/hugohiihto/enemy_bomb.png";
+                    path_of_hazard_2 = "res/enemy_bomb.png";
                 }
                 if(currentHazardOrMoney2.equals("B")) {
-                    path_of_hazard_2 = "./src/hugohiihto/enemy_beaver_masi.png";
+                    path_of_hazard_2 = "res/enemy_beaver_masi.png";
                 }
                 if(currentHazardOrMoney3.equals("M")) {
-                    path_of_hazard_3 = "./src/hugohiihto/money.png";
+                    path_of_hazard_3 = "res/money.png";
                 }
                 if(currentHazardOrMoney3.equals("8")) {
-                    path_of_hazard_3 = "./src/hugohiihto/enemy_snowman.png";
+                    path_of_hazard_3 = "res/enemy_snowman.png";
                 }
                 if(currentHazardOrMoney3.equals("o")) {
-                    path_of_hazard_3 = "./src/hugohiihto/enemy_snowball.png";
+                    path_of_hazard_3 = "res/enemy_snowball.png";
                 }
                 if(currentHazardOrMoney3.equals("Q")) {
-                    path_of_hazard_3 = "./src/hugohiihto/enemy_bomb.png";
+                    path_of_hazard_3 = "res/enemy_bomb.png";
                 }
                 if(currentHazardOrMoney3.equals("B")) {
-                    path_of_hazard_3 = "./src/hugohiihto/enemy_beaver_masi.png";
+                    path_of_hazard_3 = "res/enemy_beaver_masi.png";
                 }
                 if(currentHazardOrMoney4.equals("M")) {
-                    path_of_hazard_4 = "./src/hugohiihto/money.png";
+                    path_of_hazard_4 = "res/money.png";
                 }
                 if(currentHazardOrMoney4.equals("8")) {
-                    path_of_hazard_4 = "./src/hugohiihto/enemy_snowman.png";
+                    path_of_hazard_4 = "res/enemy_snowman.png";
                 }
                 if(currentHazardOrMoney4.equals("o")) {
-                    path_of_hazard_4 = "./src/hugohiihto/enemy_snowball.png";
+                    path_of_hazard_4 = "res/enemy_snowball.png";
                 }
                 if(currentHazardOrMoney4.equals("Q")) {
-                    path_of_hazard_4 = "./src/hugohiihto/enemy_bomb.png";
+                    path_of_hazard_4 = "res/enemy_bomb.png";
                 }
                 if(currentHazardOrMoney4.equals("B")) {
-                    path_of_hazard_4 = "./src/hugohiihto/enemy_beaver_masi.png";
+                    path_of_hazard_4 = "res/enemy_beaver_masi.png";
                 }
                 if(currentHazardOrMoney1.equals("1")) {
                     path_of_hazard_2 = ""; currentHazardOrMoney2_image = null;
@@ -2493,22 +2493,22 @@ public final class Game_Display extends JPanel{
                     path_of_hazard_4 = ""; currentHazardOrMoney4_image = null;
                     for(int i = 0; i < 3; i++) {
                         if(thingsToRemember.charAt(i) == 'A') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_A_asterisk.png";
+                            path_of_hazard_1 = "res/remember_A_asterisk.png";
                         }
                         if(thingsToRemember.charAt(i) == 'B') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_B_bell.png";
+                            path_of_hazard_1 = "res/remember_B_bell.png";
                         }
                         if(thingsToRemember.charAt(i) == 'C') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_C_clock.png";
+                            path_of_hazard_1 = "res/remember_C_clock.png";
                         }
                         if(thingsToRemember.charAt(i) == 'D') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_D_diamond.png";
+                            path_of_hazard_1 = "res/remember_D_diamond.png";
                         }
                         if(thingsToRemember.charAt(i) == 'H') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_H_hash.png";
+                            path_of_hazard_1 = "res/remember_H_hash.png";
                         }
                         if(thingsToRemember.charAt(i) == 'S') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_S_star.png";
+                            path_of_hazard_1 = "res/remember_S_star.png";
                         }
                     }
                 }
@@ -2518,22 +2518,22 @@ public final class Game_Display extends JPanel{
                     path_of_hazard_4 = ""; currentHazardOrMoney4_image = null;
                     for(int i = 3; i < 6; i++) {
                         if(thingsToRemember.charAt(i) == 'A') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_A_asterisk.png";
+                            path_of_hazard_1 = "res/remember_A_asterisk.png";
                         }
                         if(thingsToRemember.charAt(i) == 'B') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_B_bell.png";
+                            path_of_hazard_1 = "res/remember_B_bell.png";
                         }
                         if(thingsToRemember.charAt(i) == 'C') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_C_clock.png";
+                            path_of_hazard_1 = "res/remember_C_clock.png";
                         }
                         if(thingsToRemember.charAt(i) == 'D') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_D_diamond.png";
+                            path_of_hazard_1 = "res/remember_D_diamond.png";
                         }
                         if(thingsToRemember.charAt(i) == 'H') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_H_hash.png";
+                            path_of_hazard_1 = "res/remember_H_hash.png";
                         }
                         if(thingsToRemember.charAt(i) == 'S') {
-                            path_of_hazard_1 = "./src/hugohiihto/remember_S_star.png";
+                            path_of_hazard_1 = "res/remember_S_star.png";
                         }
                     }
                 }
@@ -2580,12 +2580,12 @@ public final class Game_Display extends JPanel{
                     currentHazardOrMoney4_image = currentHazardOrMoney_4.getImage();
                 }
 
-                String onesToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(ones) + ".png";
-                String tensToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(tens) + ".png";
-                String hundredsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(hundreds) + ".png";
-                String thousandsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(thousands) + ".png";
-                String tenThousandsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(tenThousands) + ".png";
-                String hundredThousandsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(hundredThousands) + ".png";
+                String onesToDraw_path = "res/numbers" + String.valueOf(ones) + ".png";
+                String tensToDraw_path = "res/numbers" + String.valueOf(tens) + ".png";
+                String hundredsToDraw_path = "res/numbers" + String.valueOf(hundreds) + ".png";
+                String thousandsToDraw_path = "res/numbers" + String.valueOf(thousands) + ".png";
+                String tenThousandsToDraw_path = "res/numbers" + String.valueOf(tenThousands) + ".png";
+                String hundredThousandsToDraw_path = "res/numbers" + String.valueOf(hundredThousands) + ".png";
 
                 digitFromLeft1_x_position = (int) ((int) d.getWidth()/2);
                 digitFromLeft1_y_position = (int) ((int) d.getHeight()/1.27);
@@ -3105,12 +3105,12 @@ public final class Game_Display extends JPanel{
                 key2 = false;
                 key1 = false;
                 
-                String onesToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(ones) + ".png";
-                String tensToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(tens) + ".png";
-                String hundredsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(hundreds) + ".png";
-                String thousandsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(thousands) + ".png";
-                String tenThousandsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(tenThousands) + ".png";
-                String hundredThousandsToDraw_path = "./src/hugohiihto/numbers" + String.valueOf(hundredThousands) + ".png";
+                String onesToDraw_path = "res/numbers" + String.valueOf(ones) + ".png";
+                String tensToDraw_path = "res/numbers" + String.valueOf(tens) + ".png";
+                String hundredsToDraw_path = "res/numbers" + String.valueOf(hundreds) + ".png";
+                String thousandsToDraw_path = "res/numbers" + String.valueOf(thousands) + ".png";
+                String tenThousandsToDraw_path = "res/numbers" + String.valueOf(tenThousands) + ".png";
+                String hundredThousandsToDraw_path = "res/numbers" + String.valueOf(hundredThousands) + ".png";
 
                 digitFromLeft1_x_position = (int) ((int) d.getWidth()/11);
                 digitFromLeft1_y_position = (int) ((int) d.getHeight()/2.2);
@@ -3170,7 +3170,7 @@ public final class Game_Display extends JPanel{
                 repaint();
 
                 if(pulled_rope_1) {
-                    ImageIcon r1_icon = new ImageIcon("./src/hugohiihto/rope1good.png");
+                    ImageIcon r1_icon = new ImageIcon("res/rope1good.png");
                     int r1_iconw = r1_icon.getIconWidth();
                     int r1_iconh = r1_icon.getIconHeight();
                     r1_icon.setImage(r1_icon.getImage().getScaledInstance(r1_iconw-30, r1_iconh-30, Image.SCALE_DEFAULT));
@@ -3178,7 +3178,7 @@ public final class Game_Display extends JPanel{
                     g.drawImage(r1, digitFromLeft1_x_position-40, digitFromLeft1_y_position+70, this);
                 }
                 if(pulled_rope_2 == true || (pulled_rope_1 == false && pulled_rope_2 == false && pulled_rope_3 == false)) {
-                    ImageIcon r2_icon = new ImageIcon("./src/hugohiihto/rope2bad.png");
+                    ImageIcon r2_icon = new ImageIcon("res/rope2bad.png");
                     int r2_iconw = r2_icon.getIconWidth();
                     int r2_iconh = r2_icon.getIconHeight();
                     r2_icon.setImage(r2_icon.getImage().getScaledInstance(r2_iconw-30, r2_iconh-30, Image.SCALE_DEFAULT));
@@ -3186,7 +3186,7 @@ public final class Game_Display extends JPanel{
                     g.drawImage(r2, digitFromLeft1_x_position-40, digitFromLeft1_y_position+70, this);
                 }
                 if(pulled_rope_3) {
-                    ImageIcon r3_icon = new ImageIcon("./src/hugohiihto/rope3best.png");
+                    ImageIcon r3_icon = new ImageIcon("res/rope3best.png");
                     int r3_iconw = r3_icon.getIconWidth();
                     int r3_iconh = r3_icon.getIconHeight();
                     r3_icon.setImage(r3_icon.getImage().getScaledInstance(r3_iconw-30, r3_iconh-30, Image.SCALE_DEFAULT));
@@ -3254,7 +3254,7 @@ public final class Game_Display extends JPanel{
             try {
                 System.out.println("Hugo Skiing " + VERSION + ", GAME SPEED (ms): " + GAMESPEED + ", Finnish voices");
                 f = new JFrame("HUGO - SKIING");
-                f.setIconImage(new ImageIcon("./src/hugohiihto/favicon_corner.png").getImage());
+                f.setIconImage(new ImageIcon("res/favicon_corner.png").getImage());
                 f.setSize(d);
                 f.setMaximumSize(d); // changing the dimension affects how the graphics will show up, do not edit 
                 f.setResizable(false);

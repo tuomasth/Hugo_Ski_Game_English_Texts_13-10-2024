@@ -753,7 +753,7 @@ public class HugoHiihto {
             }
             else {
                 if(currentStateAtTheLevel < 37) {
-                    File fileGameMusicH = new File("./src/hugohiihto/hiihtoaani.wav");
+                    File fileGameMusicH = new File("res/hiihtoaani.wav");
                     try {
                         Game_Display.clipH = AudioSystem.getClip();
                     } 
@@ -831,7 +831,7 @@ public class HugoHiihto {
                             Game_Display.clip4 = null; // clip variables are music or sound 
                             
                             if(Game_Display.cheatBackflip180) {
-                                File fileGameMusic2 = new File("./src/hugohiihto/music_FinnishHugo.wav");
+                                File fileGameMusic2 = new File("res/music_FinnishHugo.wav");
                                 try {
                                     Game_Display.clip4 = AudioSystem.getClip();
                                 } 
@@ -848,7 +848,7 @@ public class HugoHiihto {
                             }
                             else {
                                 if(Game_Display.number_of_lives <= 3) {
-                                    File fileGameMusic2 = new File("./src/hugohiihto/music_from_classic_skateboard.wav");
+                                    File fileGameMusic2 = new File("res/music_from_classic_skateboard.wav");
                                     try {
                                         Game_Display.clip4 = AudioSystem.getClip();
                                     } 
