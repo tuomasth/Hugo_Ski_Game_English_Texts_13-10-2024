@@ -13,6 +13,14 @@ On Linux, you might have to make the JAR file executable first: https://askubunt
 The game was tested with Windows 11 only.
 On Linux, the JAR file(s) might not work correctly. Linux users should make a JAR file themselves with NetBeans IDE, for example.
 
+## Linux
+requirements: ant 1.10+ and java 17+
+
+```shell
+ant
+java -jar dist/HugoHiihto.jar
+```
+
 ------
 
 Version 1.1 (2024) - English texts, Finnish voice acting, 
