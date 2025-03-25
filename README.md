@@ -2,6 +2,9 @@
 
 RECOMMENDED FOR WINDOWS WITH JAVA
 
+NEW VERSION ("1.1.1", I suppose): https://github.com/humbertodias/hugo-ski-game-en
+(visited on 25.3.2025)
+
 Instructions:
 
 1) Install the newest JDK from Oracle. https://www.oracle.com/java/technologies/downloads/
