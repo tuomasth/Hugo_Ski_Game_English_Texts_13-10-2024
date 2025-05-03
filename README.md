@@ -2,8 +2,11 @@
 
 RECOMMENDED FOR WINDOWS WITH JAVA
 
-NEW VERSION ("1.1.1", I suppose): https://github.com/humbertodias/hugo-ski-game-en
+NEW VERSION that fixes file names for Linux users ("v1.1.1", I suppose): 
+https://github.com/humbertodias/hugo-ski-game-en
 (visited on 25.3.2025)
+
+  <a href="#" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=Qu7O18X6IJE</a> 
 
 Instructions:
 
