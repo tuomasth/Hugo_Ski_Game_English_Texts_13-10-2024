@@ -26,7 +26,7 @@ java -jar target/hugoskifx-1.1-SNAPSHOT-jar-with-dependencies.jar
 
 Version 1.1 (2024-2025) - English texts, Finnish voice acting, 
 Java skiing game - Hugo the Troll fan game, 
-We do not own the Hugo franchise - support the official releases!
+we do not own the Hugo franchise - support the official releases!
 
 
 Recommended Java Development Kit version: 23 or newer.
