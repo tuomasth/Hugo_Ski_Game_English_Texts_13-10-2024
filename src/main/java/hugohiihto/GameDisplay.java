@@ -1,7 +1,6 @@
 package hugohiihto;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -11,16 +10,12 @@ import java.util.logging.Logger;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
 import javax.media.Player; // library FMJ - http://fmj-sf.net/
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 /**
- * Hugo Ski Game v1.1 by Tuomas Hyvönen, 10/2024 
- *
+ * Hugo Ski Game v1.1 by Tuomas Hyvönen, 10/2024
+ * <p>
  * New in this version:
  * - English texts (but I wanted to keep the Finnish Harri Hyttinen voices).
  * - The background ski tracks have a little animation.
@@ -34,118 +29,119 @@ import javax.swing.*;
  * - Scoring is different.
  * - The graphics match a bit better with what is really happening according to the game's logic.
  * - The score bar does not show unnecessary zeros and the lives are on the left side instead of right.
- *
- * - There can still be bugs and other flaws, I am not a perfect programmer. 
- *   You should be happy if the application even starts up in the first place. 
- *   If a video cut scene does not start, please move the mouse cursor on the game window. 
- *
- * The game window cannot be resized currently, press the Windows key then +Plus/-Minus to zoom in/out. 
- * Windows Magnifier/zooming instructions: 
+ * <p>
+ * - There can still be bugs and other flaws, I am not a perfect programmer.
+ * You should be happy if the application even starts up in the first place.
+ * If a video cut scene does not start, please move the mouse cursor on the game window.
+ * <p>
+ * The game window cannot be resized currently, press the Windows key then +Plus/-Minus to zoom in/out.
+ * Windows Magnifier/zooming instructions:
  * https://www.androidpolice.com/how-to-zoom-in-out-on-windows-10-11/
- * Something like this should be possible on Linux, MAC etc. too but without Windows button... 
- *
- * Thanks for trying out this game! I do not own the Hugo franchise. 
- * Sharing Java codes and random files on the Internet should not be a crime - as far as I do not cause harm to people or their money. 
- * The purpose is to share the fun with people and keep the Hugo franchise alive. 
- *
- * Java must be installed before playing the game: 
+ * Something like this should be possible on Linux, MAC etc. too but without Windows button...
+ * <p>
+ * Thanks for trying out this game! I do not own the Hugo franchise.
+ * Sharing Java codes and random files on the Internet should not be a crime - as far as I do not cause harm to people or their money.
+ * The purpose is to share the fun with people and keep the Hugo franchise alive.
+ * <p>
+ * Java must be installed before playing the game:
  * https://www.java.com/en/download/manual.jsp
- *
- *
- * "Work is not man's punishment. It is his reward and his strength and his pleasure." 
- * - George Sand, French novelist 
- *
- * "Love is a serious mental disease."      (especially for Hugo franchise) 
+ * <p>
+ * <p>
+ * "Work is not man's punishment. It is his reward and his strength and his pleasure."
+ * - George Sand, French novelist
+ * <p>
+ * "Love is a serious mental disease."      (especially for Hugo franchise)
  * - Plato, Greek philosopher
- *
+ * <p>
  * "We can easily forgive a child who is afraid of the dark; the real tragedy of life is when men are afraid of the light."
  * - Plato
- *
- * https://www.brainyquote.com 
- *
+ * <p>
+ * https://www.brainyquote.com
+ * <p>
  * ----
- *
- * Please support the original and official Hugo releases! They have been the inspiration for this game. 
- * Consider this game to be treated the same way as "Mega Man Unlimited". 
- * https://megamanfanon.fandom.com/wiki/Mega_Man_Unlimited 
- *
- * Or if you're mean, treat this the same way as Metroid AM2R. 
- * https://en.wikipedia.org/wiki/AM2R 
- *
- * Or Commodore64 Super Mario Bros. that Nintendo also did not treat well. 
- * https://archive.org/details/Super_Mario_Bros_C64_Zeropaige 
- *
- *
+ * <p>
+ * Please support the original and official Hugo releases! They have been the inspiration for this game.
+ * Consider this game to be treated the same way as "Mega Man Unlimited".
+ * https://megamanfanon.fandom.com/wiki/Mega_Man_Unlimited
+ * <p>
+ * Or if you're mean, treat this the same way as Metroid AM2R.
+ * https://en.wikipedia.org/wiki/AM2R
+ * <p>
+ * Or Commodore64 Super Mario Bros. that Nintendo also did not treat well.
+ * https://archive.org/details/Super_Mario_Bros_C64_Zeropaige
+ * <p>
+ * <p>
  * Thanks to this discussion for huge progress in game development when getting started:
  * https://stackoverflow.com/questions/12082660/background-image-for-simple-game
- *
+ * <p>
  * "The beginning is the most important part of the work."
  * - also from Plato
- *
+ * <p>
  * ----
- *
- * Some Hugo creators not involved in this project, thanks for each one of them! 
- * Consider this as "the real credits screen": 
- *
- * https://screentroll.fandom.com/wiki/Hugo_(PlayStation) 
- *  Producers: Ivan Sølvason, Lars Rikart Jensen, Troels Gram, Jens C. Ringdal
- *  Design: Niels Krogh Mortensen, Troels Gram, Lars Rikart Jensen
- *  Programmers: Peter Marino, Poul-Jesper Olsen, Ole Thomas Jensen, Mario Gomes, Claes Hougaard, 
- *    Michael Barklund, Erik Schack Andersen, John Dideriksen, Troels Gram, Jørgen Lortentsen
- *  Graphics: Chadi Freigeh, Claus Friese, Thomas Skellund, Mark Gregory, Jakob Steffensen, Peter Eide Paulsen, 
- *    Jørgen Trolle Ørberg, John Madsen, Niels Krogh Mortensen, Lars Krogh Mortensen, René Bidstrup, 
- *    Anders Morgenthaler, Torben Bakager Larsen, Jesper Laugesen 
- *  Music and sound: David A. Filskov, Christian Steen Jensen.
- *
- * https://screentroll.fandom.com/wiki/Hugo_2_(PlayStation) 
- *  Producer: Ivan Sølvason, Lars Rikart Jensen. Piet N. Kargaard
- *  Design: Mario Gomes, Peter Eide Paulsen, Poul Engelbrech Madsen, John Dideriksen
- *  Programming: Mario Gomes, Jesper Olsen, Anders Emil Hansen, Ole T. Jensen
- *  Graphics: Claus Friese, Chadi Freigeh, Peter Eide Paulsen, Piet N. Kargaard, John Madsen, Jørgen Trolle Ørberg
- *  Music and sound: David A. Filskov, Christian Steen Jensen, Klaus Mulvad Nielsen, Asbjørn Andersen
- *  Other: Niels Krogh Mortensen, Lars Krogh Mortensen, René Bidstrup, Anders Morgenthaler, Torben Bakager Larsen, 
- *    Jesper Laugesen, Tom Westerman, Thomas Skellund, Espen Toft Jacobsen, Laust Palbo Nielsen.
- *
- *  https://screentroll.fandom.com/wiki/Hugo_5
- *  Production manager: Ivan Sølvason
- *  Programmers: Jakob Frandsen, Bo Krohn, Kim Frederiksen, Lasse S. Tassing, Jens Nordahl
- *  TV programmers: Kim Frederiksen, Stig Jørgensen
- *  Graphics: Lars Krogh Mortensen, Laust Palbo Nielsen, Tom Westermann, Esben Toft Jacobsen, 
- *    Jakob Steffensen, Jesper Eskildsen, Thomas Skellund
- *  Music and sound effects: Mads Kristensen, David Filskov.
- *
- *  https://screentroll.fandom.com/wiki/Hugo_(1996_video_game)
- *  Producer: Ivan Sølvason
- *  PC programming: Jakob Frandsen, Lasse Tassing, Kim Frederisken, Troels Gram
- *  TV programming: Stig Jørgansen, Kim Frederisken, Bo Krohn, Morten Hansen, Esben Krag Hansen
- *  Graphics: Niels Krogh Mortensen, Lars Krogh Mortensen, René Bidstrup, Anders Morgenthaler, 
- *    Laust Palbo Nielsen, Thomas Skellund, Torben Bakager, Martin De Thurah
- *  Music and sound effects: Mads Kriestensen, Nicolai Thilo, Thomas Engell, Jørgen Traun. 
- *
+ * <p>
+ * Some Hugo creators not involved in this project, thanks for each one of them!
+ * Consider this as "the real credits screen":
+ * <p>
+ * https://screentroll.fandom.com/wiki/Hugo_(PlayStation)
+ * Producers: Ivan Sølvason, Lars Rikart Jensen, Troels Gram, Jens C. Ringdal
+ * Design: Niels Krogh Mortensen, Troels Gram, Lars Rikart Jensen
+ * Programmers: Peter Marino, Poul-Jesper Olsen, Ole Thomas Jensen, Mario Gomes, Claes Hougaard,
+ * Michael Barklund, Erik Schack Andersen, John Dideriksen, Troels Gram, Jørgen Lortentsen
+ * Graphics: Chadi Freigeh, Claus Friese, Thomas Skellund, Mark Gregory, Jakob Steffensen, Peter Eide Paulsen,
+ * Jørgen Trolle Ørberg, John Madsen, Niels Krogh Mortensen, Lars Krogh Mortensen, René Bidstrup,
+ * Anders Morgenthaler, Torben Bakager Larsen, Jesper Laugesen
+ * Music and sound: David A. Filskov, Christian Steen Jensen.
+ * <p>
+ * https://screentroll.fandom.com/wiki/Hugo_2_(PlayStation)
+ * Producer: Ivan Sølvason, Lars Rikart Jensen. Piet N. Kargaard
+ * Design: Mario Gomes, Peter Eide Paulsen, Poul Engelbrech Madsen, John Dideriksen
+ * Programming: Mario Gomes, Jesper Olsen, Anders Emil Hansen, Ole T. Jensen
+ * Graphics: Claus Friese, Chadi Freigeh, Peter Eide Paulsen, Piet N. Kargaard, John Madsen, Jørgen Trolle Ørberg
+ * Music and sound: David A. Filskov, Christian Steen Jensen, Klaus Mulvad Nielsen, Asbjørn Andersen
+ * Other: Niels Krogh Mortensen, Lars Krogh Mortensen, René Bidstrup, Anders Morgenthaler, Torben Bakager Larsen,
+ * Jesper Laugesen, Tom Westerman, Thomas Skellund, Espen Toft Jacobsen, Laust Palbo Nielsen.
+ * <p>
+ * https://screentroll.fandom.com/wiki/Hugo_5
+ * Production manager: Ivan Sølvason
+ * Programmers: Jakob Frandsen, Bo Krohn, Kim Frederiksen, Lasse S. Tassing, Jens Nordahl
+ * TV programmers: Kim Frederiksen, Stig Jørgensen
+ * Graphics: Lars Krogh Mortensen, Laust Palbo Nielsen, Tom Westermann, Esben Toft Jacobsen,
+ * Jakob Steffensen, Jesper Eskildsen, Thomas Skellund
+ * Music and sound effects: Mads Kristensen, David Filskov.
+ * <p>
+ * https://screentroll.fandom.com/wiki/Hugo_(1996_video_game)
+ * Producer: Ivan Sølvason
+ * PC programming: Jakob Frandsen, Lasse Tassing, Kim Frederisken, Troels Gram
+ * TV programming: Stig Jørgansen, Kim Frederisken, Bo Krohn, Morten Hansen, Esben Krag Hansen
+ * Graphics: Niels Krogh Mortensen, Lars Krogh Mortensen, René Bidstrup, Anders Morgenthaler,
+ * Laust Palbo Nielsen, Thomas Skellund, Torben Bakager, Martin De Thurah
+ * Music and sound effects: Mads Kriestensen, Nicolai Thilo, Thomas Engell, Jørgen Traun.
+ * <p>
  * https://fi.wikipedia.org/wiki/DJ_Hugo
  * https://fi.wikipedia.org/wiki/Hugo_(televisio-ohjelma)
- * Music: Slotmachine featuring Gemini 7, Kata Laurikainen, Anssi Ahonen, Jaana Rinne 
- * Other: Harri Hyttinen, Eija Ahvo, Jussi-Pekka Koskiranta, Pekka Kossila, Ari Meriläinen, Taru Valkeapää, Marika Saukkonen. 
- *
- * Guyus the Raptor and other uploaders at YouTube etc. 
+ * Music: Slotmachine featuring Gemini 7, Kata Laurikainen, Anssi Ahonen, Jaana Rinne
+ * Other: Harri Hyttinen, Eija Ahvo, Jussi-Pekka Koskiranta, Pekka Kossila, Ari Meriläinen, Taru Valkeapää, Marika Saukkonen.
+ * <p>
+ * Guyus the Raptor and other uploaders at YouTube etc.
  * Commodore 64 music by Jens-Christian Huus
- *
+ * <p>
  * ----
- *
- *
- * The game display class. The other class is HugoHiihto.java. 
- * The main method is here, check the end of this file. 
- *
+ * <p>
+ * <p>
+ * The game display class. The other class is HugoHiihto.java.
+ * The main method is here, check the end of this file.
+ * <p>
  * Tested with Microsoft Windows 11
- * Java developed by Oracle / Sun Microsystems. 
- * Created with Apache NetBeans 23 
- * Official release date: 24/2/2023 - v1.0 Finnish version available worldwide 
- * @author Tuomas Hyvönen 
+ * Java developed by Oracle / Sun Microsystems.
+ * Created with Apache NetBeans 23
+ * Official release date: 24/2/2023 - v1.0 Finnish version available worldwide
+ *
+ * @author Tuomas Hyvönen
  * @version 1.1.ENG
  */
-public final class Game_Display extends JPanel{
-    final static String VERSION = "1.1.ENG";
-    final static int GAMESPEED = 1700;      // in milliseconds
+public final class GameDisplay extends JPanel {
+    static final String VERSION = "1.1.ENG";
+    static final int GAMESPEED = 1700;      // in milliseconds
     // does not update graphics!
     int game_state = 0;      // 0 = Pre title no music,  1 = title screen and credits screen after beating the game,
     // 2 = showing a video,     3 = actual ski game,
@@ -205,7 +201,8 @@ public final class Game_Display extends JPanel{
     // As the programmer I own nothing. The original creators listed above do not lose money when these tracks are included in this game.
     // Do not upload valuable video game and TV show musics to YouTube if they have strict copyrights!
 
-    /*   * E- empty (even though E might not be needed to be read, it is meaningful to show positions)
+    /*
+     * E- empty (even though E might not be needed to be read, it is meaningful to show positions)
      * M- money
      * 8- snowman
      * o- snowball (small o)
@@ -249,10 +246,10 @@ public final class Game_Display extends JPanel{
     static Dimension d = new Dimension(630, 500);
     int maxW = d.width - 220;
 
-    int w_width = (int) d.getWidth()/7; // hugo skiing animation
-    int w_height = (int) d.getHeight()/3;
-    int e_width = (int) d.getWidth()/7;
-    int e_height = (int) d.getHeight()/3;
+    int w_width = (int) d.getWidth() / 7; // hugo skiing animation
+    int w_height = (int) d.getHeight() / 3;
+    int e_width = (int) d.getWidth() / 7;
+    int e_height = (int) d.getHeight() / 3;
 
     static int x, y;
     static int currentGrid = 0; // or line, should be 0, 1, 2 or 3, nothing else
@@ -465,131 +462,152 @@ public final class Game_Display extends JPanel{
      * Game reset call.
      */
     public void reset() {
-        HugoHiihto.hugoHiihto = null;
-        HugoHiihto.gameReset(GAMESPEED); // creates a new game
+        HugoSkiing.hugoHiihto = null;
+        HugoSkiing.gameReset(GAMESPEED); // creates a new game
     }
 
     /**
      * Resets the positions of 4 ski track objects.
      */
     public static void reset4positions() {
-        if(HugoHiihto.tic) {
-            Game_Display.currentHazardOrMoney1_x_position = (Game_Display.d.width/3)+35;
-            Game_Display.currentHazardOrMoney1_y_position = (int)(Game_Display.d.height/3);
-            if(HugoHiihto.currentStateAtTheLevel == 14 || HugoHiihto.currentStateAtTheLevel == 25) {
-                if(!pausedWithEnter) {
-                    Game_Display.currentHazardOrMoney1_x_position = 20;
-                    Game_Display.currentHazardOrMoney1_y_position = 30;
+        if (HugoSkiing.tic) {
+            GameDisplay.currentHazardOrMoney1_x_position = (GameDisplay.d.width / 3) + 35;
+            GameDisplay.currentHazardOrMoney1_y_position = (int) (GameDisplay.d.height / 3);
+            if (HugoSkiing.currentStateAtTheLevel == 14 || HugoSkiing.currentStateAtTheLevel == 25) {
+                if (!pausedWithEnter) {
+                    GameDisplay.currentHazardOrMoney1_x_position = 20;
+                    GameDisplay.currentHazardOrMoney1_y_position = 30;
                 }
             }
-            Game_Display.currentHazardOrMoney2_x_position = (Game_Display.d.width/3)+58;
-            Game_Display.currentHazardOrMoney2_y_position = (int)(Game_Display.d.height/3.1);
-            Game_Display.currentHazardOrMoney3_x_position = (Game_Display.d.width/3)+88;
-            Game_Display.currentHazardOrMoney3_y_position = (int)(Game_Display.d.height/3.1);
-            Game_Display.currentHazardOrMoney4_x_position = (Game_Display.d.width/3)+130;
-            Game_Display.currentHazardOrMoney4_y_position = (int)(Game_Display.d.height/3.1);
-            Game_Display.currentHazardOrMoney1w = 1;
-            Game_Display.currentHazardOrMoney1h = 1;
-            Game_Display.currentHazardOrMoney2w = 1;
-            Game_Display.currentHazardOrMoney2h = 1;
-            Game_Display.currentHazardOrMoney3w = 1;
-            Game_Display.currentHazardOrMoney3h = 1;
-            Game_Display.currentHazardOrMoney4w = 1;
-            Game_Display.currentHazardOrMoney4h = 1;
-            if(currentHazardOrMoney1_y_position > y && (HugoHiihto.currentStateAtTheLevel != 14
-                    && HugoHiihto.currentStateAtTheLevel != 25)) {
-                currentHazardOrMoney1_y_position+=1000;
-                currentHazardOrMoney1_x_position+=1000;
+            GameDisplay.currentHazardOrMoney2_x_position = (GameDisplay.d.width / 3) + 58;
+            GameDisplay.currentHazardOrMoney2_y_position = (int) (GameDisplay.d.height / 3.1);
+            GameDisplay.currentHazardOrMoney3_x_position = (GameDisplay.d.width / 3) + 88;
+            GameDisplay.currentHazardOrMoney3_y_position = (int) (GameDisplay.d.height / 3.1);
+            GameDisplay.currentHazardOrMoney4_x_position = (GameDisplay.d.width / 3) + 130;
+            GameDisplay.currentHazardOrMoney4_y_position = (int) (GameDisplay.d.height / 3.1);
+            GameDisplay.currentHazardOrMoney1w = 1;
+            GameDisplay.currentHazardOrMoney1h = 1;
+            GameDisplay.currentHazardOrMoney2w = 1;
+            GameDisplay.currentHazardOrMoney2h = 1;
+            GameDisplay.currentHazardOrMoney3w = 1;
+            GameDisplay.currentHazardOrMoney3h = 1;
+            GameDisplay.currentHazardOrMoney4w = 1;
+            GameDisplay.currentHazardOrMoney4h = 1;
+            if (currentHazardOrMoney1_y_position > y && (HugoSkiing.currentStateAtTheLevel != 14
+                    && HugoSkiing.currentStateAtTheLevel != 25)) {
+                currentHazardOrMoney1_y_position += 1000;
+                currentHazardOrMoney1_x_position += 1000;
             }
-            if(currentHazardOrMoney2_y_position > y) {
-                currentHazardOrMoney2_y_position+=1000;
-                currentHazardOrMoney2_x_position+=1000;
+            if (currentHazardOrMoney2_y_position > y) {
+                currentHazardOrMoney2_y_position += 1000;
+                currentHazardOrMoney2_x_position += 1000;
             }
-            if(currentHazardOrMoney3_y_position > y) {
-                currentHazardOrMoney3_y_position+=1000;
-                currentHazardOrMoney3_x_position+=1000;
+            if (currentHazardOrMoney3_y_position > y) {
+                currentHazardOrMoney3_y_position += 1000;
+                currentHazardOrMoney3_x_position += 1000;
             }
-            if(currentHazardOrMoney4_y_position > y) {
-                currentHazardOrMoney4_y_position+=1000;
-                currentHazardOrMoney4_x_position+=1000;
+            if (currentHazardOrMoney4_y_position > y) {
+                currentHazardOrMoney4_y_position += 1000;
+                currentHazardOrMoney4_x_position += 1000;
             }
         }
     }
 
     /**
      * Set lives, max is 4 in this version (1.1).
+     *
      * @param new_amount
      */
     public static void setLives(int new_amount) {
-        if(new_amount < 5 && new_amount > -1) {
+        if (new_amount < 5 && new_amount > -1) {
             number_of_lives = new_amount;
         }
     }
+
     /**
      * Set ones.
+     *
      * @param new_amount
      */
     public static void setOnes(int new_amount) {
         ones = new_amount;
     }
+
     /**
      * Set tens.
+     *
      * @param new_amount
      */
     public static void setTens(int new_amount) {
         tens = new_amount;
     }
+
     /**
      * Set hundreds.
+     *
      * @param new_amount
      */
     public static void setHundreds(int new_amount) {
         hundreds = new_amount;
     }
+
     /**
      * Set thousands.
+     *
      * @param new_amount
      */
     public static void setThousands(int new_amount) {
         thousands = new_amount;
     }
+
     /**
      * Set 10 000s.
+     *
      * @param new_amount
      */
     public static void setTenThousands(int new_amount) {
         tenThousands = new_amount;
     }
+
     /**
      * Set 100 000s.
+     *
      * @param new_amount
      */
     public static void setHundredThousands(int new_amount) {
         hundredThousands = new_amount;
     }
+
     /**
      * Set hazard 1.
+     *
      * @param value
      */
     public static void setcurrentHazardOrMoney1(String value) {
         currentHazardOrMoney1 = value;
     }
+
     /**
      * Set hazard 2.
+     *
      * @param value
      */
     public static void setcurrentHazardOrMoney2(String value) {
         currentHazardOrMoney2 = value;
     }
+
     /**
      * Set hazard 3.
+     *
      * @param value
      */
     public static void setcurrentHazardOrMoney3(String value) {
         currentHazardOrMoney3 = value;
     }
+
     /**
      * Set hazard 4.
+     *
      * @param value
      */
     public static void setcurrentHazardOrMoney4(String value) {
@@ -597,820 +615,14 @@ public final class Game_Display extends JPanel{
     }
 
     /**
-     * Key listeners when pressing buttons. Please call only once!
-     * Else, input bugs will occur with multiple presses.
-     */
-    public class AL extends KeyAdapter {
-
-        /**
-         * Key pressed event when player gives input.
-         * @param e
-         */
-        @Override
-        public void keyPressed(KeyEvent e) {
-            int keyCode = e.getKeyCode();
-
-            if(keyCode == KeyEvent.VK_ESCAPE) {
-
-                System.gc();    // run garbage collector
-                System.exit(0); // and exit if ESC pressed
-            }
-
-            if(keyCode == KeyEvent.VK_ENTER) {
-
-                if(video != 3) {
-                    if(videoimg != null) {  // so videos will always start at the beginning
-                        videoimg.flush();
-                        videoimg = null;
-                    }
-                }
-
-                // Mutings
-                if(clip0 != null) {
-                    if(clip0.isRunning()) {
-                        clip0.stop();
-                    }
-                }
-                /*
-                if(clip1 != null) {
-                    if(clip1.isRunning()) {
-                        clip1.stop();
-                    }
-                }
-                */
-                if(clip2 != null) {
-                    if(clip2.isRunning()) {
-                        clip2.stop();
-                    }
-                }
-                if(clip3 != null) {
-                    if(clip3.isRunning()) {
-                        clip3.stop();
-                    }
-                }
-                if(mediaPlayer != null && video != 2 && video != 3) {
-                    mediaPlayer.stop();
-                }
-            }
-
-
-            if((double)game_state < 0.1) {
-                if (keyCode == KeyEvent.VK_ENTER) {
-
-                    constructFrames(game_state);
-
-                    if(clip1 != null) {
-                        if(clip1.isRunning()) {
-                            clip1.stop(); //popcorn
-                        }
-                    }
-                    if(clip4 != null) {
-                        if(clip4.isRunning()) {
-                            clip4.stop(); //skateboard
-                        }
-                    }
-
-                    video = 0;
-                    nextState = 6;
-                }
-            }
-            else if((double)game_state > 0.9 && (double)game_state < 1.1) {
-                if (keyCode == KeyEvent.VK_ENTER) {
-
-                    videoimg = new ImageIcon("res/scylla_intro_s.gif").getImage();
-                    videoimg = new ImageIcon("res/start_hoplaa_s.gif").getImage();
-                    videoimg.setAccelerationPriority((float)1.0); // from 0-> lowest to 1-> highest
-
-
-                    if(HugoHiihto.currentStateAtTheLevel >= 71 && (pulled_rope_3 || pulled_rope_1)) {
-                        nextState = 0;
-                        HugoHiihto.currentStateAtTheLevel = -5;
-                    }
-                    else {
-                        if(HugoHiihto.gameOver) {
-                            if(HugoHiihto.timerTask != null) {
-                                HugoHiihto.timerTask.cancel();
-                            }
-                        }
-
-                        reset();
-
-                        video = 1;
-                        nextState = 6;
-                        constructFrames(game_state);
-                    }
-                }
-                if((keyCode == KeyEvent.VK_9 || keyCode == KeyEvent.VK_NUMPAD9) && key5) {      key6 = true; }
-                if(keyCode == KeyEvent.VK_9 || keyCode == KeyEvent.VK_NUMPAD9) {                key1 = true; }
-                if((keyCode == KeyEvent.VK_7 || keyCode == KeyEvent.VK_NUMPAD7) && key9) {      key10 = true; }
-                if((keyCode == KeyEvent.VK_7 || keyCode == KeyEvent.VK_NUMPAD7) && key1) {      key2 = true; }
-                if((keyCode == KeyEvent.VK_0 || keyCode == KeyEvent.VK_NUMPAD0) && key3) {      key4 = true; }
-                if((keyCode == KeyEvent.VK_0 || keyCode == KeyEvent.VK_NUMPAD0) && key2) {      key3 = true; }
-                if((keyCode == KeyEvent.VK_5 || keyCode == KeyEvent.VK_NUMPAD5) && key6) {      key7 = true; }
-                if((keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) && key11) {     key12 = true; }
-                if((keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) && key10) {     key11 = true; }
-                if((keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) && key8) {      key9 = true; }
-                if((keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) && key7) {      key8 = true; }
-                if((keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) && key4) {      key5 = true; }
-                if(cheatBackflip180) {
-                    try {
-                        Game_Display.clipMoney = AudioSystem.getClip();
-                    }
-                    catch (LineUnavailableException ex) {
-                        Logger.getLogger(HugoHiihto.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        Game_Display.clipMoney.open(AudioSystem.getAudioInputStream(Game_Display.fileMoney));
-                    }
-                    catch (UnsupportedAudioFileException | IOException | LineUnavailableException  ex) {
-                        Logger.getLogger(HugoHiihto.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    FloatControl gainControl =
-                            (FloatControl) Game_Display.clipMoney.getControl(FloatControl.Type.MASTER_GAIN);
-                    gainControl.setValue(-0.0f); // volume setting
-                    Game_Display.clipMoney.start();
-                }
-                if(key12) { // Activating the cheat mode!
-                    cheatBackflip180 = true;
-                }
-            }
-            else if((double)game_state > 1.9 && (double)game_state < 2.1) {
-                // 0 = Scylla intro,          1 = Hugo's first words hoplaa nyt hommiin,
-                // 2 = Scylla button,         3 = three ropes intro,
-                // 4 = Hugo asks for two,     5 = two chosen correctly,
-                // 6 = made a wrong choice,   7 = (knock) Hugo finished the skiing,
-                // 8 = [knock] wake up pahvi, 9 = (knock) now the last troll going,
-                // 10 = (knock) game over,    11 = rope #1,
-                // 12 = rope #2,              13 = rope #3,
-                // 14 = snowman,              15 = snowball,
-                // 16 = bomb,                 17 = beaver.
-
-                if(video == 0) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-
-                        if(HugoHiihto.currentStateAtTheLevel >= 71 && HugoHiihto.gameOver == false) {
-                            try {
-                                clip3 = AudioSystem.getClip();
-                            }
-                            catch (LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            try {
-                                clip3.open(AudioSystem.getAudioInputStream(fileGameMusic2));
-                            }
-                            catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            FloatControl gainControl =
-                                    (FloatControl) clip3.getControl(FloatControl.Type.MASTER_GAIN);
-                            gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                            clip3.start();
-                        }
-                        else {
-                            try {
-                                clip0 = AudioSystem.getClip();
-                            }
-                            catch (LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            try {
-                                clip0.open(AudioSystem.getAudioInputStream(fileGameMusic0));
-                            }
-                            catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            FloatControl gainControl =
-                                    (FloatControl) clip0.getControl(FloatControl.Type.MASTER_GAIN);
-                            gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                            clip0.start();
-                        }
-
-                        gamePaused = true;
-                        nextState = 1;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 1) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 3; // to the actual game
-                        gamePaused = false;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 2) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 3;
-                        gamePaused = false;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 3) {
-                    if(clip1 != null) {
-                        if(clip1.isRunning()) {
-                            clip1.stop();
-                        }
-                    }
-
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                    if(keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_NUMPAD1) {
-                        if(mediaPlayer != null) {
-                            mediaPlayer.stop();
-                        }
-                        pulled_rope_1 = true;
-                        pulled_rope_2 = false;
-                        pulled_rope_3 = false;
-                        System.out.println("1 chosen!");
-
-                        // 1004 points like in the good old times (at least in some classic games)
-                        HugoHiihto.increaseScoreThousands(thousands);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-
-                        video = 11;
-                        nextState = 6; // use state 6 or higher when moving from a video to another video
-                    }
-                    if(keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_NUMPAD2) {
-                        if(mediaPlayer != null) {
-                            mediaPlayer.stop();
-                        }
-                        pulled_rope_2 = true;
-                        pulled_rope_1 = false;
-                        pulled_rope_3 = false;
-                        System.out.println("2 chosen!");
-                        HugoHiihto.currentStateAtTheLevel = -5;
-                        video = 12;
-                        nextState = 6;
-                    }
-                    if(keyCode == KeyEvent.VK_3 || keyCode == KeyEvent.VK_NUMPAD3) {
-                        if(mediaPlayer != null) {
-                            mediaPlayer.stop();
-                        }
-                        pulled_rope_3 = true;
-                        pulled_rope_1 = false;
-                        pulled_rope_2 = false;
-                        System.out.println("3 chosen!");
-
-                        // 2026 points = the best ending score, more than just a money bag
-                        HugoHiihto.increaseScoreThousands(thousands);
-                        HugoHiihto.increaseScoreThousands(thousands);
-                        HugoHiihto.increaseScoreTens(tens);
-                        HugoHiihto.increaseScoreTens(tens);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-                        HugoHiihto.increaseScoreOnes(ones);
-
-                        video = 13;
-                        nextState = 6;
-                    }
-                }
-                if(video == 4) {    // hugo asks 2
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 4;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 5) {    // 2 right
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        if(clip1 != null) {
-                            if(clip1.isRunning()) {
-                                clip1.stop();//popcorn stop
-                            }
-                        }
-                        if(clip4 != null) {
-                            if(clip4.isRunning()) {
-                                clip4.stop();//skateboard stop
-                            }
-                        }
-
-                        video = 3;
-                        nextState = 6;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 6) {    // wrong
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        HugoHiihto.gameOver = true;
-                        nextState = 5;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 7) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        Game_Display.video = 4;
-                        Game_Display.nextState = 6;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 8) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 3; // to the actual game
-                        gamePaused = false;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 9) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 3; // to the actual game
-                        gamePaused = false;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 10) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        // cancel all timertasks!
-                        HugoHiihto.gameOver = true;
-                        nextState = 5;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 11) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 5;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 12) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 5;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 13) {
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        nextState = 5;
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 14) {
-                    currentGrid = 0;
-                    currentHazardOrMoney1_y_position += 800;
-                    currentHazardOrMoney2_y_position += 800;
-                    currentHazardOrMoney3_y_position += 800;
-                    currentHazardOrMoney4_y_position += 800;
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        if(number_of_lives >= 2) {
-                            video = 8;
-                            nextState = 6;
-                        }
-                        else {
-                            if(number_of_lives >= 1) {
-                                video = 9;
-                                nextState = 6;
-                            }
-                            else {
-                                video = 10;
-                                nextState = 6;
-                            }
-                        }
-
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 15) {
-                    currentGrid = 0;
-                    currentHazardOrMoney1_y_position += 800;
-                    currentHazardOrMoney2_y_position += 800;
-                    currentHazardOrMoney3_y_position += 800;
-                    currentHazardOrMoney4_y_position += 800;
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        if(number_of_lives >= 2) {
-                            video = 8;
-                            nextState = 6;
-                        }
-                        else {
-                            if(number_of_lives >= 1) {
-                                video = 9;
-                                nextState = 6;
-                            }
-                            else {
-                                video = 10;
-                                nextState = 6;
-                            }
-                        }
-
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 16) {
-                    currentGrid = 0;
-                    currentHazardOrMoney1_y_position += 800;
-                    currentHazardOrMoney2_y_position += 800;
-                    currentHazardOrMoney3_y_position += 800;
-                    currentHazardOrMoney4_y_position += 800;
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        if(number_of_lives >= 2) {
-                            video = 8;
-                            nextState = 6;
-                        }
-                        else {
-                            if(number_of_lives >= 1) {
-                                video = 9;
-                                nextState = 6;
-                            }
-                            else {
-                                video = 10;
-                                nextState = 6;
-                            }
-                        }
-
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-                if(video == 17) {
-                    currentGrid = 0;
-                    currentHazardOrMoney1_y_position += 800;
-                    currentHazardOrMoney2_y_position += 800;
-                    currentHazardOrMoney3_y_position += 800;
-                    currentHazardOrMoney4_y_position += 800;
-                    if(keyCode == KeyEvent.VK_ENTER) {
-                        if(number_of_lives >= 2) {
-                            video = 8;
-                            nextState = 6;
-                        }
-                        else {
-                            if(number_of_lives >= 1) {
-                                video = 9;
-                                nextState = 6;
-                            }
-                            else {
-                                video = 10;
-                                nextState = 6;
-                            }
-                        }
-
-                    }
-                    if(keyCode == KeyEvent.VK_ESCAPE) {
-                        System.gc();
-                        System.exit(0);
-                    }
-                }
-            }
-            else if((double)game_state > 2.9 && (double)game_state < 3.1) {
-
-                maxW = d.width - 220;
-
-                if ((keyCode == KeyEvent.VK_LEFT && keyCode != KeyEvent.VK_RIGHT) ||
-                        (keyCode == KeyEvent.VK_4 && !(keyCode == KeyEvent.VK_6)) ||
-                        (keyCode == KeyEvent.VK_NUMPAD4 && !(keyCode == KeyEvent.VK_NUMPAD6))) {
-                    if(!gamePaused) {
-                        if (x <= -25) {
-                        }
-                        else {
-                            if(currentGrid >= 1){
-                                currentGrid--;
-                            }
-                        }
-                    }
-                }
-                else if ((keyCode == KeyEvent.VK_RIGHT && keyCode != KeyEvent.VK_LEFT) ||
-                        (keyCode == KeyEvent.VK_6 && !(keyCode == KeyEvent.VK_4)) ||
-                        (keyCode == KeyEvent.VK_NUMPAD6 && !(keyCode == KeyEvent.VK_NUMPAD4))) {
-                    if(!gamePaused) {
-                        if (x >= maxW) {
-                        }
-                        else {
-                            if(currentGrid <= 2){
-                                currentGrid++;
-                            }
-                        }
-                    }
-                }
-
-
-                if(keyCode == KeyEvent.VK_ENTER) {
-                    pausedWithEnter = true;
-                    if(!gamePaused) {
-                        gamePaused = true;
-                    }
-                    else {
-                        pausedWithEnter = false;
-                        gamePaused = false;
-                    }
-                }
-            }
-            else if((double)game_state > 3.9 && (double)game_state < 4.1) {
-                //keyCode = e.getKeyCode();
-                // currentlyAllCorrect = true;
-                if(keyCode == KeyEvent.VK_NUMPAD1 || keyCode == KeyEvent.VK_1) { // 1
-                    if(!secondPhase) {
-                        if( thingsToRemember.charAt(0) == 'A' || // if caps, then correct
-                                thingsToRemember.charAt(0) == 'B' ||
-                                thingsToRemember.charAt(0) == 'C' ||
-                                thingsToRemember.charAt(0) == 'D' ||
-                                thingsToRemember.charAt(0) == 'H' ||
-                                thingsToRemember.charAt(0) == 'S') {
-                            //currentlyAllCorrect = true;
-                        }
-                        else {
-                            currentlyAllCorrect = false;
-                        }
-                        secondPhase = true;
-                    }
-                    else {
-                        if( thingsToRemember.charAt(3) == 'A' || // if caps, then correct
-                                thingsToRemember.charAt(3) == 'B' ||
-                                thingsToRemember.charAt(3) == 'C' ||
-                                thingsToRemember.charAt(3) == 'D' ||
-                                thingsToRemember.charAt(3) == 'H' ||
-                                thingsToRemember.charAt(3) == 'S') {
-                            //currentlyAllCorrect = true;
-                        }
-                        else {
-                            currentlyAllCorrect = false;
-                        }
-                        //secondPhase = false;
-                        if(currentlyAllCorrect) {
-                            allCorrectInTheEnd = true;
-                            System.out.println("Both correct!");
-                        }
-                    }
-                }
-                if(keyCode == KeyEvent.VK_NUMPAD2 || keyCode == KeyEvent.VK_2) { // 2
-                    if(!secondPhase) {
-                        if( thingsToRemember.charAt(1) == 'A' || // if caps, then correct
-                                thingsToRemember.charAt(1) == 'B' ||
-                                thingsToRemember.charAt(1) == 'C' ||
-                                thingsToRemember.charAt(1) == 'D' ||
-                                thingsToRemember.charAt(1) == 'H' ||
-                                thingsToRemember.charAt(1) == 'S') {
-                            //currentlyAllCorrect = true;
-                        }
-                        else {
-                            currentlyAllCorrect = false;
-                        }
-                        secondPhase = true;
-                    }
-                    else {
-                        if( thingsToRemember.charAt(4) == 'A' || // if caps, then correct
-                                thingsToRemember.charAt(4) == 'B' ||
-                                thingsToRemember.charAt(4) == 'C' ||
-                                thingsToRemember.charAt(4) == 'D' ||
-                                thingsToRemember.charAt(4) == 'H' ||
-                                thingsToRemember.charAt(4) == 'S') {
-                            //currentlyAllCorrect = true;
-                        }
-                        else {
-                            currentlyAllCorrect = false;
-                        }
-                        //secondPhase = false;
-                        if(currentlyAllCorrect) {
-                            allCorrectInTheEnd = true;
-                            System.out.println("Both correct!");
-                        }
-                    }
-                }
-                if(keyCode == KeyEvent.VK_NUMPAD3 || keyCode == KeyEvent.VK_3) { // 3
-                    if(!secondPhase) {
-                        if( thingsToRemember.charAt(2) == 'A' || // if caps, then correct
-                                thingsToRemember.charAt(2) == 'B' ||
-                                thingsToRemember.charAt(2) == 'C' ||
-                                thingsToRemember.charAt(2) == 'D' ||
-                                thingsToRemember.charAt(2) == 'H' ||
-                                thingsToRemember.charAt(2) == 'S') {
-                            //currentlyAllCorrect = true;
-                        }
-                        else {
-                            currentlyAllCorrect = false;
-                        }
-                        secondPhase = true;
-                    }
-                    else {
-                        if( thingsToRemember.charAt(5) == 'A' || // if caps, then correct
-                                thingsToRemember.charAt(5) == 'B' ||
-                                thingsToRemember.charAt(5) == 'C' ||
-                                thingsToRemember.charAt(5) == 'D' ||
-                                thingsToRemember.charAt(5) == 'H' ||
-                                thingsToRemember.charAt(5) == 'S') {
-                            //currentlyAllCorrect = true;
-                        }
-                        else {
-                            currentlyAllCorrect = false;
-                        }
-                        //secondPhase = false;
-                        if(currentlyAllCorrect) {
-                            allCorrectInTheEnd = true;
-                            System.out.println("Both correct!");
-                        }
-                    }
-                }
-
-                if ((currentlyAllCorrect && (
-                        keyCode == KeyEvent.VK_1 ||
-                                keyCode == KeyEvent.VK_2 ||
-                                keyCode == KeyEvent.VK_3 ||
-                                keyCode == KeyEvent.VK_NUMPAD1 ||
-                                keyCode == KeyEvent.VK_NUMPAD2 ||
-                                keyCode == KeyEvent.VK_NUMPAD3))) {
-                    try {
-                        clipCorrect = AudioSystem.getClip();
-                    }
-                    catch (LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        clipCorrect.open(AudioSystem.getAudioInputStream(fileCorrect));
-                    }
-                    catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    FloatControl gainControl =
-                            (FloatControl) clipCorrect.getControl(FloatControl.Type.MASTER_GAIN);
-                    gainControl.setValue(-0.0f); // volume setting if wanted
-                    clipCorrect.start();
-                }
-                if(!currentlyAllCorrect) {
-                    if(!allCorrectInTheEnd) {
-                        System.out.println("Wrong guess, not proceeding to ropes!");
-
-                        nextState = 5;
-                    }
-                }
-                if(allCorrectInTheEnd) {
-                    System.out.println("Proceeding to ropes!");
-                    video = 3;
-                    nextState = 2;
-                }
-            }
-            else if((double)game_state > 4.9 && (double)game_state < 5.1) {
-                if(keyCode == KeyEvent.VK_ENTER) {
-                    if(pulled_rope_1 || pulled_rope_3) {
-                        HugoHiihto.currentStateAtTheLevel = 71;
-                        nextState = 1;
-
-                        if(HugoHiihto.currentStateAtTheLevel >= 71) {
-                            try {
-                                clip3 = AudioSystem.getClip();
-                            }
-                            catch (LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            try {
-                                clip3.open(AudioSystem.getAudioInputStream(fileGameMusic2));
-                            }
-                            catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            FloatControl gainControl =
-                                    (FloatControl) clip3.getControl(FloatControl.Type.MASTER_GAIN);
-                            gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                            clip3.start();
-                        }
-                        else {
-                            try {
-                                clip0 = AudioSystem.getClip();
-                            }
-                            catch (LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            try {
-                                clip0.open(AudioSystem.getAudioInputStream(fileGameMusic0));
-                            }
-                            catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                                Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            FloatControl gainControl =
-                                    (FloatControl) clip0.getControl(FloatControl.Type.MASTER_GAIN);
-                            gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                            clip0.start();
-                        }
-                    }
-                    else {
-                        nextState = 0;
-                    }
-                }
-            }
-            else if((double)game_state >= 5.1) {
-                nextState = 2;
-                System.out.println(" --- keyPressed --- to state " + nextState);
-            }
-        }
-
-        /**
-         * When releasing the left/right button in state 3. Plays a sound effect.
-         *
-         * @param e
-         */
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-            if(!gamePaused && game_state == 3) {
-                if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    try {
-                        clipChangeGrid = AudioSystem.getClip();
-                    }
-                    catch (LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        clipChangeGrid.open(AudioSystem.getAudioInputStream(fileChangeGrid));
-                    }
-                    catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    FloatControl gainControl =
-                            (FloatControl) clipChangeGrid.getControl(FloatControl.Type.MASTER_GAIN);
-                    gainControl.setValue(-23.0f); // volume setting, decreasing sfx volume a bit
-                    clipChangeGrid.start();
-                }
-                if (e.getKeyCode() == KeyEvent.VK_4 || e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
-                    try {
-                        clipChangeGrid4 = AudioSystem.getClip();
-                    }
-                    catch (LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        clipChangeGrid4.open(AudioSystem.getAudioInputStream(fileChangeGrid4));
-                    }
-                    catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    clipChangeGrid4.start();
-                }
-                if (e.getKeyCode() == KeyEvent.VK_6 || e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
-                    try {
-                        clipChangeGrid6 = AudioSystem.getClip();
-                    }
-                    catch (LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        clipChangeGrid6.open(AudioSystem.getAudioInputStream(fileChangeGrid6));
-                    }
-                    catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    clipChangeGrid6.start();
-                }
-            }
-        }
-    }
-
-    /**
      * The constructor.
      *
      * @throws Exception
      */
-    public Game_Display() throws Exception {
-        addKeyListener(new AL());
+    public GameDisplay() throws Exception {
+        addKeyListener(new AL(this));
         constructFrames(game_state);
-        if(videoimg != null) {  // videos should always start at the beginning
+        if (videoimg != null) {  // videos should always start at the beginning
             videoimg.flush();
             videoimg = null;
         }
@@ -1424,15 +636,15 @@ public final class Game_Display extends JPanel{
      */
     public void constructFrames(int gameState) {
         repaint();
-        if(gameState != nextState) {
+        if (gameState != nextState) {
             //System.out.println("gameState != nextState");
             return;
         }
-        if((double)gameState < 0.1) {
+        if ((double) gameState < 0.1) {
 
             ImageIcon theVeryFirst_icon = new ImageIcon("res/_the_very_1st_texts.png");
             int wi = (int) d.getWidth();
-            int he = (int) d.getHeight()-35;
+            int he = (int) d.getHeight() - 35;
             theVeryFirst_icon.setImage(theVeryFirst_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
             theVeryFirst = theVeryFirst_icon.getImage();
 
@@ -1440,25 +652,24 @@ public final class Game_Display extends JPanel{
             setFocusable(true);
 
         }
-        if((double)gameState > 0.9 && (double)gameState < 1.1) {
-            if(gameState != 3 && nextState != 3) {
+        if ((double) gameState > 0.9 && (double) gameState < 1.1) {
+            if (gameState != 3 && nextState != 3) {
                 gamePaused = true;
             }
 
-            if(HugoHiihto.currentStateAtTheLevel >= 71 && HugoHiihto.gameOver == false) {
+            if (HugoSkiing.currentStateAtTheLevel >= 71 && HugoSkiing.gameOver == false) {
                 ImageIcon credits_icon = new ImageIcon("res/credits_screen.png");
-                int wi = (int) d.getWidth()-2;
-                int he = (int) d.getHeight()-37;
+                int wi = (int) d.getWidth() - 2;
+                int he = (int) d.getHeight() - 37;
                 credits_icon.setImage(credits_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
                 creditsScreen = credits_icon.getImage();
 
                 //addKeyListener(new AL());
                 setFocusable(true);
-            }
-            else {
+            } else {
                 ImageIcon title_icon = new ImageIcon("res/title_screen.png");
-                int wi = (int) d.getWidth()-15;
-                int he = (int) d.getHeight()-20;
+                int wi = (int) d.getWidth() - 15;
+                int he = (int) d.getHeight() - 20;
                 title_icon.setImage(title_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
                 titleScreen = title_icon.getImage();
 
@@ -1466,82 +677,82 @@ public final class Game_Display extends JPanel{
                 setFocusable(true);
             }
         }
-        if((double)gameState > 1.9 && (double)gameState < 2.1) {
+        if ((double) gameState > 1.9 && (double) gameState < 2.1) {
             //addKeyListener(new AL());
             setFocusable(true);
-            if(!useMP4) {
+            if (!useMP4) {
                 //String pathGif = "";
                 String pathSound = "";
-                switch(video) {
-                    case 0 ->  {
+                switch (video) {
+                    case 0 -> {
                         //pathGif = "res/scylla_intro.gif";
                         pathSound = "res/scylla_intro.aiff";
                     }
-                    case 1 ->  {
+                    case 1 -> {
                         //pathGif = "res/start_hoplaa.gif";
                         pathSound = "res/start_hoplaa.aiff";
                     }
-                    case 2 ->  {
+                    case 2 -> {
                         //pathGif = "res/scylla_button_press.gif";
                         pathSound = "res/scylla_button_press.aiff";
                     }
-                    case 3 ->  {
+                    case 3 -> {
                         //pathGif = "res/scylla0.gif";
                         pathSound = "res/scylla0.aiff";
                     }
-                    case 4 ->  {
+                    case 4 -> {
                         //pathGif = "res/remember2forKey_intro.gif";
                         pathSound = "res/remember2forKey_intro.aiff";
                     }
-                    case 5 ->  {
+                    case 5 -> {
                         //pathGif = "res/remember2forKey_win.gif";
                         pathSound = "res/remember2forKey_win.aiff";
                     }
-                    case 6 ->  {
+                    case 6 -> {
                         //pathGif = "res/remember2forKey_fail.gif";
                         pathSound = "res/remember2forKey_fail.aiff";
                     }
-                    case 7 ->  {
+                    case 7 -> {
                         //pathGif = "res/screentalk_finish_line.gif";
                         pathSound = "res/screentalk_finish_line.aiff";
                     }
-                    case 8 ->  {
+                    case 8 -> {
                         //pathGif = "res/screentalk_heraa_pahvi.gif";
                         pathSound = "res/screentalk_heraa_pahvi.aiff";
                     }
-                    case 9 ->  {
+                    case 9 -> {
                         //pathGif = "res/screentalk_viimeista_viedaan.gif";
                         pathSound = "res/screentalk_viimeista_viedaan.aiff";
                     }
-                    case 10 ->  {
+                    case 10 -> {
                         //pathGif = "res/screentalk_game_over.gif";
                         pathSound = "res/screentalk_game_over.aiff";
                     }
-                    case 11 ->  {
+                    case 11 -> {
                         //pathGif = "res/scylla1.gif";
                         pathSound = "res/scylla1.aiff";
                     }
-                    case 12 ->  {
+                    case 12 -> {
                         //pathGif = "res/scylla2.gif";
                         pathSound = "res/scylla2.aiff";
                     }
-                    case 13 ->  {
+                    case 13 -> {
                         //pathGif = "res/scylla3.gif";
                         pathSound = "res/scylla3.aiff";
                     }
-                    case 14 ->  {
+                    case 14 -> {
                         //pathGif = "res/loselife_snowman.gif";
                         pathSound = "res/loselife_snowman.aiff";
                     }
-                    case 15 ->  {
+                    case 15 -> {
                         //pathGif = "res/loselife_snowball.gif";
                         pathSound = "res/loselife_snowball.aiff";
                     }
-                    case 16 ->  {
+                    case 16 -> {
                         //pathGif = "res/loselife_bomb.gif";
                         pathSound = "res/loselife_bomb.aiff";
                     }
-                    case 17 ->  {
+                    case 17 -> {
                         //pathGif = "res/loselife_beaver.gif";
                         pathSound = "res/loselife_beaver.aiff";
                     }
@@ -1552,17 +763,16 @@ public final class Game_Display extends JPanel{
                 URL mediaURL = null;
                 try {
                     mediaURL = fi.toURL();
-                }
-                catch (MalformedURLException ex) {
-                    Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(GameDisplay.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 try {
                     //mediaPlayer = Manager.createRealizedPlayer(mediaURL);
                     mediaPlayer = Manager.createPlayer(mediaURL);
 
-                } catch (IOException | NoPlayerException  ex) {
-                    Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException | NoPlayerException ex) {
+                    Logger.getLogger(GameDisplay.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 // https://convertio.co/mp4-mov/
                 // https://www.oracle.com/java/technologies/javase/jmf-211-formats.html
@@ -1573,7 +783,7 @@ public final class Game_Display extends JPanel{
                 System.out.println("Playing sound for a video");
             }
         }
-        if((double)gameState > 2.9 && (double)gameState < 3.1) {
+        if ((double) gameState > 2.9 && (double) gameState < 3.1) {
             repaint();
             ImageIcon west = new ImageIcon("res/hugo_ski_L.gif");
             ImageIcon east = new ImageIcon("res/hugo_ski_R.gif");
@@ -1596,8 +806,8 @@ public final class Game_Display extends JPanel{
 
 
             ImageIcon j = new ImageIcon("res/background1.gif");
-            int wi = (int) d.getWidth()-10;
-            int he = (int) d.getHeight()-35;
+            int wi = (int) d.getWidth() - 10;
+            int he = (int) d.getHeight() - 35;
             j.setImage(j.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
             bg = j.getImage();
 
@@ -1606,19 +816,19 @@ public final class Game_Display extends JPanel{
             //addKeyListener(new AL());
 
             x = 55;
-            y = (int) ((int) d.getHeight()/2.67);
+            y = (int) ((int) d.getHeight() / 2.67);
 
             // decoration graphics: trees, cloud(s) etc.
-            cloud_x_position = (int) ((int) d.getWidth()/3);
-            cloud_y_position = (int) ((int) d.getHeight()/25);
+            cloud_x_position = (int) ((int) d.getWidth() / 3);
+            cloud_y_position = (int) ((int) d.getHeight() / 25);
             ImageIcon cloudicon = new ImageIcon("res/cloud.png");
             int cloudiconw = cloudicon.getIconWidth();
             int cloudiconh = cloudicon.getIconHeight();
             cloudicon.setImage(cloudicon.getImage().getScaledInstance(cloudiconw, cloudiconh, Image.SCALE_DEFAULT));
             cloud = cloudicon.getImage();
 
-            possibleTree1_x_position = (d.width/5)-40;
-            possibleTree1_y_position = (d.height/17)+20;
+            possibleTree1_x_position = (d.width / 5) - 40;
+            possibleTree1_y_position = (d.height / 17) + 20;
             possibleTree1icon = new ImageIcon("res/trees2.png");
             possibleTree1iconw = possibleTree1icon.getIconWidth();
             possibleTree1iconh = possibleTree1icon.getIconHeight();
@@ -1626,8 +836,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree1iconw, possibleTree1iconh, Image.SCALE_DEFAULT));
             possibleTree1 = possibleTree1icon.getImage();
 
-            possibleTree2_x_position = (d.width/5)-40;
-            possibleTree2_y_position = (d.height/17)+20;
+            possibleTree2_x_position = (d.width / 5) - 40;
+            possibleTree2_y_position = (d.height / 17) + 20;
             possibleTree2icon = new ImageIcon("res/trees0.png");
             possibleTree2iconw = possibleTree2icon.getIconWidth();
             possibleTree2iconh = possibleTree2icon.getIconHeight();
@@ -1635,8 +845,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree2iconw, possibleTree2iconh, Image.SCALE_DEFAULT));
             possibleTree2 = possibleTree2icon.getImage();
 
-            possibleTree3_x_position = (d.width/5)-40;
-            possibleTree3_y_position = (d.height/17)+20;
+            possibleTree3_x_position = (d.width / 5) - 40;
+            possibleTree3_y_position = (d.height / 17) + 20;
             possibleTree3icon = new ImageIcon("res/trees1.png");
             possibleTree3iconw = possibleTree3icon.getIconWidth();
             possibleTree3iconh = possibleTree3icon.getIconHeight();
@@ -1644,8 +854,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree3iconw, possibleTree3iconh, Image.SCALE_DEFAULT));
             possibleTree3 = possibleTree3icon.getImage();
 
-            possibleTree4_x_position = (int) ((int) d.getWidth()/2)+70;
-            possibleTree4_y_position = (int) ((int) d.getHeight()/4)-90;
+            possibleTree4_x_position = (int) ((int) d.getWidth() / 2) + 70;
+            possibleTree4_y_position = (int) ((int) d.getHeight() / 4) - 90;
             possibleTree4icon = new ImageIcon("res/trees2.png");
             possibleTree4iconw = possibleTree4icon.getIconWidth();
             possibleTree4iconh = possibleTree4icon.getIconHeight();
@@ -1653,8 +863,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree4iconw, possibleTree4iconh, Image.SCALE_DEFAULT));
             possibleTree4 = possibleTree4icon.getImage();
 
-            possibleTree5_x_position = (int) ((int) d.getWidth()/2)+70;
-            possibleTree5_y_position = (int) ((int) d.getHeight()/4)-90;
+            possibleTree5_x_position = (int) ((int) d.getWidth() / 2) + 70;
+            possibleTree5_y_position = (int) ((int) d.getHeight() / 4) - 90;
             possibleTree5icon = new ImageIcon("res/trees0.png");
             possibleTree5iconw = possibleTree5icon.getIconWidth();
             possibleTree5iconh = possibleTree5icon.getIconHeight();
@@ -1662,8 +872,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree5iconw, possibleTree5iconh, Image.SCALE_DEFAULT));
             possibleTree5 = possibleTree5icon.getImage();
 
-            possibleTree6_x_position = (int) ((int) d.getWidth()/2)+70;
-            possibleTree6_y_position = (int) ((int) d.getHeight()/4)-90;
+            possibleTree6_x_position = (int) ((int) d.getWidth() / 2) + 70;
+            possibleTree6_y_position = (int) ((int) d.getHeight() / 4) - 90;
             possibleTree6icon = new ImageIcon("res/trees1.png");
             possibleTree6iconw = possibleTree6icon.getIconWidth();
             possibleTree6iconh = possibleTree6icon.getIconHeight();
@@ -1671,8 +881,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree6iconw, possibleTree6iconh, Image.SCALE_DEFAULT));
             possibleTree6 = possibleTree6icon.getImage();
 
-            possibleTree7_x_position = (int) ((int) d.getWidth()/2)+72;
-            possibleTree7_y_position = (int) ((int) d.getHeight()/4)-92;
+            possibleTree7_x_position = (int) ((int) d.getWidth() / 2) + 72;
+            possibleTree7_y_position = (int) ((int) d.getHeight() / 4) - 92;
             possibleTree7icon = new ImageIcon("res/trees2.png");
             possibleTree7iconw = possibleTree7icon.getIconWidth();
             possibleTree7iconh = possibleTree7icon.getIconHeight();
@@ -1680,8 +890,8 @@ public final class Game_Display extends JPanel{
                     .getScaledInstance(possibleTree7iconw, possibleTree7iconh, Image.SCALE_DEFAULT));
             possibleTree7 = possibleTree7icon.getImage();
 
-            possibleTree8_x_position = (d.width/5)-42;
-            possibleTree8_y_position = (d.height/17)+22;
+            possibleTree8_x_position = (d.width / 5) - 42;
+            possibleTree8_y_position = (d.height / 17) + 22;
             possibleTree8icon = new ImageIcon("res/trees1.png");
             possibleTree8iconw = possibleTree8icon.getIconWidth();
             possibleTree8iconh = possibleTree8icon.getIconHeight();
@@ -1690,32 +900,32 @@ public final class Game_Display extends JPanel{
             possibleTree8 = possibleTree8icon.getImage();
 
 
-            hugolife1_x_position = (int) ((int) d.getWidth()/55);
-            hugolife1_y_position = (int) ((int) d.getHeight()/1.3);
+            hugolife1_x_position = (int) ((int) d.getWidth() / 55);
+            hugolife1_y_position = (int) ((int) d.getHeight() / 1.3);
             ImageIcon life1 = new ImageIcon("res/hugo_life.png");
             int life1w = life1.getIconWidth();
             int life1h = life1.getIconHeight();
             life1.setImage(life1.getImage().getScaledInstance(life1w, life1h, Image.SCALE_DEFAULT));
             hugolife1 = life1.getImage();
 
-            hugolife2_x_position = (int) ((int) d.getWidth()/55) +80;
-            hugolife2_y_position = (int) ((int) d.getHeight()/1.3);
+            hugolife2_x_position = (int) ((int) d.getWidth() / 55) + 80;
+            hugolife2_y_position = (int) ((int) d.getHeight() / 1.3);
             ImageIcon life2 = new ImageIcon("res/hugo_life.png");
             int life2w = life2.getIconWidth();
             int life2h = life2.getIconHeight();
             life2.setImage(life2.getImage().getScaledInstance(life2w, life2h, Image.SCALE_DEFAULT));
             hugolife2 = life2.getImage();
 
-            hugolife3_x_position = (int) ((int) d.getWidth()/55) + 160;
-            hugolife3_y_position = (int) ((int) d.getHeight()/1.3);
+            hugolife3_x_position = (int) ((int) d.getWidth() / 55) + 160;
+            hugolife3_y_position = (int) ((int) d.getHeight() / 1.3);
             ImageIcon life3 = new ImageIcon("res/hugo_life.png");
             int life3w = life3.getIconWidth();
             int life3h = life3.getIconHeight();
             life3.setImage(life3.getImage().getScaledInstance(life3w, life3h, Image.SCALE_DEFAULT));
             hugolife3 = life3.getImage();
 
-            pause_x_position = (int) ((int) d.getWidth()/6);
-            pause_y_position = (int) ((int) d.getHeight()/3);
+            pause_x_position = (int) ((int) d.getWidth() / 6);
+            pause_y_position = (int) ((int) d.getHeight() / 3);
             ImageIcon pauseicon = new ImageIcon("res/pause.png");
             int pausew = pauseicon.getIconWidth();
             int pauseh = pauseicon.getIconHeight();
@@ -1723,19 +933,19 @@ public final class Game_Display extends JPanel{
             pause = pauseicon.getImage();
 
             scorebar_x_position = 0;
-            scorebar_y_position = (int) ((int) d.getHeight()/1.35);
+            scorebar_y_position = (int) ((int) d.getHeight() / 1.35);
             ImageIcon scorebaricon = new ImageIcon("res/score-life-bar.png");
             int scorebarw = scorebaricon.getIconWidth();
             int scorebarh = scorebaricon.getIconHeight();
-            scorebaricon.setImage(scorebaricon.getImage().getScaledInstance(scorebarw*5, scorebarh, Image.SCALE_DEFAULT));
+            scorebaricon.setImage(scorebaricon.getImage().getScaledInstance(scorebarw * 5, scorebarh, Image.SCALE_DEFAULT));
             scorebar = scorebaricon.getImage();
 
         }
-        if((double)gameState > 3.9 && (double)gameState < 4.1) {
+        if ((double) gameState > 3.9 && (double) gameState < 4.1) {
 
             ImageIcon io = new ImageIcon("res/cave_entrance00.png");
-            int wi = (int) d.getWidth()-10;
-            int he = (int) d.getHeight()-35;
+            int wi = (int) d.getWidth() - 10;
+            int he = (int) d.getHeight() - 35;
             io.setImage(io.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
             bgCave = io.getImage();
 
@@ -1746,15 +956,15 @@ public final class Game_Display extends JPanel{
             cave_x = 1;
             cave_y = 1;
 
-            for(int i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 int pos = 0;
                 int hei = 0;
-                if(i == 0) {
+                if (i == 0) {
                     pos = position1;
                     hei = heightLevel1;
 
-                    u1b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
-                    u1b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
+                    u1b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                    u1b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
                     ImageIcon u1bicon = new ImageIcon("res/num_select1.png");
                     ImageIcon u1wicon = new ImageIcon("res/num_selected1.png");
                     int u1we = u1bicon.getIconWidth();
@@ -1764,12 +974,12 @@ public final class Game_Display extends JPanel{
                     u1wicon.setImage(u1wicon.getImage().getScaledInstance(u1we, u1he, Image.SCALE_DEFAULT));
                     u1w = u1wicon.getImage();
                 }
-                if(i == 1) {
+                if (i == 1) {
                     pos = position2;
                     hei = heightLevel1;
 
-                    u2b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
-                    u2b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
+                    u2b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                    u2b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
                     ImageIcon u2bicon = new ImageIcon("res/num_select2.png");
                     ImageIcon u2wicon = new ImageIcon("res/num_selected2.png");
                     int u2we = u2bicon.getIconWidth();
@@ -1779,12 +989,12 @@ public final class Game_Display extends JPanel{
                     u2wicon.setImage(u2wicon.getImage().getScaledInstance(u2we, u2he, Image.SCALE_DEFAULT));
                     u2w = u2wicon.getImage();
                 }
-                if(i == 2) {
+                if (i == 2) {
                     pos = position3;
                     hei = heightLevel1;
 
-                    u3b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
-                    u3b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
+                    u3b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                    u3b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
                     ImageIcon u3bicon = new ImageIcon("res/num_select3.png");
                     ImageIcon u3wicon = new ImageIcon("res/num_selected3.png");
                     int u3we = u3bicon.getIconWidth();
@@ -1794,12 +1004,12 @@ public final class Game_Display extends JPanel{
                     u3wicon.setImage(u3wicon.getImage().getScaledInstance(u3we, u3he, Image.SCALE_DEFAULT));
                     u3w = u3wicon.getImage();
                 }
-                if(i == 3) {
+                if (i == 3) {
                     pos = position1;
                     hei = heightLevel2;
 
-                    d1b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
-                    d1b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
+                    d1b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                    d1b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
                     ImageIcon d1bicon = new ImageIcon("res/num_select1.png");
                     ImageIcon d1wicon = new ImageIcon("res/num_selected1.png");
                     int d1we = d1bicon.getIconWidth();
@@ -1809,12 +1019,12 @@ public final class Game_Display extends JPanel{
                     d1wicon.setImage(d1wicon.getImage().getScaledInstance(d1we, d1he, Image.SCALE_DEFAULT));
                     d1w = d1wicon.getImage();
                 }
-                if(i == 4) {
+                if (i == 4) {
                     pos = position2;
                     hei = heightLevel2;
 
-                    d2b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
-                    d2b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
+                    d2b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                    d2b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
                     ImageIcon d2bicon = new ImageIcon("res/num_select2.png");
                     ImageIcon d2wicon = new ImageIcon("res/num_selected2.png");
                     int d2we = d2bicon.getIconWidth();
@@ -1824,12 +1034,12 @@ public final class Game_Display extends JPanel{
                     d2wicon.setImage(d2wicon.getImage().getScaledInstance(d2we, d2he, Image.SCALE_DEFAULT));
                     d2w = d2wicon.getImage();
                 }
-                if(i == 5) {
+                if (i == 5) {
                     pos = position3;
                     hei = heightLevel2;
 
-                    d3b_x_position = (int) ((int) d.getWidth()/6)+(pos-2);
-                    d3b_y_position = (int) ((int) d.getHeight()/19)+(hei+90);
+                    d3b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                    d3b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
                     ImageIcon d3bicon = new ImageIcon("res/num_select3.png");
                     ImageIcon d3wicon = new ImageIcon("res/num_selected3.png");
                     int d3we = d3bicon.getIconWidth();
@@ -1840,54 +1050,54 @@ public final class Game_Display extends JPanel{
                     d3w = d3wicon.getImage();
                 }
 
-                if(thingsToRemember.charAt(i) == 'a' || thingsToRemember.charAt(i) == 'A') {
-                    asterisk_x_position = (int) ((int) d.getWidth()/6)+(pos);
-                    asterisk_y_position = (int) ((int) d.getHeight()/19)+(hei);
+                if (thingsToRemember.charAt(i) == 'a' || thingsToRemember.charAt(i) == 'A') {
+                    asterisk_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                    asterisk_y_position = (int) ((int) d.getHeight() / 19) + (hei);
                     ImageIcon asteriskicon = new ImageIcon("res/remember_A_asterisk.png");
                     int asteriskw = asteriskicon.getIconWidth();
                     int asteriskh = asteriskicon.getIconHeight();
                     asteriskicon.setImage(asteriskicon.getImage().getScaledInstance(asteriskw, asteriskh, Image.SCALE_DEFAULT));
                     asterisk = asteriskicon.getImage();
                 }
-                if(thingsToRemember.charAt(i) == 'b' || thingsToRemember.charAt(i) == 'B') {
-                    bell_x_position = (int) ((int) d.getWidth()/6)+(pos);
-                    bell_y_position = (int) ((int) d.getHeight()/19)+(hei);
+                if (thingsToRemember.charAt(i) == 'b' || thingsToRemember.charAt(i) == 'B') {
+                    bell_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                    bell_y_position = (int) ((int) d.getHeight() / 19) + (hei);
                     ImageIcon bellicon = new ImageIcon("res/remember_B_bell.png");
                     int bellw = bellicon.getIconWidth();
                     int bellh = bellicon.getIconHeight();
                     bellicon.setImage(bellicon.getImage().getScaledInstance(bellw, bellh, Image.SCALE_DEFAULT));
                     bell = bellicon.getImage();
                 }
-                if(thingsToRemember.charAt(i) == 'c' || thingsToRemember.charAt(i) == 'C') {
-                    clock_x_position = (int) ((int) d.getWidth()/6)+(pos);
-                    clock_y_position = (int) ((int) d.getHeight()/19)+(hei);
+                if (thingsToRemember.charAt(i) == 'c' || thingsToRemember.charAt(i) == 'C') {
+                    clock_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                    clock_y_position = (int) ((int) d.getHeight() / 19) + (hei);
                     ImageIcon clockicon = new ImageIcon("res/remember_C_clock.png");
                     int clockw = clockicon.getIconWidth();
                     int clockh = clockicon.getIconHeight();
                     clockicon.setImage(clockicon.getImage().getScaledInstance(clockw, clockh, Image.SCALE_DEFAULT));
                     clock = clockicon.getImage();
                 }
-                if(thingsToRemember.charAt(i) == 'd' || thingsToRemember.charAt(i) == 'D') {
-                    diamond_x_position = (int) ((int) d.getWidth()/6)+(pos);
-                    diamond_y_position = (int) ((int) d.getHeight()/19)+(hei);
+                if (thingsToRemember.charAt(i) == 'd' || thingsToRemember.charAt(i) == 'D') {
+                    diamond_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                    diamond_y_position = (int) ((int) d.getHeight() / 19) + (hei);
                     ImageIcon diamondicon = new ImageIcon("res/remember_D_diamond.png");
                     int diamondw = diamondicon.getIconWidth();
                     int diamondh = diamondicon.getIconHeight();
                     diamondicon.setImage(diamondicon.getImage().getScaledInstance(diamondw, diamondh, Image.SCALE_DEFAULT));
                     diamond = diamondicon.getImage();
                 }
-                if(thingsToRemember.charAt(i) == 'h' || thingsToRemember.charAt(i) == 'H') {
-                    hashtag_x_position = (int) ((int) d.getWidth()/6)+(pos);
-                    hashtag_y_position = (int) ((int) d.getHeight()/19)+(hei);
+                if (thingsToRemember.charAt(i) == 'h' || thingsToRemember.charAt(i) == 'H') {
+                    hashtag_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                    hashtag_y_position = (int) ((int) d.getHeight() / 19) + (hei);
                     ImageIcon hashtagicon = new ImageIcon("res/remember_H_hash.png");
                     int hashtagw = hashtagicon.getIconWidth();
                     int hashtagh = hashtagicon.getIconHeight();
                     hashtagicon.setImage(hashtagicon.getImage().getScaledInstance(hashtagw, hashtagh, Image.SCALE_DEFAULT));
                     hashtag = hashtagicon.getImage();
                 }
-                if(thingsToRemember.charAt(i) == 's' || thingsToRemember.charAt(i) == 'S') {
-                    star_x_position = (int) ((int) d.getWidth()/6)+(pos);
-                    star_y_position = (int) ((int) d.getHeight()/19)+(hei);
+                if (thingsToRemember.charAt(i) == 's' || thingsToRemember.charAt(i) == 'S') {
+                    star_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                    star_y_position = (int) ((int) d.getHeight() / 19) + (hei);
                     ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
                     int starw = staricon.getIconWidth();
                     int starh = staricon.getIconHeight();
@@ -1898,7 +1108,7 @@ public final class Game_Display extends JPanel{
             }
 
         }
-        if((double)gameState > 4.9 && (double)gameState < 5.1) {
+        if ((double) gameState > 4.9 && (double) gameState < 5.1) {
 
             //addKeyListener(new Game_Display.AL());// keyboard listener but do not uncomment these, should be called only once
             setFocusable(true);
@@ -1909,21 +1119,21 @@ public final class Game_Display extends JPanel{
             scoreBG.setImage(scoreBG.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
             scoreBGR = scoreBG.getImage();
 
-            star_x_position = (int) ((int) d.getWidth()/6);
-            star_y_position = (int) ((int) d.getHeight()/19);
+            star_x_position = (int) ((int) d.getWidth() / 6);
+            star_y_position = (int) ((int) d.getHeight() / 19);
             ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
             int starw = staricon.getIconWidth();
             int starh = staricon.getIconHeight();
             staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
             star = staricon.getImage();
 
-            if(videoimg != null) {
+            if (videoimg != null) {
                 videoimg.flush();
                 videoimg = null;
             }
         }
 
-        if(videoimg != null) {  // videos should always start at the beginning
+        if (videoimg != null) {  // videos should always start at the beginning
             videoimg.flush();
             videoimg = null;
         }
@@ -1932,18 +1142,19 @@ public final class Game_Display extends JPanel{
 
     /**
      * The paint component method for graphics object(s).
+     *
      * @param g
      */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if((double)game_state < 0.1) {
+        if ((double) game_state < 0.1) {
             super.paintComponent(g);
             g.drawImage(theVeryFirst, 0, 0, this);
             repaint();
 
-            if(nextState != game_state) {
+            if (nextState != game_state) {
                 System.out.println("------ State change from " + game_state + " to " + nextState);
                 game_state = nextState;
                 //super.paintComponent(g);
@@ -1961,20 +1172,19 @@ public final class Game_Display extends JPanel{
             }
         }
 
-        if((double)game_state > 0.9 && (double)game_state < 1.1) {
+        if ((double) game_state > 0.9 && (double) game_state < 1.1) {
             super.paintComponent(g);
-            if(HugoHiihto.currentStateAtTheLevel >= 71 && HugoHiihto.gameOver == false) {
+            if (HugoSkiing.currentStateAtTheLevel >= 71 && HugoSkiing.gameOver == false) {
                 //super.paintComponent(g);
                 g.drawImage(creditsScreen, 0, 0, this);
                 repaint();
-            }
-            else {
+            } else {
                 //super.paintComponent(g);
                 g.drawImage(titleScreen, 0, 0, this);
                 repaint();
             }
 
-            if(nextState != game_state) {
+            if (nextState != game_state) {
                 System.out.println("------ State change from " + game_state + " to " + nextState);
                 game_state = nextState;
                 //super.paintComponent(g);
@@ -1992,81 +1202,81 @@ public final class Game_Display extends JPanel{
             }
         }
 
-        if((double)game_state > 1.9 && (double)game_state < 2.1) {
+        if ((double) game_state > 1.9 && (double) game_state < 2.1) {
             super.paintComponent(g);
 
-            if(useMP4) { // If you think that ".aiff + .gif" is not a good combination
+            if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
                 String pathMP4 = "";
-                switch(video) {
-                    case 0 ->  {
+                switch (video) {
+                    case 0 -> {
                         pathMP4 = "res/scylla_intro.mp4";
                         //pathSound = "res/scylla_intro.aiff";
                     }
-                    case 1 ->  {
+                    case 1 -> {
                         pathMP4 = "res/start_hoplaa.mp4";
                         //pathSound = "res/start_hoplaa.aiff";
                     }
-                    case 2 ->  {
+                    case 2 -> {
                         pathMP4 = "res/scylla_button_press.mp4";
                         //pathSound = "res/scylla_button_press.aiff";
                     }
-                    case 3 ->  {
+                    case 3 -> {
                         pathMP4 = "res/scylla0.mp4";
                         //pathSound = "res/scylla0.aiff";
                     }
-                    case 4 ->  {
+                    case 4 -> {
                         pathMP4 = "res/remember2forKey_intro.mp4";
                         //pathSound = "res/remember2forKey_intro.aiff";
                     }
-                    case 5 ->  {
+                    case 5 -> {
                         pathMP4 = "res/remember2forKey_win.mp4";
                         //pathSound = "res/remember2forKey_win.aiff";
                     }
-                    case 6 ->  {
+                    case 6 -> {
                         pathMP4 = "res/remember2forKey_fail.mp4";
                         //pathSound = "res/remember2forKey_fail.aiff";
                     }
-                    case 7 ->  {
+                    case 7 -> {
                         pathMP4 = "res/screentalk_finish_line.mp4";
                         //pathSound = "res/screentalk_finish_line.aiff";
                     }
-                    case 8 ->  {
+                    case 8 -> {
                         pathMP4 = "res/screentalk_heraa_pahvi.mp4";
                         //pathSound = "res/screentalk_heraa_pahvi.aiff";
                     }
-                    case 9 ->  {
+                    case 9 -> {
                         pathMP4 = "res/screentalk_viimeista_viedaan.mp4";
                         //pathSound = "res/screentalk_viimeista_viedaan.aiff";
                     }
-                    case 10 ->  {
+                    case 10 -> {
                         pathMP4 = "res/screentalk_game_over.mp4";
                         //pathSound = "res/screentalk_game_over.aiff";
                     }
-                    case 11 ->  {
+                    case 11 -> {
                         pathMP4 = "res/scylla1.mp4";
                         //pathSound = "res/scylla1.aiff";
                     }
-                    case 12 ->  {
+                    case 12 -> {
                         pathMP4 = "res/scylla2.mp4";
                         //pathSound = "res/scylla2.aiff";
                     }
-                    case 13 ->  {
+                    case 13 -> {
                         pathMP4 = "res/scylla3.mp4";
                         //pathSound = "res/scylla3.aiff";
                     }
-                    case 14 ->  {
+                    case 14 -> {
                         pathMP4 = "res/loselife_snowman.mp4";
                         //pathSound = "res/loselife_snowman.aiff";
                     }
-                    case 15 ->  {
+                    case 15 -> {
                         pathMP4 = "res/loselife_snowball.mp4";
                         //pathSound = "res/loselife_snowball.aiff";
                     }
-                    case 16 ->  {
+                    case 16 -> {
                         pathMP4 = "res/loselife_bomb.mp4";
                         //pathSound = "res/loselife_bomb.aiff";
                     }
-                    case 17 ->  {
+                    case 17 -> {
                         pathMP4 = "res/loselife_beaver.mp4";
                         //pathSound = "res/loselife_beaver.aiff";
                     }
@@ -2075,85 +1285,83 @@ public final class Game_Display extends JPanel{
                 File video_source = new File(pathMP4);
                 try {
                     Desktop.getDesktop().open(video_source); // opens Windows Media Player for instance
-                }
-                catch (IOException ex) {                   // not the best way to display mp4s
-                    Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {                   // not the best way to display mp4s
+                    Logger.getLogger(GameDisplay.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            }
-            else {
+            } else {
                 String pathGif = "";
                 //String pathSound = "";
-                switch(video) {
-                    case 0 ->  {
+                switch (video) {
+                    case 0 -> {
                         pathGif = "res/scylla_intro_s.gif";
                         //pathSound = "res/scylla_intro.aiff";
                     }
-                    case 1 ->  {
+                    case 1 -> {
                         pathGif = "res/start_hoplaa_s.gif";
                         //pathSound = "res/start_hoplaa.aiff";
                     }
-                    case 2 ->  {
+                    case 2 -> {
                         pathGif = "res/scylla_button_press_s.gif";
                         //pathSound = "res/scylla_button_press.aiff";
                     }
-                    case 3 ->  {
+                    case 3 -> {
                         pathGif = "res/scylla0_s.gif";
                         //pathSound = "res/scylla0.aiff";
                     }
-                    case 4 ->  {
+                    case 4 -> {
                         pathGif = "res/remember2forKey_intro_s.gif";
                         //pathSound = "res/remember2forKey_intro.aiff";
                     }
-                    case 5 ->  {
+                    case 5 -> {
                         pathGif = "res/remember2forKey_win_s.gif";
                         //pathSound = "res/remember2forKey_win.aiff";
                     }
-                    case 6 ->  {
+                    case 6 -> {
                         pathGif = "res/remember2forKey_fail_s.gif";
                         //pathSound = "res/remember2forKey_fail.aiff";
                     }
-                    case 7 ->  {
+                    case 7 -> {
                         pathGif = "res/screentalk_finish_line_s.gif";
                         //pathSound = "res/screentalk_finish_line.aiff";
                     }
-                    case 8 ->  {
+                    case 8 -> {
                         pathGif = "res/screentalk_heraa_pahvi_s.gif";
                         //pathSound = "res/screentalk_heraa_pahvi.aiff";
                     }
-                    case 9 ->  {
+                    case 9 -> {
                         pathGif = "res/screentalk_viimeista_viedaan_s.gif";
                         //pathSound = "res/screentalk_viimeista_viedaan.aiff";
                     }
-                    case 10 ->  {
+                    case 10 -> {
                         pathGif = "res/screentalk_game_over_s.gif";
                         //pathSound = "res/screentalk_game_over.aiff";
                     }
-                    case 11 ->  {
+                    case 11 -> {
                         pathGif = "res/scylla1_s.gif";
                         //pathSound = "res/scylla1.aiff";
                     }
-                    case 12 ->  {
+                    case 12 -> {
                         pathGif = "res/scylla2_s.gif";
                         //pathSound = "res/scylla2.aiff";
                     }
-                    case 13 ->  {
+                    case 13 -> {
                         pathGif = "res/scylla3_s.gif";
                         //pathSound = "res/scylla3.aiff";
                     }
-                    case 14 ->  {
+                    case 14 -> {
                         pathGif = "res/loselife_snowman_s.gif";
                         //pathSound = "res/loselife_snowman.aiff";
                     }
-                    case 15 ->  {
+                    case 15 -> {
                         pathGif = "res/loselife_snowball_s.gif";
                         //pathSound = "res/loselife_snowball.aiff";
                     }
-                    case 16 ->  {
+                    case 16 -> {
                         pathGif = "res/loselife_bomb_s.gif";
                         //pathSound = "res/loselife_bomb.aiff";
                     }
-                    case 17 ->  {
+                    case 17 -> {
                         pathGif = "res/loselife_beaver_s.gif";
                         //pathSound = "res/loselife_beaver.aiff";
                     }
@@ -2164,16 +1372,16 @@ public final class Game_Display extends JPanel{
                 videoimg = null; // .gif
                 videoimg = videoIMGicon.getImage();
                 int wi = (int) (d.getWidth());
-                int he = (int) (d.getHeight()-40);
-                videoimg.setAccelerationPriority((float)1.0); // from 0-> lowest to 1-> highest
+                int he = (int) (d.getHeight() - 40);
+                videoimg.setAccelerationPriority((float) 1.0); // from 0-> lowest to 1-> highest
 
                 g.drawImage(videoimg, 0, 0, wi, he, null);
-                for(int i = 0; i < 30000; i++) {
+                for (int i = 0; i < 30000; i++) {
                     repaint(); // Important repaint lines
                 }
             }
 
-            if(nextState != game_state) {
+            if (nextState != game_state) {
                 System.out.println("------ State change from " + game_state + " to " + nextState);
                 game_state = nextState;
                 //super.paintComponent(g);
@@ -2190,7 +1398,7 @@ public final class Game_Display extends JPanel{
 
             }
         }
-        if((double)game_state > 2.9 && (double)game_state < 3.1) {
+        if ((double) game_state > 2.9 && (double) game_state < 3.1) {
             super.paintComponent(g);
             g.drawImage(bg, 0, 0, null);
 
@@ -2202,23 +1410,22 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(System.currentTimeMillis()%19 == 0) {
-                        if(leftWind) {
+                    if (System.currentTimeMillis() % 19 == 0) {
+                        if (leftWind) {
                             cloud_x_position--;
-                        }
-                        else {
+                        } else {
                             cloud_x_position++;
                         }
                     }
-                    if(cloud_x_position < -300 && leftWind) {
+                    if (cloud_x_position < -300 && leftWind) {
                         cloud_x_position = d.width;
                     }
-                    if(cloud_x_position > 700 && !leftWind) {
-                        cloud_x_position -=1000;
+                    if (cloud_x_position > 700 && !leftWind) {
+                        cloud_x_position -= 1000;
                     }
                 }
             };
-            if(!Cloud.isAlive()) {
+            if (!Cloud.isAlive()) {
                 Cloud.start();
             }
 
@@ -2229,19 +1436,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree1_x_position-=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree1_x_position -= 2;
                             possibleTree1_y_position++;
                         }
-                        if(possibleTree1_x_position < -340) {
-                            possibleTree1_x_position = (d.width/8)-7;
-                            possibleTree1_y_position = (d.height/12)+20;
+                        if (possibleTree1_x_position < -340) {
+                            possibleTree1_x_position = (d.width / 8) - 7;
+                            possibleTree1_y_position = (d.height / 12) + 20;
                         }
                     }
                 }
             };
-            if(!Tr1.isAlive()) {
+            if (!Tr1.isAlive()) {
                 Tr1.start();
             }
             Thread Tr2 = new Thread() {
@@ -2251,19 +1458,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree2_x_position-=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree2_x_position -= 2;
                             possibleTree2_y_position++;
                         }
-                        if(possibleTree2_x_position < -400) {
-                            possibleTree2_x_position = (d.width/4)-4;
-                            possibleTree2_y_position = (d.height/8)+20;
+                        if (possibleTree2_x_position < -400) {
+                            possibleTree2_x_position = (d.width / 4) - 4;
+                            possibleTree2_y_position = (d.height / 8) + 20;
                         }
                     }
                 }
             };
-            if(!Tr2.isAlive()) {
+            if (!Tr2.isAlive()) {
                 Tr2.start();
             }
             Thread Tr3 = new Thread() {
@@ -2273,19 +1480,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree3_x_position-=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree3_x_position -= 2;
                             possibleTree3_y_position++;
                         }
-                        if(possibleTree3_x_position < -500) {
-                            possibleTree3_x_position = (d.width/5)-4;
-                            possibleTree3_y_position = (d.height/17)+20;
+                        if (possibleTree3_x_position < -500) {
+                            possibleTree3_x_position = (d.width / 5) - 4;
+                            possibleTree3_y_position = (d.height / 17) + 20;
                         }
                     }
                 }
             };
-            if(!Tr3.isAlive()) {
+            if (!Tr3.isAlive()) {
                 Tr3.start();
             }
             Thread Tr4 = new Thread() {
@@ -2295,19 +1502,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree4_x_position+=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree4_x_position += 2;
                             possibleTree4_y_position++;
                         }
-                        if(possibleTree4_x_position > 640) {
-                            possibleTree4_x_position = (int) ((int) d.getWidth()/2)+40;
-                            possibleTree4_y_position = (int) ((int) d.getHeight()/3)-100;
+                        if (possibleTree4_x_position > 640) {
+                            possibleTree4_x_position = (int) ((int) d.getWidth() / 2) + 40;
+                            possibleTree4_y_position = (int) ((int) d.getHeight() / 3) - 100;
                         }
                     }
                 }
             };
-            if(!Tr4.isAlive()) {
+            if (!Tr4.isAlive()) {
                 Tr4.start();
             }
             Thread Tr5 = new Thread() {
@@ -2317,19 +1524,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree5_x_position+=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree5_x_position += 2;
                             possibleTree5_y_position++;
                         }
-                        if(possibleTree5_x_position > 760) {
-                            possibleTree5_x_position = (int) ((int) d.getWidth()/2)+40;
-                            possibleTree5_y_position = (int) ((int) d.getHeight()/3)-80;
+                        if (possibleTree5_x_position > 760) {
+                            possibleTree5_x_position = (int) ((int) d.getWidth() / 2) + 40;
+                            possibleTree5_y_position = (int) ((int) d.getHeight() / 3) - 80;
                         }
                     }
                 }
             };
-            if(!Tr5.isAlive()) {
+            if (!Tr5.isAlive()) {
                 Tr5.start();
             }
             Thread Tr6 = new Thread() {
@@ -2339,19 +1546,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree6_x_position+=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree6_x_position += 2;
                             possibleTree6_y_position++;
                         }
-                        if(possibleTree6_x_position > 800) {
-                            possibleTree6_x_position = (int) ((int) d.getWidth()/2)+40;
-                            possibleTree6_y_position = (int) ((int) d.getHeight()/3)-80;
+                        if (possibleTree6_x_position > 800) {
+                            possibleTree6_x_position = (int) ((int) d.getWidth() / 2) + 40;
+                            possibleTree6_y_position = (int) ((int) d.getHeight() / 3) - 80;
                         }
                     }
                 }
             };
-            if(!Tr6.isAlive()) {
+            if (!Tr6.isAlive()) {
                 Tr6.start();
             }
             Thread Tr7 = new Thread() {
@@ -2361,19 +1568,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree7_x_position+=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree7_x_position += 2;
                             possibleTree7_y_position++;
                         }
-                        if(possibleTree7_x_position > 753) {
-                            possibleTree7_x_position = (int) ((int) d.getWidth()/2)+42;
-                            possibleTree7_y_position = (int) ((int) d.getHeight()/3)-82;
+                        if (possibleTree7_x_position > 753) {
+                            possibleTree7_x_position = (int) ((int) d.getWidth() / 2) + 42;
+                            possibleTree7_y_position = (int) ((int) d.getHeight() / 3) - 82;
                         }
                     }
                 }
             };
-            if(!Tr7.isAlive()) {
+            if (!Tr7.isAlive()) {
                 Tr7.start();
             }
             Thread Tr8 = new Thread() {
@@ -2383,19 +1590,19 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%2 == 0) {
-                            possibleTree8_x_position-=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 2 == 0) {
+                            possibleTree8_x_position -= 2;
                             possibleTree8_y_position++;
                         }
-                        if(possibleTree8_x_position < -574) {
-                            possibleTree8_x_position = (d.width/9);
-                            possibleTree8_y_position = (d.height/7)+32;
+                        if (possibleTree8_x_position < -574) {
+                            possibleTree8_x_position = (d.width / 9);
+                            possibleTree8_y_position = (d.height / 7) + 32;
                         }
                     }
                 }
             };
-            if(!Tr8.isAlive()) {
+            if (!Tr8.isAlive()) {
                 Tr8.start();
             }
 
@@ -2414,132 +1621,138 @@ public final class Game_Display extends JPanel{
             String path_of_hazard_2 = "";
             String path_of_hazard_3 = "";
             String path_of_hazard_4 = "";
-            if(currentHazardOrMoney1.equals("E") || currentHazardOrMoney1.equals("S") || currentHazardOrMoney1.equals("F")) {
+            if (currentHazardOrMoney1.equals("E") || currentHazardOrMoney1.equals("S") || currentHazardOrMoney1.equals("F")) {
                 currentHazardOrMoney1_image = null;
             }
-            if(currentHazardOrMoney2.equals("E") || currentHazardOrMoney2.equals("S") || currentHazardOrMoney2.equals("F")) {
+            if (currentHazardOrMoney2.equals("E") || currentHazardOrMoney2.equals("S") || currentHazardOrMoney2.equals("F")) {
                 currentHazardOrMoney2_image = null;
             }
-            if(currentHazardOrMoney3.equals("E") || currentHazardOrMoney3.equals("S") || currentHazardOrMoney3.equals("F")) {
+            if (currentHazardOrMoney3.equals("E") || currentHazardOrMoney3.equals("S") || currentHazardOrMoney3.equals("F")) {
                 currentHazardOrMoney3_image = null;
             }
-            if(currentHazardOrMoney4.equals("E") || currentHazardOrMoney4.equals("S") || currentHazardOrMoney4.equals("F")) {
+            if (currentHazardOrMoney4.equals("E") || currentHazardOrMoney4.equals("S") || currentHazardOrMoney4.equals("F")) {
                 currentHazardOrMoney4_image = null;
             }
 
-            if(currentHazardOrMoney1.equals("M")) {
+            if (currentHazardOrMoney1.equals("M")) {
                 path_of_hazard_1 = "res/money.png";
             }
-            if(currentHazardOrMoney1.equals("8")) {
+            if (currentHazardOrMoney1.equals("8")) {
                 path_of_hazard_1 = "res/enemy_snowman.png";
             }
-            if(currentHazardOrMoney1.equals("o")) {
+            if (currentHazardOrMoney1.equals("o")) {
                 path_of_hazard_1 = "res/enemy_snowball.png";
             }
-            if(currentHazardOrMoney1.equals("Q")) {
+            if (currentHazardOrMoney1.equals("Q")) {
                 path_of_hazard_1 = "res/enemy_bomb.png";
             }
-            if(currentHazardOrMoney1.equals("B")) {
+            if (currentHazardOrMoney1.equals("B")) {
                 path_of_hazard_1 = "res/enemy_beaver_masi.png";
             }
-            if(currentHazardOrMoney2.equals("M")) {
+            if (currentHazardOrMoney2.equals("M")) {
                 path_of_hazard_2 = "res/money.png";
             }
-            if(currentHazardOrMoney2.equals("8")) {
+            if (currentHazardOrMoney2.equals("8")) {
                 path_of_hazard_2 = "res/enemy_snowman.png";
             }
-            if(currentHazardOrMoney2.equals("o")) {
+            if (currentHazardOrMoney2.equals("o")) {
                 path_of_hazard_2 = "res/enemy_snowball.png";
             }
-            if(currentHazardOrMoney2.equals("Q")) {
+            if (currentHazardOrMoney2.equals("Q")) {
                 path_of_hazard_2 = "res/enemy_bomb.png";
             }
-            if(currentHazardOrMoney2.equals("B")) {
+            if (currentHazardOrMoney2.equals("B")) {
                 path_of_hazard_2 = "res/enemy_beaver_masi.png";
             }
-            if(currentHazardOrMoney3.equals("M")) {
+            if (currentHazardOrMoney3.equals("M")) {
                 path_of_hazard_3 = "res/money.png";
             }
-            if(currentHazardOrMoney3.equals("8")) {
+            if (currentHazardOrMoney3.equals("8")) {
                 path_of_hazard_3 = "res/enemy_snowman.png";
             }
-            if(currentHazardOrMoney3.equals("o")) {
+            if (currentHazardOrMoney3.equals("o")) {
                 path_of_hazard_3 = "res/enemy_snowball.png";
             }
-            if(currentHazardOrMoney3.equals("Q")) {
+            if (currentHazardOrMoney3.equals("Q")) {
                 path_of_hazard_3 = "res/enemy_bomb.png";
             }
-            if(currentHazardOrMoney3.equals("B")) {
+            if (currentHazardOrMoney3.equals("B")) {
                 path_of_hazard_3 = "res/enemy_beaver_masi.png";
             }
-            if(currentHazardOrMoney4.equals("M")) {
+            if (currentHazardOrMoney4.equals("M")) {
                 path_of_hazard_4 = "res/money.png";
             }
-            if(currentHazardOrMoney4.equals("8")) {
+            if (currentHazardOrMoney4.equals("8")) {
                 path_of_hazard_4 = "res/enemy_snowman.png";
             }
-            if(currentHazardOrMoney4.equals("o")) {
+            if (currentHazardOrMoney4.equals("o")) {
                 path_of_hazard_4 = "res/enemy_snowball.png";
             }
-            if(currentHazardOrMoney4.equals("Q")) {
+            if (currentHazardOrMoney4.equals("Q")) {
                 path_of_hazard_4 = "res/enemy_bomb.png";
             }
-            if(currentHazardOrMoney4.equals("B")) {
+            if (currentHazardOrMoney4.equals("B")) {
                 path_of_hazard_4 = "res/enemy_beaver_masi.png";
             }
-            if(currentHazardOrMoney1.equals("1")) {
-                path_of_hazard_2 = ""; currentHazardOrMoney2_image = null;
-                path_of_hazard_3 = ""; currentHazardOrMoney3_image = null;
-                path_of_hazard_4 = ""; currentHazardOrMoney4_image = null;
-                for(int i = 0; i < 3; i++) {
-                    if(thingsToRemember.charAt(i) == 'A') {
+            if (currentHazardOrMoney1.equals("1")) {
+                path_of_hazard_2 = "";
+                currentHazardOrMoney2_image = null;
+                path_of_hazard_3 = "";
+                currentHazardOrMoney3_image = null;
+                path_of_hazard_4 = "";
+                currentHazardOrMoney4_image = null;
+                for (int i = 0; i < 3; i++) {
+                    if (thingsToRemember.charAt(i) == 'A') {
                         path_of_hazard_1 = "res/remember_A_asterisk.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'B') {
+                    if (thingsToRemember.charAt(i) == 'B') {
                         path_of_hazard_1 = "res/remember_B_bell.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'C') {
+                    if (thingsToRemember.charAt(i) == 'C') {
                         path_of_hazard_1 = "res/remember_C_clock.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'D') {
+                    if (thingsToRemember.charAt(i) == 'D') {
                         path_of_hazard_1 = "res/remember_D_diamond.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'H') {
+                    if (thingsToRemember.charAt(i) == 'H') {
                         path_of_hazard_1 = "res/remember_H_hash.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'S') {
+                    if (thingsToRemember.charAt(i) == 'S') {
                         path_of_hazard_1 = "res/remember_S_star.png";
                     }
                 }
             }
-            if(currentHazardOrMoney1.equals("2")) {
-                path_of_hazard_2 = ""; currentHazardOrMoney2_image = null;
-                path_of_hazard_3 = ""; currentHazardOrMoney3_image = null;
-                path_of_hazard_4 = ""; currentHazardOrMoney4_image = null;
-                for(int i = 3; i < 6; i++) {
-                    if(thingsToRemember.charAt(i) == 'A') {
+            if (currentHazardOrMoney1.equals("2")) {
+                path_of_hazard_2 = "";
+                currentHazardOrMoney2_image = null;
+                path_of_hazard_3 = "";
+                currentHazardOrMoney3_image = null;
+                path_of_hazard_4 = "";
+                currentHazardOrMoney4_image = null;
+                for (int i = 3; i < 6; i++) {
+                    if (thingsToRemember.charAt(i) == 'A') {
                         path_of_hazard_1 = "res/remember_A_asterisk.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'B') {
+                    if (thingsToRemember.charAt(i) == 'B') {
                         path_of_hazard_1 = "res/remember_B_bell.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'C') {
+                    if (thingsToRemember.charAt(i) == 'C') {
                         path_of_hazard_1 = "res/remember_C_clock.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'D') {
+                    if (thingsToRemember.charAt(i) == 'D') {
                         path_of_hazard_1 = "res/remember_D_diamond.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'H') {
+                    if (thingsToRemember.charAt(i) == 'H') {
                         path_of_hazard_1 = "res/remember_H_hash.png";
                     }
-                    if(thingsToRemember.charAt(i) == 'S') {
+                    if (thingsToRemember.charAt(i) == 'S') {
                         path_of_hazard_1 = "res/remember_S_star.png";
                     }
                 }
             }
             // file names should remain exactly original
 
-            if(!"".equals(path_of_hazard_1)) {
+            if (!"".equals(path_of_hazard_1)) {
                 //currentHazardOrMoney1_x_position = (int) ((int) d.getWidth()/15);
                 //currentHazardOrMoney1_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_1 = new ImageIcon(path_of_hazard_1);
@@ -2549,7 +1762,7 @@ public final class Game_Display extends JPanel{
                         .getScaledInstance(currentHazardOrMoney1w, currentHazardOrMoney1h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney1_image = currentHazardOrMoney_1.getImage();
             }
-            if(!"".equals(path_of_hazard_2)) {
+            if (!"".equals(path_of_hazard_2)) {
                 //currentHazardOrMoney2_x_position = (int) ((int) d.getWidth()/15)+130;
                 //currentHazardOrMoney2_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_2 = new ImageIcon(path_of_hazard_2);
@@ -2559,7 +1772,7 @@ public final class Game_Display extends JPanel{
                         .getScaledInstance(currentHazardOrMoney2w, currentHazardOrMoney2h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney2_image = currentHazardOrMoney_2.getImage();
             }
-            if(!"".equals(path_of_hazard_3)) {
+            if (!"".equals(path_of_hazard_3)) {
                 //currentHazardOrMoney3_x_position = (int) ((int) d.getWidth()/15)+250;
                 //currentHazardOrMoney3_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_3 = new ImageIcon(path_of_hazard_3);
@@ -2569,7 +1782,7 @@ public final class Game_Display extends JPanel{
                         .getScaledInstance(currentHazardOrMoney3w, currentHazardOrMoney3h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney3_image = currentHazardOrMoney_3.getImage();
             }
-            if(!"".equals(path_of_hazard_4)) {
+            if (!"".equals(path_of_hazard_4)) {
                 //currentHazardOrMoney4_x_position = (int) ((int) d.getWidth()/15)+395;
                 //currentHazardOrMoney4_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_4 = new ImageIcon(path_of_hazard_4);
@@ -2587,48 +1800,48 @@ public final class Game_Display extends JPanel{
             String tenThousandsToDraw_path = "res/numbers" + String.valueOf(tenThousands) + ".png";
             String hundredThousandsToDraw_path = "res/numbers" + String.valueOf(hundredThousands) + ".png";
 
-            digitFromLeft1_x_position = (int) ((int) d.getWidth()/2);
-            digitFromLeft1_y_position = (int) ((int) d.getHeight()/1.27);
+            digitFromLeft1_x_position = (int) ((int) d.getWidth() / 2);
+            digitFromLeft1_y_position = (int) ((int) d.getHeight() / 1.27);
             ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
             int digitFromLeft1w = digitFromLeft1.getIconWidth();
             int digitFromLeft1h = digitFromLeft1.getIconHeight();
             digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
             digitFromLeft1image = digitFromLeft1.getImage();
 
-            digitFromLeft2_x_position = (int) ((int) d.getWidth()/2) +45;
-            digitFromLeft2_y_position = (int) ((int) d.getHeight()/1.27);
+            digitFromLeft2_x_position = (int) ((int) d.getWidth() / 2) + 45;
+            digitFromLeft2_y_position = (int) ((int) d.getHeight() / 1.27);
             ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
             int digitFromLeft2w = digitFromLeft2.getIconWidth();
             int digitFromLeft2h = digitFromLeft2.getIconHeight();
             digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
             digitFromLeft2image = digitFromLeft2.getImage();
 
-            digitFromLeft3_x_position = (int) ((int) d.getWidth()/2) +90;
-            digitFromLeft3_y_position = (int) ((int) d.getHeight()/1.27);
+            digitFromLeft3_x_position = (int) ((int) d.getWidth() / 2) + 90;
+            digitFromLeft3_y_position = (int) ((int) d.getHeight() / 1.27);
             ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
             int digitFromLeft3w = digitFromLeft3.getIconWidth();
             int digitFromLeft3h = digitFromLeft3.getIconHeight();
             digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
             digitFromLeft3image = digitFromLeft3.getImage();
 
-            digitFromLeft4_x_position = (int) ((int) d.getWidth()/2) +135;
-            digitFromLeft4_y_position = (int) ((int) d.getHeight()/1.27);
+            digitFromLeft4_x_position = (int) ((int) d.getWidth() / 2) + 135;
+            digitFromLeft4_y_position = (int) ((int) d.getHeight() / 1.27);
             ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
             int digitFromLeft4w = digitFromLeft4.getIconWidth();
             int digitFromLeft4h = digitFromLeft4.getIconHeight();
             digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
             digitFromLeft4image = digitFromLeft4.getImage();
 
-            digitFromLeft5_x_position = (int) ((int) d.getWidth()/2) +180;
-            digitFromLeft5_y_position = (int) ((int) d.getHeight()/1.27);
+            digitFromLeft5_x_position = (int) ((int) d.getWidth() / 2) + 180;
+            digitFromLeft5_y_position = (int) ((int) d.getHeight() / 1.27);
             ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
             int digitFromLeft5w = digitFromLeft5.getIconWidth();
             int digitFromLeft5h = digitFromLeft5.getIconHeight();
             digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
             digitFromLeft5image = digitFromLeft5.getImage();
 
-            digitFromLeft6_x_position = (int) ((int) d.getWidth()/2) +225;
-            digitFromLeft6_y_position = (int) ((int) d.getHeight()/1.27);
+            digitFromLeft6_x_position = (int) ((int) d.getWidth() / 2) + 225;
+            digitFromLeft6_y_position = (int) ((int) d.getHeight() / 1.27);
             ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
             int digitFromLeft6w = digitFromLeft6.getIconWidth();
             int digitFromLeft6h = digitFromLeft6.getIconHeight();
@@ -2642,71 +1855,68 @@ public final class Game_Display extends JPanel{
                  */
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if(!gamePaused) {
-                        if(HugoHiihto.currentStateAtTheLevel == 15 || HugoHiihto.currentStateAtTheLevel == 26) {
+                    if (!gamePaused) {
+                        if (HugoSkiing.currentStateAtTheLevel == 15 || HugoSkiing.currentStateAtTheLevel == 26) {
                             currentHazardOrMoney1w = 1;
                             currentHazardOrMoney1h = 1;
                             currentHazardOrMoney1_y_position = 8000;
                             currentHazardOrMoney1_x_position = 8000;
                         }
-                        if(vanish4Faster && (HugoHiihto.currentStateAtTheLevel == 14 || HugoHiihto.currentStateAtTheLevel == 25)) {
-                            currentHazardOrMoney1_y_position+=4;
+                        if (vanish4Faster && (HugoSkiing.currentStateAtTheLevel == 14 || HugoSkiing.currentStateAtTheLevel == 25)) {
+                            currentHazardOrMoney1_y_position += 4;
                         }
-                        if(HugoHiihto.currentStateAtTheLevel == 14 || HugoHiihto.currentStateAtTheLevel == 25) {
-                            if(currentHazardOrMoney1_x_position < 310) {
+                        if (HugoSkiing.currentStateAtTheLevel == 14 || HugoSkiing.currentStateAtTheLevel == 25) {
+                            if (currentHazardOrMoney1_x_position < 310) {
                                 currentHazardOrMoney1_x_position++;
-                            }
-                            else {
-                                currentHazardOrMoney1_y_position+=3;
+                            } else {
+                                currentHazardOrMoney1_y_position += 3;
                             }
                             currentHazardOrMoney1w = 120;
                             currentHazardOrMoney1h = 120;
-                            if(currentHazardOrMoney1_x_position < 180 || vanish4Faster) {
+                            if (currentHazardOrMoney1_x_position < 180 || vanish4Faster) {
                                 currentHazardOrMoney1_x_position++;
                             }
-                        }
-                        else {
-                            if(System.currentTimeMillis()%3 == 0) {
-                                currentHazardOrMoney1_x_position-=2;
-                                currentHazardOrMoney1_y_position-=2;
+                        } else {
+                            if (System.currentTimeMillis() % 3 == 0) {
+                                currentHazardOrMoney1_x_position -= 2;
+                                currentHazardOrMoney1_y_position -= 2;
                                 currentHazardOrMoney1w++;
-                                currentHazardOrMoney1h+=2;
+                                currentHazardOrMoney1h += 2;
                             }
                             //
-                            if(currentHazardOrMoney1_y_position < 185) {
-                                currentHazardOrMoney1_y_position+=2;
-                            }
-                            else if(currentHazardOrMoney1_y_position > y -25 && System.currentTimeMillis()%5 == 0) {
+                            if (currentHazardOrMoney1_y_position < 185) {
+                                currentHazardOrMoney1_y_position += 2;
+                            } else if (currentHazardOrMoney1_y_position > y - 25 && System.currentTimeMillis() % 5 == 0) {
                                 currentHazardOrMoney1_x_position--;
                                 currentHazardOrMoney1_y_position++;
                             }
-                            if(currentHazardOrMoney1_y_position > d.getHeight()-230) {
+                            if (currentHazardOrMoney1_y_position > d.getHeight() - 230) {
                                 currentHazardOrMoney1_x_position = (int) (d.getWidth() + 1000);
                                 currentHazardOrMoney1w = 1;
                                 currentHazardOrMoney1h = 1;
                             }
-                            if(currentHazardOrMoney1_y_position > d.getHeight()-230 ||
+                            if (currentHazardOrMoney1_y_position > d.getHeight() - 230 ||
                                     currentHazardOrMoney1_x_position < 50 ||
-                                    !HugoHiihto.tic) {
+                                    !HugoSkiing.tic) {
                                 currentHazardOrMoney1_y_position = 8000;
                                 //System.out.println("Off screen 1");
                                 currentHazardOrMoney1w = 1;
                                 currentHazardOrMoney1h = 1;
                             }
                         }
-                        if(vanish4Faster) {
-                            currentHazardOrMoney1_y_position+=3;
-                            currentHazardOrMoney1_x_position-=5;
-                            currentHazardOrMoney1w+=3;
-                            currentHazardOrMoney1h+=3;
+                        if (vanish4Faster) {
+                            currentHazardOrMoney1_y_position += 3;
+                            currentHazardOrMoney1_x_position -= 5;
+                            currentHazardOrMoney1w += 3;
+                            currentHazardOrMoney1h += 3;
                         }
                     }
                 }
             };
-            if(!HAZ1.isAlive()) {
+            if (!HAZ1.isAlive()) {
                 HAZ1.start();
             }
-            if(HugoHiihto.currentStateAtTheLevel > -2) {
+            if (HugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney1_image, currentHazardOrMoney1_x_position, currentHazardOrMoney1_y_position, this);
             }
 
@@ -2718,48 +1928,48 @@ public final class Game_Display extends JPanel{
                 public void run() {
                     repaint();
                     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%3 == 0) {
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 3 == 0) {
                             currentHazardOrMoney2_y_position++;
                             currentHazardOrMoney2w++;
-                            currentHazardOrMoney2h+=2;
+                            currentHazardOrMoney2h += 2;
                         }
                         //
-                        if(currentHazardOrMoney2_y_position < 175) {
+                        if (currentHazardOrMoney2_y_position < 175) {
                             currentHazardOrMoney2_y_position++;
                         }
-                        if(System.currentTimeMillis()%3 == 0 && currentHazardOrMoney2_x_position > 192) {
+                        if (System.currentTimeMillis() % 3 == 0 && currentHazardOrMoney2_x_position > 192) {
                             currentHazardOrMoney2_x_position--;
                         }
-                        if(currentHazardOrMoney2_y_position > d.getHeight()-230) {
+                        if (currentHazardOrMoney2_y_position > d.getHeight() - 230) {
                             currentHazardOrMoney2_x_position = (int) (d.getWidth() + 1000);
                             currentHazardOrMoney2w = 1;
                             currentHazardOrMoney2h = 1;
                         }
-                        if(currentHazardOrMoney2_y_position > d.getHeight()-230 ||
-                                !HugoHiihto.tic) {
+                        if (currentHazardOrMoney2_y_position > d.getHeight() - 230 ||
+                                !HugoSkiing.tic) {
                             //System.out.println("Off screen 2");
                             currentHazardOrMoney2_y_position = 8000;
                             currentHazardOrMoney2w = 1;
                             currentHazardOrMoney2h = 1;
                             repaint();
                         }
-                        if(currentHazardOrMoney2_y_position > y +30 && System.currentTimeMillis()%5 == 0) {
+                        if (currentHazardOrMoney2_y_position > y + 30 && System.currentTimeMillis() % 5 == 0) {
                             currentHazardOrMoney2_y_position++;
                         }
-                        if(vanish4Faster) {
-                            currentHazardOrMoney2_y_position+=3;
+                        if (vanish4Faster) {
+                            currentHazardOrMoney2_y_position += 3;
                             currentHazardOrMoney2_x_position--;
-                            currentHazardOrMoney2w+=3;
-                            currentHazardOrMoney2h+=3;
+                            currentHazardOrMoney2w += 3;
+                            currentHazardOrMoney2h += 3;
                         }
                     }
                 }
             };
-            if(!HAZ2.isAlive()) {
+            if (!HAZ2.isAlive()) {
                 HAZ2.start();
             }
-            if(HugoHiihto.currentStateAtTheLevel > -2) {
+            if (HugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney2_image, currentHazardOrMoney2_x_position, currentHazardOrMoney2_y_position, this);
             }
 
@@ -2771,47 +1981,47 @@ public final class Game_Display extends JPanel{
                 public void run() {
                     repaint();
                     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%3 == 0) {
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 3 == 0) {
                             currentHazardOrMoney3_y_position++;
                             currentHazardOrMoney3w++;
-                            currentHazardOrMoney3h+=2;
+                            currentHazardOrMoney3h += 2;
                         }
                         //
-                        if(currentHazardOrMoney3_y_position < 175) {
+                        if (currentHazardOrMoney3_y_position < 175) {
                             currentHazardOrMoney3_y_position++;
                         }
-                        if(System.currentTimeMillis()%3 == 0  && currentHazardOrMoney3_x_position < 340) {
+                        if (System.currentTimeMillis() % 3 == 0 && currentHazardOrMoney3_x_position < 340) {
                             currentHazardOrMoney3_x_position++;
                         }
-                        if(currentHazardOrMoney3_y_position > d.getHeight()-230) {
+                        if (currentHazardOrMoney3_y_position > d.getHeight() - 230) {
                             currentHazardOrMoney3_x_position = (int) (d.getWidth() + 1000);
                             currentHazardOrMoney3w = 1;
                             currentHazardOrMoney3h = 1;
                         }
-                        if(currentHazardOrMoney3_y_position > d.getHeight()-230 ||
-                                !HugoHiihto.tic) {
+                        if (currentHazardOrMoney3_y_position > d.getHeight() - 230 ||
+                                !HugoSkiing.tic) {
                             //System.out.println("Off screen 3");
                             currentHazardOrMoney3_y_position = 8000;
                             currentHazardOrMoney3w = 1;
                             currentHazardOrMoney3h = 1;
                             repaint();
                         }
-                        if(currentHazardOrMoney3_y_position > y +30  && System.currentTimeMillis()%5 == 0) {
+                        if (currentHazardOrMoney3_y_position > y + 30 && System.currentTimeMillis() % 5 == 0) {
                             currentHazardOrMoney3_y_position++;
                         }
-                        if(vanish4Faster) {
-                            currentHazardOrMoney3_y_position+=3;
-                            currentHazardOrMoney3w+=3;
-                            currentHazardOrMoney3h+=3;
+                        if (vanish4Faster) {
+                            currentHazardOrMoney3_y_position += 3;
+                            currentHazardOrMoney3w += 3;
+                            currentHazardOrMoney3h += 3;
                         }
                     }
                 }
             };
-            if(!HAZ3.isAlive()) {
+            if (!HAZ3.isAlive()) {
                 HAZ3.start();
             }
-            if(HugoHiihto.currentStateAtTheLevel > -2) {
+            if (HugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney3_image, currentHazardOrMoney3_x_position, currentHazardOrMoney3_y_position, this);
             }
 
@@ -2823,77 +2033,77 @@ public final class Game_Display extends JPanel{
                 public void run() {
                     repaint();
                     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if(!gamePaused) {
-                        if(System.currentTimeMillis()%3 == 0) {
-                            currentHazardOrMoney4_x_position+=2;
+                    if (!gamePaused) {
+                        if (System.currentTimeMillis() % 3 == 0) {
+                            currentHazardOrMoney4_x_position += 2;
                             currentHazardOrMoney4_y_position++;
                             currentHazardOrMoney4w++;
-                            currentHazardOrMoney4h+=2;
+                            currentHazardOrMoney4h += 2;
                         }
                         //
-                        if(currentHazardOrMoney4_y_position < 165) {
+                        if (currentHazardOrMoney4_y_position < 165) {
                             currentHazardOrMoney4_y_position++;
                         }
-                        if(currentHazardOrMoney4_y_position > d.getHeight()-230) {
+                        if (currentHazardOrMoney4_y_position > d.getHeight() - 230) {
                             currentHazardOrMoney4_x_position = (int) (d.getWidth() + 1000);
                             currentHazardOrMoney4w = 1;
                             currentHazardOrMoney4h = 1;
                         }
-                        if(currentHazardOrMoney4_y_position > d.getHeight()-230 ||
-                                !HugoHiihto.tic) {
+                        if (currentHazardOrMoney4_y_position > d.getHeight() - 230 ||
+                                !HugoSkiing.tic) {
                             //System.out.println("Off screen 4");
                             currentHazardOrMoney4_y_position = 8000;
                             currentHazardOrMoney4w = 1;
                             currentHazardOrMoney4h = 1;
                             repaint();
                         }
-                        if(currentHazardOrMoney4_y_position > y +30  && System.currentTimeMillis()%5 == 0) {
+                        if (currentHazardOrMoney4_y_position > y + 30 && System.currentTimeMillis() % 5 == 0) {
                             currentHazardOrMoney4_y_position++;
                         }
-                        if(vanish4Faster) {
-                            currentHazardOrMoney4_y_position+=3;
-                            currentHazardOrMoney4_x_position+=3;
-                            currentHazardOrMoney4w+=3;
-                            currentHazardOrMoney4h+=3;
+                        if (vanish4Faster) {
+                            currentHazardOrMoney4_y_position += 3;
+                            currentHazardOrMoney4_x_position += 3;
+                            currentHazardOrMoney4w += 3;
+                            currentHazardOrMoney4h += 3;
                         }
                     }
                 }
             };
-            if(!HAZ4.isAlive()) {
+            if (!HAZ4.isAlive()) {
                 HAZ4.start();
             }
-            if(HugoHiihto.currentStateAtTheLevel > -2) {
+            if (HugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney4_image, currentHazardOrMoney4_x_position, currentHazardOrMoney4_y_position, this);
             }
 
             g.drawImage(scorebar, scorebar_x_position, scorebar_y_position, this);
 
-            if(hundredThousandsVisible)
+            if (hundredThousandsVisible)
                 g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
-            if(tenThousandsVisible)
+            if (tenThousandsVisible)
                 g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
-            if(thousandsVisible)
+            if (thousandsVisible)
                 g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
-            if(hundredsVisible)
+            if (hundredsVisible)
                 g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
-            if(tensVisible)
+            if (tensVisible)
                 g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
-            if(onesVisible)
+            if (onesVisible)
                 g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
 
             repaint();
 
-            if((double)number_of_lives > 1.5) {
+            if ((double) number_of_lives > 1.5) {
                 g.drawImage(hugolife1, hugolife1_x_position, hugolife1_y_position, this);
             }
-            if((double)number_of_lives > 2.5) {
+            if ((double) number_of_lives > 2.5) {
                 g.drawImage(hugolife2, hugolife2_x_position, hugolife2_y_position, this);
             }
-            if((double)number_of_lives > 3.5) {
+            if ((double) number_of_lives > 3.5) {
                 g.drawImage(hugolife3, hugolife3_x_position, hugolife3_y_position, this);
             }
 
-            if(currentGrid < 2) { // Hugo ski animation
+            if (currentGrid < 2) { // Hugo ski animation
                 Thread GRIDS01 = new Thread() {
                     @Override
                     /**
@@ -2902,33 +2112,31 @@ public final class Game_Display extends JPanel{
                     public void run() {
                         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                         int target = 55;
-                        if(currentGrid == 0) {
+                        if (currentGrid == 0) {
                             target = 55;
                         }
-                        if(currentGrid == 1) {
-                            target = 55 + (maxW/3);
+                        if (currentGrid == 1) {
+                            target = 55 + (maxW / 3);
                         }
-                        if(x > target) {
-                            x-=6;
+                        if (x > target) {
+                            x -= 6;
                             repaint();
                         }
-                        if(x < target) {
-                            x+=6;
+                        if (x < target) {
+                            x += 6;
                             repaint();
                         }
                     }
                 };
-                if(!GRIDS01.isAlive()) {
+                if (!GRIDS01.isAlive()) {
                     GRIDS01.start();
                 }
-                if(currentGrid == 0) {
+                if (currentGrid == 0) {
                     g.drawImage(sprite_L2, x, y, this);
-                }
-                else {
+                } else {
                     g.drawImage(sprite_L, x, y, this);
                 }
-            }
-            else {
+            } else {
                 Thread GRIDS23 = new Thread() {
                     @Override
                     /**
@@ -2937,41 +2145,40 @@ public final class Game_Display extends JPanel{
                     public void run() {
                         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                         int target = 55;
-                        if(currentGrid == 2) {
-                            target = 55 + (maxW/3)*2;
+                        if (currentGrid == 2) {
+                            target = 55 + (maxW / 3) * 2;
                         }
-                        if(currentGrid == 3) {
-                            target = 55 + (maxW/3)*3;
+                        if (currentGrid == 3) {
+                            target = 55 + (maxW / 3) * 3;
                         }
-                        if(x > target) {
-                            x-=6;
+                        if (x > target) {
+                            x -= 6;
                             repaint();
                         }
-                        if(x < target) {
-                            x+=6; // 6 is the speed of changing grid
+                        if (x < target) {
+                            x += 6; // 6 is the speed of changing grid
                             repaint();
                         }
                     }
                 };
-                if(!GRIDS23.isAlive()) {
+                if (!GRIDS23.isAlive()) {
                     GRIDS23.start();
                 }
-                if(currentGrid == 3) {
+                if (currentGrid == 3) {
                     g.drawImage(sprite_R2, x, y, this);
-                }
-                else {
+                } else {
                     g.drawImage(sprite_R, x, y, this);
                 }
             }
 
             // Order matters,
-            if(gamePaused) { // pause should be written last because it should always be on top of everything.
-                if(pausedWithEnter) {
+            if (gamePaused) { // pause should be written last because it should always be on top of everything.
+                if (pausedWithEnter) {
                     g.drawImage(pause, pause_x_position, pause_y_position, this);
                 }
             }
 
-            if(nextState != game_state) {
+            if (nextState != game_state) {
                 System.out.println("------ State change from " + game_state + " to " + nextState);
                 game_state = nextState;
                 //super.paintComponent(g);
@@ -2988,7 +2195,7 @@ public final class Game_Display extends JPanel{
 
             }
         }
-        if((double)game_state > 3.9 && (double)game_state < 4.1) {
+        if ((double) game_state > 3.9 && (double) game_state < 4.1) {
             super.paintComponent(g);
 
             g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
@@ -3000,14 +2207,14 @@ public final class Game_Display extends JPanel{
             g.drawImage(hashtag, hashtag_x_position, hashtag_y_position, this);
             g.drawImage(star, star_x_position, star_y_position, this);
 
-            if(currentlyAllCorrect) {
+            if (currentlyAllCorrect) {
                 g.drawImage(u1b, u1b_x_position, u1b_y_position, this);
                 g.drawImage(u2b, u2b_x_position, u2b_y_position, this);
                 g.drawImage(u3b, u3b_x_position, u3b_y_position, this);
             }
 
-            if(secondPhase && currentlyAllCorrect) {
-                if( thingsToRemember.charAt(0) == 'A' || // if caps, correct
+            if (secondPhase && currentlyAllCorrect) {
+                if (thingsToRemember.charAt(0) == 'A' || // if caps, correct
                         thingsToRemember.charAt(0) == 'B' ||
                         thingsToRemember.charAt(0) == 'C' ||
                         thingsToRemember.charAt(0) == 'D' ||
@@ -3015,7 +2222,7 @@ public final class Game_Display extends JPanel{
                         thingsToRemember.charAt(0) == 'S') {
                     g.drawImage(u1w, u1b_x_position, u1b_y_position, this);
                 }
-                if( thingsToRemember.charAt(1) == 'A' ||
+                if (thingsToRemember.charAt(1) == 'A' ||
                         thingsToRemember.charAt(1) == 'B' ||
                         thingsToRemember.charAt(1) == 'C' ||
                         thingsToRemember.charAt(1) == 'D' ||
@@ -3023,7 +2230,7 @@ public final class Game_Display extends JPanel{
                         thingsToRemember.charAt(1) == 'S') {
                     g.drawImage(u2w, u2b_x_position, u2b_y_position, this);
                 }
-                if( thingsToRemember.charAt(2) == 'A' ||
+                if (thingsToRemember.charAt(2) == 'A' ||
                         thingsToRemember.charAt(2) == 'B' ||
                         thingsToRemember.charAt(2) == 'C' ||
                         thingsToRemember.charAt(2) == 'D' ||
@@ -3036,8 +2243,8 @@ public final class Game_Display extends JPanel{
                 g.drawImage(d2b, d2b_x_position, d2b_y_position, this);
                 g.drawImage(d3b, d3b_x_position, d3b_y_position, this);
 
-                if(allCorrectInTheEnd) {
-                    if( thingsToRemember.charAt(3) == 'A' || // if caps, correct
+                if (allCorrectInTheEnd) {
+                    if (thingsToRemember.charAt(3) == 'A' || // if caps, correct
                             thingsToRemember.charAt(3) == 'B' ||
                             thingsToRemember.charAt(3) == 'C' ||
                             thingsToRemember.charAt(3) == 'D' ||
@@ -3045,7 +2252,7 @@ public final class Game_Display extends JPanel{
                             thingsToRemember.charAt(3) == 'S') {
                         g.drawImage(d1w, d1b_x_position, d1b_y_position, this);
                     }
-                    if( thingsToRemember.charAt(4) == 'A' ||
+                    if (thingsToRemember.charAt(4) == 'A' ||
                             thingsToRemember.charAt(4) == 'B' ||
                             thingsToRemember.charAt(4) == 'C' ||
                             thingsToRemember.charAt(4) == 'D' ||
@@ -3053,7 +2260,7 @@ public final class Game_Display extends JPanel{
                             thingsToRemember.charAt(4) == 'S') {
                         g.drawImage(d2w, d2b_x_position, d2b_y_position, this);
                     }
-                    if( thingsToRemember.charAt(5) == 'A' ||
+                    if (thingsToRemember.charAt(5) == 'A' ||
                             thingsToRemember.charAt(5) == 'B' ||
                             thingsToRemember.charAt(5) == 'C' ||
                             thingsToRemember.charAt(5) == 'D' ||
@@ -3065,13 +2272,13 @@ public final class Game_Display extends JPanel{
                     nextState = 6;
                 }
             }
-            if(!currentlyAllCorrect) {
+            if (!currentlyAllCorrect) {
                 video = 6;
                 nextState = 6;
             }
             repaint();
 
-            if(nextState != game_state) {
+            if (nextState != game_state) {
                 System.out.println("------ State change from " + game_state + " to " + nextState);
                 game_state = nextState;
                 //super.paintComponent(g);
@@ -3088,7 +2295,7 @@ public final class Game_Display extends JPanel{
             }
         }
 
-        if((double)game_state > 4.9 && (double)game_state < 5.1) {
+        if ((double) game_state > 4.9 && (double) game_state < 5.1) {
             super.paintComponent(g);
 
             cheatBackflip180 = false;
@@ -3112,8 +2319,8 @@ public final class Game_Display extends JPanel{
             String tenThousandsToDraw_path = "res/numbers" + String.valueOf(tenThousands) + ".png";
             String hundredThousandsToDraw_path = "res/numbers" + String.valueOf(hundredThousands) + ".png";
 
-            digitFromLeft1_x_position = (int) ((int) d.getWidth()/11);
-            digitFromLeft1_y_position = (int) ((int) d.getHeight()/2.2);
+            digitFromLeft1_x_position = (int) ((int) d.getWidth() / 11);
+            digitFromLeft1_y_position = (int) ((int) d.getHeight() / 2.2);
             ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
             int digitFromLeft1w = digitFromLeft1.getIconWidth();
             int digitFromLeft1h = digitFromLeft1.getIconHeight();
@@ -3121,8 +2328,8 @@ public final class Game_Display extends JPanel{
                     digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
             digitFromLeft1image = digitFromLeft1.getImage();
 
-            digitFromLeft2_x_position = (int) ((int) d.getWidth()/11) +50;
-            digitFromLeft2_y_position = (int) ((int) d.getHeight()/2.2);
+            digitFromLeft2_x_position = (int) ((int) d.getWidth() / 11) + 50;
+            digitFromLeft2_y_position = (int) ((int) d.getHeight() / 2.2);
             ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
             int digitFromLeft2w = digitFromLeft2.getIconWidth();
             int digitFromLeft2h = digitFromLeft2.getIconHeight();
@@ -3130,8 +2337,8 @@ public final class Game_Display extends JPanel{
                     digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
             digitFromLeft2image = digitFromLeft2.getImage();
 
-            digitFromLeft3_x_position = (int) ((int) d.getWidth()/11) +100;
-            digitFromLeft3_y_position = (int) ((int) d.getHeight()/2.2);
+            digitFromLeft3_x_position = (int) ((int) d.getWidth() / 11) + 100;
+            digitFromLeft3_y_position = (int) ((int) d.getHeight() / 2.2);
             ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
             int digitFromLeft3w = digitFromLeft3.getIconWidth();
             int digitFromLeft3h = digitFromLeft3.getIconHeight();
@@ -3139,8 +2346,8 @@ public final class Game_Display extends JPanel{
                     digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
             digitFromLeft3image = digitFromLeft3.getImage();
 
-            digitFromLeft4_x_position = (int) ((int) d.getWidth()/11) +150;
-            digitFromLeft4_y_position = (int) ((int) d.getHeight()/2.2);
+            digitFromLeft4_x_position = (int) ((int) d.getWidth() / 11) + 150;
+            digitFromLeft4_y_position = (int) ((int) d.getHeight() / 2.2);
             ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
             int digitFromLeft4w = digitFromLeft4.getIconWidth();
             int digitFromLeft4h = digitFromLeft4.getIconHeight();
@@ -3148,8 +2355,8 @@ public final class Game_Display extends JPanel{
                     digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
             digitFromLeft4image = digitFromLeft4.getImage();
 
-            digitFromLeft5_x_position = (int) ((int) d.getWidth()/11) +200;
-            digitFromLeft5_y_position = (int) ((int) d.getHeight()/2.2);
+            digitFromLeft5_x_position = (int) ((int) d.getWidth() / 11) + 200;
+            digitFromLeft5_y_position = (int) ((int) d.getHeight() / 2.2);
             ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
             int digitFromLeft5w = digitFromLeft5.getIconWidth();
             int digitFromLeft5h = digitFromLeft5.getIconHeight();
@@ -3157,8 +2364,8 @@ public final class Game_Display extends JPanel{
                     digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
             digitFromLeft5image = digitFromLeft5.getImage();
 
-            digitFromLeft6_x_position = (int) ((int) d.getWidth()/11) +250;
-            digitFromLeft6_y_position = (int) ((int) d.getHeight()/2.2);
+            digitFromLeft6_x_position = (int) ((int) d.getWidth() / 11) + 250;
+            digitFromLeft6_y_position = (int) ((int) d.getHeight() / 2.2);
             ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
             int digitFromLeft6w = digitFromLeft6.getIconWidth();
             int digitFromLeft6h = digitFromLeft6.getIconHeight();
@@ -3169,47 +2376,47 @@ public final class Game_Display extends JPanel{
             g.drawImage(scoreBGR, -10, -18, null);
             repaint();
 
-            if(pulled_rope_1) {
+            if (pulled_rope_1) {
                 ImageIcon r1_icon = new ImageIcon("res/rope1good.png");
                 int r1_iconw = r1_icon.getIconWidth();
                 int r1_iconh = r1_icon.getIconHeight();
-                r1_icon.setImage(r1_icon.getImage().getScaledInstance(r1_iconw-30, r1_iconh-30, Image.SCALE_DEFAULT));
+                r1_icon.setImage(r1_icon.getImage().getScaledInstance(r1_iconw - 30, r1_iconh - 30, Image.SCALE_DEFAULT));
                 r1 = r1_icon.getImage();
-                g.drawImage(r1, digitFromLeft1_x_position-40, digitFromLeft1_y_position+70, this);
+                g.drawImage(r1, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
             }
-            if(pulled_rope_2 == true || (pulled_rope_1 == false && pulled_rope_2 == false && pulled_rope_3 == false)) {
+            if (pulled_rope_2 == true || (pulled_rope_1 == false && pulled_rope_2 == false && pulled_rope_3 == false)) {
                 ImageIcon r2_icon = new ImageIcon("res/rope2bad.png");
                 int r2_iconw = r2_icon.getIconWidth();
                 int r2_iconh = r2_icon.getIconHeight();
-                r2_icon.setImage(r2_icon.getImage().getScaledInstance(r2_iconw-30, r2_iconh-30, Image.SCALE_DEFAULT));
+                r2_icon.setImage(r2_icon.getImage().getScaledInstance(r2_iconw - 30, r2_iconh - 30, Image.SCALE_DEFAULT));
                 r2 = r2_icon.getImage();
-                g.drawImage(r2, digitFromLeft1_x_position-40, digitFromLeft1_y_position+70, this);
+                g.drawImage(r2, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
             }
-            if(pulled_rope_3) {
+            if (pulled_rope_3) {
                 ImageIcon r3_icon = new ImageIcon("res/rope3best.png");
                 int r3_iconw = r3_icon.getIconWidth();
                 int r3_iconh = r3_icon.getIconHeight();
-                r3_icon.setImage(r3_icon.getImage().getScaledInstance(r3_iconw-30, r3_iconh-30, Image.SCALE_DEFAULT));
+                r3_icon.setImage(r3_icon.getImage().getScaledInstance(r3_iconw - 30, r3_iconh - 30, Image.SCALE_DEFAULT));
                 r3 = r3_icon.getImage();
-                g.drawImage(r3, digitFromLeft1_x_position-40, digitFromLeft1_y_position+70, this);
+                g.drawImage(r3, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
             }
 
-            if(hundredThousandsVisible)
+            if (hundredThousandsVisible)
                 g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
-            if(tenThousandsVisible)
+            if (tenThousandsVisible)
                 g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
-            if(thousandsVisible)
+            if (thousandsVisible)
                 g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
-            if(hundredsVisible)
+            if (hundredsVisible)
                 g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
-            if(tensVisible)
+            if (tensVisible)
                 g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
-            if(onesVisible)
+            if (onesVisible)
                 g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
 
             repaint();
 
-            if(nextState != game_state) {
+            if (nextState != game_state) {
                 System.out.println("------ State change from " + game_state + " to " + nextState);
                 game_state = nextState;
                 //super.paintComponent(g);
@@ -3225,7 +2432,7 @@ public final class Game_Display extends JPanel{
                 repaint();
             }
         }
-        if((double)game_state >= 5.1) {
+        if ((double) game_state >= 5.1) {
             // when moving from state 2 straight back to state 2, a workaround, show 2 videos in a row both with sound
             nextState = 2;
             System.out.println("------ State change from " + game_state + " to " + nextState);
@@ -3236,43 +2443,4 @@ public final class Game_Display extends JPanel{
     }
 
 
-    /**
-     * The main method. The program execution starts here.
-     * Hugo Ski Game for Java, PC video game, designed for laptops and desktops.
-     *
-     * Tested with Microsoft Windows 11, 64 bit
-     * Java developed by Oracle / Sun Microsystems
-     * Recommended Java JDK version: 23 (or 17)
-     *
-     * Tuomas T. Hyvönen, 2024, Finland
-     * Apache NetBeans 23, older versions used too when developing
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> { // lambda expression, https://www.w3schools.com/java/java_lambda.asp
-            try {
-                System.out.println("Hugo Skiing " + VERSION + ", GAME SPEED (ms): " + GAMESPEED + ", Finnish voices");
-                f = new JFrame("HUGO - SKIING");
-                f.setIconImage(new ImageIcon("res/favicon_corner.png").getImage());
-                f.setSize(d);
-                f.setMaximumSize(d); // changing the dimension affects how the graphics will show up, do not edit 
-                f.setResizable(false);
-                f.setLocationRelativeTo(null);
-                f.setVisible(true);
-                f.setContentPane(new Game_Display());
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            }
-            catch (Exception e) {
-                f = new JFrame("SOME FILES ARE PROBABLY MISSING OR THEY HAVE BEEN RENAMED OR EDITED");
-                f.setSize(d);
-                f.setLocationRelativeTo(null);
-                f.setVisible(true);
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                System.out.println(e);
-            }
-        }/**
-         * Running the JFrame. 
-         */ );
-    }
-} 
+}
