@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.Manager;
@@ -200,7 +202,7 @@ public final class GameDisplay extends JPanel {
     //  Ending song Commodore64 Hugo rap
     //  Finnish Hugo TV show theme song (1993 Finnish DJ Hugo charity CD tr 1)
     // As the programmer I own nothing. The original creators listed above do not lose money when these tracks are included in this game.
-    // Do not upload valuable video game and TV show musics to YouTube if they have strict copyrights!
+    // Do not upload valuable video games and TV show music to YouTube if they have strict copyrights!
 
     /*
      * E- empty (even though E might not be needed to be read, it is meaningful to show positions)
@@ -464,6 +466,20 @@ public final class GameDisplay extends JPanel {
     private final HugoSkiing hugoSkiing;
 
     /**
+     * The constructor.
+     */
+    public GameDisplay() {
+        setDoubleBuffered(true);
+        hugoSkiing = new HugoSkiing(this);
+        addKeyListener(new GameActionListener(hugoSkiing));
+        constructFrames(gameState);
+        if (videoimg != null) {  // videos should always start at the beginning
+            videoimg.flush();
+            videoimg = null;
+        }
+    }
+
+    /**
      * Game reset call.
      */
     public void reset() {
@@ -618,18 +634,6 @@ public final class GameDisplay extends JPanel {
         currentHazardOrMoney4 = value;
     }
 
-    /**
-     * The constructor.
-     */
-    public GameDisplay() {
-        hugoSkiing = new HugoSkiing(this);
-        addKeyListener(new GameActionListener(hugoSkiing));
-        constructFrames(gameState);
-        if (videoimg != null) {  // videos should always start at the beginning
-            videoimg.flush();
-            videoimg = null;
-        }
-    }
 
     /**
      * Called by the constructor at first, then others can call when needed.
@@ -651,7 +655,6 @@ public final class GameDisplay extends JPanel {
             theVeryFirst_icon.setImage(theVeryFirst_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
             theVeryFirst = theVeryFirst_icon.getImage();
 
-            //addKeyListener(new AL());
             setFocusable(true);
 
         }
@@ -667,7 +670,6 @@ public final class GameDisplay extends JPanel {
                 credits_icon.setImage(credits_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
                 creditsScreen = credits_icon.getImage();
 
-                //addKeyListener(new AL());
                 setFocusable(true);
             } else {
                 ImageIcon title_icon = new ImageIcon("res/title_screen.png");
@@ -676,41 +678,15 @@ public final class GameDisplay extends JPanel {
                 title_icon.setImage(title_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
                 titleScreen = title_icon.getImage();
 
-                //addKeyListener(new AL());
                 setFocusable(true);
             }
         }
         if ((double) gameState > 1.9 && (double) gameState < 2.1) {
-            //addKeyListener(new AL());
+
             setFocusable(true);
             if (!useMP4) {
-
-                String[] soundPaths = {
-                        "res/scylla_intro.aiff",
-                        "res/start_hoplaa.aiff",
-                        "res/scylla_button_press.aiff",
-                        "res/scylla0.aiff",
-                        "res/remember2forKey_intro.aiff",
-                        "res/remember2forKey_win.aiff",
-                        "res/remember2forKey_fail.aiff",
-                        "res/screentalk_finish_line.aiff",
-                        "res/screentalk_heraa_pahvi.aiff",
-                        "res/screentalk_viimeista_viedaan.aiff",
-                        "res/screentalk_game_over.aiff",
-                        "res/scylla1.aiff",
-                        "res/scylla2.aiff",
-                        "res/scylla3.aiff",
-                        "res/loselife_snowman.aiff",
-                        "res/loselife_snowball.aiff",
-                        "res/loselife_bomb.aiff",
-                        "res/loselife_beaver.aiff"
-                };
-                String pathSound = soundPaths[video];
-
-                // Important! Do not change the file names. Any renaming will cause problems.
-
+                String pathSound = getResourceAudioVideo(video, ".aiff");
                 File fi = new File(pathSound); // .aiff is a well-working sound format for the current video setup
-
                 URL mediaURL = null;
                 try {
                     mediaURL = fi.toURL();
@@ -719,16 +695,11 @@ public final class GameDisplay extends JPanel {
                 }
 
                 try {
-                    //mediaPlayer = Manager.createRealizedPlayer(mediaURL);
                     mediaPlayer = Manager.createPlayer(mediaURL);
 
                 } catch (IOException | NoPlayerException ex) {
                     Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
                 }
-                // https://convertio.co/mp4-mov/
-                // https://www.oracle.com/java/technologies/javase/jmf-211-formats.html
-                // https://convertio.co/mp4-mov/
-                // https://www.oracle.com/java/technologies/javase/jmf-211-formats.html
 
                 mediaPlayer.start();
                 System.out.println("Playing sound for a video");
@@ -763,8 +734,6 @@ public final class GameDisplay extends JPanel {
             bg = j.getImage();
 
             setFocusable(true);
-
-            //addKeyListener(new AL());
 
             x = 55;
             y = (int) ((int) d.getHeight() / 2.67);
@@ -1060,8 +1029,6 @@ public final class GameDisplay extends JPanel {
 
         }
         if ((double) gameState > 4.9 && (double) gameState < 5.1) {
-
-            //addKeyListener(new Game_Display.AL());// keyboard listener but do not uncomment these, should be called only once
             setFocusable(true);
 
             ImageIcon scoreBG = new ImageIcon("res/title_screen_nothing.png");
@@ -1077,11 +1044,6 @@ public final class GameDisplay extends JPanel {
             int starh = staricon.getIconHeight();
             staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
             star = staricon.getImage();
-
-            if (videoimg != null) {
-                videoimg.flush();
-                videoimg = null;
-            }
         }
 
         if (videoimg != null) {  // videos should always start at the beginning
@@ -1141,29 +1103,7 @@ public final class GameDisplay extends JPanel {
             super.paintComponent(g);
 
             if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
-
-                String[] mp4Files = {
-                        "res/scylla_intro.mp4",
-                        "res/start_hoplaa.mp4",
-                        "res/scylla_button_press.mp4",
-                        "res/scylla0.mp4",
-                        "res/remember2forKey_intro.mp4",
-                        "res/remember2forKey_win.mp4",
-                        "res/remember2forKey_fail.mp4",
-                        "res/screentalk_finish_line.mp4",
-                        "res/screentalk_heraa_pahvi.mp4",
-                        "res/screentalk_viimeista_viedaan.mp4",
-                        "res/screentalk_game_over.mp4",
-                        "res/scylla1.mp4",
-                        "res/scylla2.mp4",
-                        "res/scylla3.mp4",
-                        "res/loselife_snowman.mp4",
-                        "res/loselife_snowball.mp4",
-                        "res/loselife_bomb.mp4",
-                        "res/loselife_beaver.mp4"
-                };
-
-                String pathMP4 = mp4Files[video];
+                String pathMP4 = getResourceAudioVideo(video, ".mp4");
 
                 File video_source = new File(pathMP4);
                 try {
@@ -1173,27 +1113,7 @@ public final class GameDisplay extends JPanel {
                 }
 
             } else {
-                String[] gifPaths = {
-                        "res/scylla_intro_s.gif",
-                        "res/start_hoplaa_s.gif",
-                        "res/scylla_button_press_s.gif",
-                        "res/scylla0_s.gif",
-                        "res/remember2forKey_intro_s.gif",
-                        "res/remember2forKey_win_s.gif",
-                        "res/remember2forKey_fail_s.gif",
-                        "res/screentalk_finish_line_s.gif",
-                        "res/screentalk_heraa_pahvi_s.gif",
-                        "res/screentalk_viimeista_viedaan_s.gif",
-                        "res/screentalk_game_over_s.gif",
-                        "res/scylla1_s.gif",
-                        "res/scylla2_s.gif",
-                        "res/scylla3_s.gif",
-                        "res/loselife_snowman_s.gif",
-                        "res/loselife_snowball_s.gif",
-                        "res/loselife_bomb_s.gif",
-                        "res/loselife_beaver_s.gif"
-                }; // Important! Do not change the file names.
-                String pathGif = gifPaths[video];
+                String pathGif = getResourceAudioVideo(video, "_s.gif");
 
                 videoIMGicon = new ImageIcon(pathGif);
                 super.paintComponent(g);
@@ -1438,83 +1358,23 @@ public final class GameDisplay extends JPanel {
             g.drawImage(possibleTree7, possibleTree7_x_position, possibleTree7_y_position, this);
             g.drawImage(possibleTree8, possibleTree8_x_position, possibleTree8_y_position, this);
 
-            String path_of_hazard_1 = "";
-            String path_of_hazard_2 = "";
-            String path_of_hazard_3 = "";
-            String path_of_hazard_4 = "";
-            if (currentHazardOrMoney1.equals("E") || currentHazardOrMoney1.equals("S") || currentHazardOrMoney1.equals("F")) {
-                currentHazardOrMoney1_image = null;
-            }
-            if (currentHazardOrMoney2.equals("E") || currentHazardOrMoney2.equals("S") || currentHazardOrMoney2.equals("F")) {
-                currentHazardOrMoney2_image = null;
-            }
-            if (currentHazardOrMoney3.equals("E") || currentHazardOrMoney3.equals("S") || currentHazardOrMoney3.equals("F")) {
-                currentHazardOrMoney3_image = null;
-            }
-            if (currentHazardOrMoney4.equals("E") || currentHazardOrMoney4.equals("S") || currentHazardOrMoney4.equals("F")) {
-                currentHazardOrMoney4_image = null;
-            }
+            Set<String> ignored = Set.of("E", "S", "F");
+            if (ignored.contains(currentHazardOrMoney1)) currentHazardOrMoney1_image = null;
+            if (ignored.contains(currentHazardOrMoney2)) currentHazardOrMoney2_image = null;
+            if (ignored.contains(currentHazardOrMoney3)) currentHazardOrMoney3_image = null;
+            if (ignored.contains(currentHazardOrMoney4)) currentHazardOrMoney4_image = null;
 
-            if (currentHazardOrMoney1.equals("M")) {
-                path_of_hazard_1 = "res/money.png";
-            }
-            if (currentHazardOrMoney1.equals("8")) {
-                path_of_hazard_1 = "res/enemy_snowman.png";
-            }
-            if (currentHazardOrMoney1.equals("o")) {
-                path_of_hazard_1 = "res/enemy_snowball.png";
-            }
-            if (currentHazardOrMoney1.equals("Q")) {
-                path_of_hazard_1 = "res/enemy_bomb.png";
-            }
-            if (currentHazardOrMoney1.equals("B")) {
-                path_of_hazard_1 = "res/enemy_beaver_masi.png";
-            }
-            if (currentHazardOrMoney2.equals("M")) {
-                path_of_hazard_2 = "res/money.png";
-            }
-            if (currentHazardOrMoney2.equals("8")) {
-                path_of_hazard_2 = "res/enemy_snowman.png";
-            }
-            if (currentHazardOrMoney2.equals("o")) {
-                path_of_hazard_2 = "res/enemy_snowball.png";
-            }
-            if (currentHazardOrMoney2.equals("Q")) {
-                path_of_hazard_2 = "res/enemy_bomb.png";
-            }
-            if (currentHazardOrMoney2.equals("B")) {
-                path_of_hazard_2 = "res/enemy_beaver_masi.png";
-            }
-            if (currentHazardOrMoney3.equals("M")) {
-                path_of_hazard_3 = "res/money.png";
-            }
-            if (currentHazardOrMoney3.equals("8")) {
-                path_of_hazard_3 = "res/enemy_snowman.png";
-            }
-            if (currentHazardOrMoney3.equals("o")) {
-                path_of_hazard_3 = "res/enemy_snowball.png";
-            }
-            if (currentHazardOrMoney3.equals("Q")) {
-                path_of_hazard_3 = "res/enemy_bomb.png";
-            }
-            if (currentHazardOrMoney3.equals("B")) {
-                path_of_hazard_3 = "res/enemy_beaver_masi.png";
-            }
-            if (currentHazardOrMoney4.equals("M")) {
-                path_of_hazard_4 = "res/money.png";
-            }
-            if (currentHazardOrMoney4.equals("8")) {
-                path_of_hazard_4 = "res/enemy_snowman.png";
-            }
-            if (currentHazardOrMoney4.equals("o")) {
-                path_of_hazard_4 = "res/enemy_snowball.png";
-            }
-            if (currentHazardOrMoney4.equals("Q")) {
-                path_of_hazard_4 = "res/enemy_bomb.png";
-            }
-            if (currentHazardOrMoney4.equals("B")) {
-                path_of_hazard_4 = "res/enemy_beaver_masi.png";
-            }
+            Map<String, String> hazardPaths = Map.of(
+                    "M", "res/money.png",
+                    "8", "res/enemy_snowman.png",
+                    "o", "res/enemy_snowball.png",
+                    "Q", "res/enemy_bomb.png",
+                    "B", "res/enemy_beaver_masi.png"
+            );
+            String path_of_hazard_1 = hazardPaths.getOrDefault(currentHazardOrMoney1, "");
+            String path_of_hazard_2 = hazardPaths.getOrDefault(currentHazardOrMoney2, "");
+            String path_of_hazard_3 = hazardPaths.getOrDefault(currentHazardOrMoney3, "");
+            String path_of_hazard_4 = hazardPaths.getOrDefault(currentHazardOrMoney4, "");
             if (currentHazardOrMoney1.equals("1")) {
                 path_of_hazard_2 = "";
                 currentHazardOrMoney2_image = null;
@@ -1522,24 +1382,19 @@ public final class GameDisplay extends JPanel {
                 currentHazardOrMoney3_image = null;
                 path_of_hazard_4 = "";
                 currentHazardOrMoney4_image = null;
+                Map<Character, String> hazardMap = Map.of(
+                        'A', "res/remember_A_asterisk.png",
+                        'B', "res/remember_B_bell.png",
+                        'C', "res/remember_C_clock.png",
+                        'D', "res/remember_D_diamond.png",
+                        'H', "res/remember_H_hash.png",
+                        'S', "res/remember_S_star.png"
+                );
+
                 for (int i = 0; i < 3; i++) {
-                    if (thingsToRemember.charAt(i) == 'A') {
-                        path_of_hazard_1 = "res/remember_A_asterisk.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'B') {
-                        path_of_hazard_1 = "res/remember_B_bell.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'C') {
-                        path_of_hazard_1 = "res/remember_C_clock.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'D') {
-                        path_of_hazard_1 = "res/remember_D_diamond.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'H') {
-                        path_of_hazard_1 = "res/remember_H_hash.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'S') {
-                        path_of_hazard_1 = "res/remember_S_star.png";
+                    char c = thingsToRemember.charAt(i);
+                    if (hazardMap.containsKey(c)) {
+                        path_of_hazard_1 = hazardMap.get(c);
                     }
                 }
             }
@@ -1574,52 +1429,36 @@ public final class GameDisplay extends JPanel {
             // file names should remain exactly original
 
             if (!"".equals(path_of_hazard_1)) {
-                //currentHazardOrMoney1_x_position = (int) ((int) d.getWidth()/15);
-                //currentHazardOrMoney1_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_1 = new ImageIcon(path_of_hazard_1);
-                //currentHazardOrMoney1w = currentHazardOrMoney1.getIconWidth();
-                //currentHazardOrMoney1h = currentHazardOrMoney1.getIconHeight();
                 currentHazardOrMoney_1.setImage(currentHazardOrMoney_1.getImage()
                         .getScaledInstance(currentHazardOrMoney1w, currentHazardOrMoney1h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney1_image = currentHazardOrMoney_1.getImage();
             }
             if (!"".equals(path_of_hazard_2)) {
-                //currentHazardOrMoney2_x_position = (int) ((int) d.getWidth()/15)+130;
-                //currentHazardOrMoney2_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_2 = new ImageIcon(path_of_hazard_2);
-                //currentHazardOrMoney2w = currentHazardOrMoney2.getIconWidth();
-                //currentHazardOrMoney2h = currentHazardOrMoney2.getIconHeight();
                 currentHazardOrMoney_2.setImage(currentHazardOrMoney_2.getImage()
                         .getScaledInstance(currentHazardOrMoney2w, currentHazardOrMoney2h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney2_image = currentHazardOrMoney_2.getImage();
             }
             if (!"".equals(path_of_hazard_3)) {
-                //currentHazardOrMoney3_x_position = (int) ((int) d.getWidth()/15)+250;
-                //currentHazardOrMoney3_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_3 = new ImageIcon(path_of_hazard_3);
-                //currentHazardOrMoney3w = currentHazardOrMoney3.getIconWidth();
-                //currentHazardOrMoney3h = currentHazardOrMoney3.getIconHeight();
                 currentHazardOrMoney_3.setImage(currentHazardOrMoney_3.getImage()
                         .getScaledInstance(currentHazardOrMoney3w, currentHazardOrMoney3h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney3_image = currentHazardOrMoney_3.getImage();
             }
             if (!"".equals(path_of_hazard_4)) {
-                //currentHazardOrMoney4_x_position = (int) ((int) d.getWidth()/15)+395;
-                //currentHazardOrMoney4_y_position = (int) ((int) d.getHeight()/3);
                 ImageIcon currentHazardOrMoney_4 = new ImageIcon(path_of_hazard_4);
-                //currentHazardOrMoney4w = currentHazardOrMoney4.getIconWidth();
-                //currentHazardOrMoney4h = currentHazardOrMoney4.getIconHeight();
                 currentHazardOrMoney_4.setImage(currentHazardOrMoney_4.getImage()
                         .getScaledInstance(currentHazardOrMoney4w, currentHazardOrMoney4h, Image.SCALE_DEFAULT));
                 currentHazardOrMoney4_image = currentHazardOrMoney_4.getImage();
             }
 
-            String onesToDraw_path = "res/numbers" + String.valueOf(ones) + ".png";
-            String tensToDraw_path = "res/numbers" + String.valueOf(tens) + ".png";
-            String hundredsToDraw_path = "res/numbers" + String.valueOf(hundreds) + ".png";
-            String thousandsToDraw_path = "res/numbers" + String.valueOf(thousands) + ".png";
-            String tenThousandsToDraw_path = "res/numbers" + String.valueOf(tenThousands) + ".png";
-            String hundredThousandsToDraw_path = "res/numbers" + String.valueOf(hundredThousands) + ".png";
+            String onesToDraw_path = "res/numbers" + (ones) + ".png";
+            String tensToDraw_path = "res/numbers" + (tens) + ".png";
+            String hundredsToDraw_path = "res/numbers" + (hundreds) + ".png";
+            String thousandsToDraw_path = "res/numbers" + (thousands) + ".png";
+            String tenThousandsToDraw_path = "res/numbers" + (tenThousands) + ".png";
+            String hundredThousandsToDraw_path = "res/numbers" + (hundredThousands) + ".png";
 
             digitFromLeft1_x_position = (int) ((int) d.getWidth() / 2);
             digitFromLeft1_y_position = (int) ((int) d.getHeight() / 1.27);
@@ -2026,29 +1865,15 @@ public final class GameDisplay extends JPanel {
                 g.drawImage(u3b, u3b_x_position, u3b_y_position, this);
             }
 
+            Set<Character> allowedChars = Set.of('A', 'B', 'C', 'D', 'H', 'S');
             if (secondPhase && currentlyAllCorrect) {
-                if (thingsToRemember.charAt(0) == 'A' || // if caps, correct
-                        thingsToRemember.charAt(0) == 'B' ||
-                        thingsToRemember.charAt(0) == 'C' ||
-                        thingsToRemember.charAt(0) == 'D' ||
-                        thingsToRemember.charAt(0) == 'H' ||
-                        thingsToRemember.charAt(0) == 'S') {
+                if (allowedChars.contains(thingsToRemember.charAt(0))) {
                     g.drawImage(u1w, u1b_x_position, u1b_y_position, this);
                 }
-                if (thingsToRemember.charAt(1) == 'A' ||
-                        thingsToRemember.charAt(1) == 'B' ||
-                        thingsToRemember.charAt(1) == 'C' ||
-                        thingsToRemember.charAt(1) == 'D' ||
-                        thingsToRemember.charAt(1) == 'H' ||
-                        thingsToRemember.charAt(1) == 'S') {
+                if (allowedChars.contains(thingsToRemember.charAt(1))) {
                     g.drawImage(u2w, u2b_x_position, u2b_y_position, this);
                 }
-                if (thingsToRemember.charAt(2) == 'A' ||
-                        thingsToRemember.charAt(2) == 'B' ||
-                        thingsToRemember.charAt(2) == 'C' ||
-                        thingsToRemember.charAt(2) == 'D' ||
-                        thingsToRemember.charAt(2) == 'H' ||
-                        thingsToRemember.charAt(2) == 'S') {
+                if (allowedChars.contains(thingsToRemember.charAt(2))) {
                     g.drawImage(u3w, u3b_x_position, u3b_y_position, this);
                 }
 
@@ -2057,28 +1882,13 @@ public final class GameDisplay extends JPanel {
                 g.drawImage(d3b, d3b_x_position, d3b_y_position, this);
 
                 if (allCorrectInTheEnd) {
-                    if (thingsToRemember.charAt(3) == 'A' || // if caps, correct
-                            thingsToRemember.charAt(3) == 'B' ||
-                            thingsToRemember.charAt(3) == 'C' ||
-                            thingsToRemember.charAt(3) == 'D' ||
-                            thingsToRemember.charAt(3) == 'H' ||
-                            thingsToRemember.charAt(3) == 'S') {
+                    if (allowedChars.contains(thingsToRemember.charAt(3))) {
                         g.drawImage(d1w, d1b_x_position, d1b_y_position, this);
                     }
-                    if (thingsToRemember.charAt(4) == 'A' ||
-                            thingsToRemember.charAt(4) == 'B' ||
-                            thingsToRemember.charAt(4) == 'C' ||
-                            thingsToRemember.charAt(4) == 'D' ||
-                            thingsToRemember.charAt(4) == 'H' ||
-                            thingsToRemember.charAt(4) == 'S') {
+                    if (allowedChars.contains(thingsToRemember.charAt(4))) {
                         g.drawImage(d2w, d2b_x_position, d2b_y_position, this);
                     }
-                    if (thingsToRemember.charAt(5) == 'A' ||
-                            thingsToRemember.charAt(5) == 'B' ||
-                            thingsToRemember.charAt(5) == 'C' ||
-                            thingsToRemember.charAt(5) == 'D' ||
-                            thingsToRemember.charAt(5) == 'H' ||
-                            thingsToRemember.charAt(5) == 'S') {
+                    if (allowedChars.contains(thingsToRemember.charAt(5))) {
                         g.drawImage(d3w, d3b_x_position, d3b_y_position, this);
                     }
                     video = 5;
@@ -2094,7 +1904,6 @@ public final class GameDisplay extends JPanel {
             if (nextState != gameState) {
                 System.out.println("------ State change from " + gameState + " to " + nextState);
                 gameState = nextState;
-                //super.paintComponent(g);
                 constructFrames(gameState);
                 repaint();
             }
@@ -2117,12 +1926,12 @@ public final class GameDisplay extends JPanel {
             key2 = false;
             key1 = false;
 
-            String onesToDraw_path = "res/numbers" + String.valueOf(ones) + ".png";
-            String tensToDraw_path = "res/numbers" + String.valueOf(tens) + ".png";
-            String hundredsToDraw_path = "res/numbers" + String.valueOf(hundreds) + ".png";
-            String thousandsToDraw_path = "res/numbers" + String.valueOf(thousands) + ".png";
-            String tenThousandsToDraw_path = "res/numbers" + String.valueOf(tenThousands) + ".png";
-            String hundredThousandsToDraw_path = "res/numbers" + String.valueOf(hundredThousands) + ".png";
+            String onesToDraw_path = "res/numbers" + ones + ".png";
+            String tensToDraw_path = "res/numbers" + tens + ".png";
+            String hundredsToDraw_path = "res/numbers" + hundreds + ".png";
+            String thousandsToDraw_path = "res/numbers" + thousands + ".png";
+            String tenThousandsToDraw_path = "res/numbers" + tenThousands + ".png";
+            String hundredThousandsToDraw_path = "res/numbers" + hundredThousands + ".png";
 
             digitFromLeft1_x_position = (int) ((int) d.getWidth() / 11);
             digitFromLeft1_y_position = (int) ((int) d.getHeight() / 2.2);
@@ -2257,7 +2066,7 @@ public final class GameDisplay extends JPanel {
         thousandsVisible = false;
         tenThousandsVisible = false;
         hundredThousandsVisible = false;
-        number_of_lives = 4; // amount of lives
+        number_of_lives = 4; // number of lives
         currentlyAllCorrect = true; // even though 0 guesses
         secondPhase = false;
         allCorrectInTheEnd = false;
@@ -2270,5 +2079,27 @@ public final class GameDisplay extends JPanel {
         setThousands(9);
         setTenThousands(9);
         setHundredThousands(9);
+    }
+
+    private String [] files = {"res/scylla_intro",
+            "res/start_hoplaa",
+            "res/scylla_button_press",
+            "res/scylla0",
+            "res/remember2forKey_intro",
+            "res/remember2forKey_win",
+            "res/remember2forKey_fail",
+            "res/screentalk_finish_line",
+            "res/screentalk_heraa_pahvi",
+            "res/screentalk_viimeista_viedaan",
+            "res/screentalk_game_over",
+            "res/scylla1",
+            "res/scylla2",
+            "res/scylla3",
+            "res/loselife_snowman",
+            "res/loselife_snowball",
+            "res/loselife_bomb",
+            "res/loselife_beaver"};
+    private String getResourceAudioVideo(int index, String extension) {
+        return files[index].concat(extension);
     }
 }
