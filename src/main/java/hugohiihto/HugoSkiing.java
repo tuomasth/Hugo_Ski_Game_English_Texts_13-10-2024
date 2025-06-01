@@ -69,7 +69,7 @@ import java.util.TimerTask;
  * <p>
  * ----
  * <p>
- * Some Hugo creators not involved in this project, thanks for each one of them!
+ * Some Hugo creators are not involved in this project, thanks for each one of them!
  * Consider this as "the real credits screen":
  * <p>
  * https://screentroll.fandom.com/wiki/Hugo_(PlayStation)
@@ -130,33 +130,29 @@ import java.util.TimerTask;
  * @version 1.1.ENG
  */
 public class HugoSkiing {
-    static HugoSkiing hugoHiihto = null;
-    static TimerTask timerTask;
+    TimerTask timerTask;
+    private GameDisplay gameDisplay;
     String[] haz = null;
     String rem = null;
-    static boolean gameOver = true;
-    static boolean hasAchievedMaxScore = false;
-    static int currentStateAtTheLevel = -5; // -5   So the game does not start with a surprise attack.
-    static int theFurthestThePlayerHasGot = -4; // -4   (-5 +1)   This is necessary because of the pause feature.
-    static boolean tic = true;
+    boolean gameOver = true;
+    boolean hasAchievedMaxScore = false;
+    int currentStateAtTheLevel = -5; // -5   So the game does not start with a surprise attack.
+    int theFurthestThePlayerHasGot = -4; // -4   (-5 +1)   This is necessary because of the pause feature.
+    boolean tic = true;
     // There is no clear logic in what class file the variables should belong to, there are only 2 Java classes used anyway.
 
     /**
      * The constructor.
      */
-    public HugoSkiing() {
+    public HugoSkiing(GameDisplay gameDisplay) {
+        this.gameDisplay = gameDisplay;
+        this.gameDisplay.leftWind = (boolean) (Math.random() < 0.5);
         haz = giveStageHazards();
         rem = giveThingsToRemember();
-        GameDisplay.leftWind = (boolean) (Math.random() < 0.5);
     }
 
-    /**
-     * Getter for a game instance.
-     *
-     * @return HugoHiihto
-     */
-    public HugoSkiing getGame() {
-        return this;
+    public GameDisplay getGameDisplay() {
+        return gameDisplay;
     }
 
     /**
@@ -166,42 +162,20 @@ public class HugoSkiing {
      *
      * @param gameSpeed
      */
-    public static void gameReset(int gameSpeed) {
+    public void gameReset(int gameSpeed) {
         if (gameSpeed > 1000 && gameSpeed < 3000 && gameOver) {
             System.out.println("Game reset called");
             gameSpeed = GameDisplay.GAMESPEED;
             System.gc(); // run Java garbage collector
-            GameDisplay.currentGrid = 0;
-            GameDisplay.pulled_rope_1 = false;
-            GameDisplay.pulled_rope_2 = false;
-            GameDisplay.pulled_rope_3 = false;
             gameOver = false;
-            GameDisplay.ones = 0;   // score digits (6)
-            GameDisplay.tens = 0;
-            GameDisplay.hundreds = 0;
-            GameDisplay.thousands = 0;
-            GameDisplay.tenThousands = 0;
-            GameDisplay.hundredThousands = 0;
-            GameDisplay.onesVisible = true;
-            GameDisplay.tensVisible = false;
-            GameDisplay.hundredsVisible = false;
-            GameDisplay.thousandsVisible = false;
-            GameDisplay.tenThousandsVisible = false;
-            GameDisplay.hundredThousandsVisible = false;
-            GameDisplay.number_of_lives = 4; // amount of lives
-            HugoSkiing.currentStateAtTheLevel = -5;
-            HugoSkiing.hasAchievedMaxScore = false;
-            HugoSkiing.theFurthestThePlayerHasGot = -4;
-            GameDisplay.currentlyAllCorrect = true; // even though 0 guesses
-            GameDisplay.secondPhase = false;
-            GameDisplay.allCorrectInTheEnd = false;
+            gameDisplay.gameReset();
 
-            if (hugoHiihto == null) {
-                hugoHiihto = new HugoSkiing();
-            }
+            currentStateAtTheLevel = -5;
+            hasAchievedMaxScore = false;
+            theFurthestThePlayerHasGot = -4;
 
-            GameDisplay.thingsToRemember = hugoHiihto.getREM();
-            timerTask = new GameLoop(hugoHiihto);  // Gameloop handles the stage hazards with time tasks and
+            gameDisplay.thingsToRemember = this.getREM();
+            timerTask = new GameLoop(this, gameDisplay);  // Game loop handles the stage hazards with time tasks and
             java.util.Timer ti = new java.util.Timer(true);   // processes them, different than the game display itself.
             ti.scheduleAtFixedRate(timerTask, 0, gameSpeed);  // For example, 1800 = 1.8 sec (affects the game speed, not graphics)
         } else {
@@ -227,7 +201,7 @@ public class HugoSkiing {
      * @param max_that_does_not_count
      * @return int
      */
-    public static int getRandom(int min, int max_that_does_not_count) {
+    public int getRandom(int min, int max_that_does_not_count) {
         int random = (int) ((Math.random() * (max_that_does_not_count - min)) + min);
         return random; // max_that_does_not_count if zero counts
     }
@@ -239,7 +213,7 @@ public class HugoSkiing {
      *
      * @return int[]
      */
-    public static int[] createStageHazards() {
+    public int[] createStageHazards() {
         int[] hazards = new int[71];
         /*
          * E- empty
@@ -311,7 +285,7 @@ public class HugoSkiing {
      *
      * @return String[]
      */
-    public static String[] giveStageHazards() {
+    public String[] giveStageHazards() {
         String[] s = new String[71];
         int haz[] = createStageHazards();
 
@@ -388,7 +362,7 @@ public class HugoSkiing {
         // "memory game"
         // 3 ropes
         s[39] = "SSSS";
-        if (GameDisplay.cheatBackflip180) {
+        if (gameDisplay.cheatBackflip180) {
             for (int i = 0; i < 1; i++) {
                 s[i] = "SSSS";
             }
@@ -422,7 +396,7 @@ public class HugoSkiing {
      *
      * @return int
      */
-    public static int generateIntToRemember() {
+    public int generateIntToRemember() {
         /*
          * 1 = asterisk & bell
          * 2 = asterisk & clock
@@ -463,11 +437,11 @@ public class HugoSkiing {
     }
 
     /**
-     * Give the 2 items to remember in order to get the skull cave key at the end.
+     * Give the 2 items to remember to get the skull cave key at the end.
      *
      * @return String
      */
-    public static String giveThingsToRemember() {
+    public String giveThingsToRemember() {
         int problem = generateIntToRemember();
         boolean[][] problem2array = new boolean[3][3];
         // asterisk a, bell b, clock c, diamond d, hashtag h, star s
@@ -543,22 +517,17 @@ public class HugoSkiing {
      *
      * @param whatWillBeIncreased
      */
-    public static void increaseScoreOnes(int whatWillBeIncreased) {
-        GameDisplay.onesVisible = true;
+    public void increaseScoreOnes(int whatWillBeIncreased) {
+        gameDisplay.onesVisible = true;
         if ((whatWillBeIncreased < 9) && (whatWillBeIncreased > -1) && (!hasAchievedMaxScore)) {
             whatWillBeIncreased++;
-            GameDisplay.setOnes(whatWillBeIncreased);
+            gameDisplay.setOnes(whatWillBeIncreased);
         } else {
-            increaseScoreTens(GameDisplay.tens);
-            GameDisplay.setOnes(0);
+            increaseScoreTens(gameDisplay.tens);
+            gameDisplay.setOnes(0);
         }
         if (hasAchievedMaxScore) {
-            GameDisplay.setOnes(9);
-            GameDisplay.setTens(9);
-            GameDisplay.setHundreds(9);
-            GameDisplay.setThousands(9);
-            GameDisplay.setTenThousands(9);
-            GameDisplay.setHundredThousands(9);
+            gameDisplay.setMaxScore();
         }
     }
 
@@ -567,23 +536,18 @@ public class HugoSkiing {
      *
      * @param whatWillBeIncreased
      */
-    public static void increaseScoreTens(int whatWillBeIncreased) {
-        GameDisplay.onesVisible = true;
-        GameDisplay.tensVisible = true;
+    public void increaseScoreTens(int whatWillBeIncreased) {
+        gameDisplay.onesVisible = true;
+        gameDisplay.tensVisible = true;
         if ((whatWillBeIncreased < 9) && (whatWillBeIncreased > -1) && (!hasAchievedMaxScore)) {
             whatWillBeIncreased++;
-            GameDisplay.setTens(whatWillBeIncreased);
+            gameDisplay.setTens(whatWillBeIncreased);
         } else {
-            increaseScoreHundreds(GameDisplay.hundreds);
-            GameDisplay.setTens(0);
+            increaseScoreHundreds(gameDisplay.hundreds);
+            gameDisplay.setTens(0);
         }
         if (hasAchievedMaxScore) {
-            GameDisplay.setOnes(9);
-            GameDisplay.setTens(9);
-            GameDisplay.setHundreds(9);
-            GameDisplay.setThousands(9);
-            GameDisplay.setTenThousands(9);
-            GameDisplay.setHundredThousands(9);
+            gameDisplay.setMaxScore();
         }
     }
 
@@ -592,24 +556,19 @@ public class HugoSkiing {
      *
      * @param whatWillBeIncreased
      */
-    public static void increaseScoreHundreds(int whatWillBeIncreased) {
-        GameDisplay.onesVisible = true;
-        GameDisplay.tensVisible = true;
-        GameDisplay.hundredsVisible = true;
+    public void increaseScoreHundreds(int whatWillBeIncreased) {
+        gameDisplay.onesVisible = true;
+        gameDisplay.tensVisible = true;
+        gameDisplay.hundredsVisible = true;
         if ((whatWillBeIncreased < 9) && (whatWillBeIncreased > -1) && (!hasAchievedMaxScore)) {
             whatWillBeIncreased++;
-            GameDisplay.setHundreds(whatWillBeIncreased);
+            gameDisplay.setHundreds(whatWillBeIncreased);
         } else {
-            increaseScoreThousands(GameDisplay.thousands);
-            GameDisplay.setHundreds(0);
+            increaseScoreThousands(gameDisplay.thousands);
+            gameDisplay.setHundreds(0);
         }
         if (hasAchievedMaxScore) {
-            GameDisplay.setOnes(9);
-            GameDisplay.setTens(9);
-            GameDisplay.setHundreds(9);
-            GameDisplay.setThousands(9);
-            GameDisplay.setTenThousands(9);
-            GameDisplay.setHundredThousands(9);
+            gameDisplay.setMaxScore();
         }
     }
 
@@ -618,25 +577,20 @@ public class HugoSkiing {
      *
      * @param whatWillBeIncreased
      */
-    public static void increaseScoreThousands(int whatWillBeIncreased) {
-        GameDisplay.onesVisible = true;
-        GameDisplay.tensVisible = true;
-        GameDisplay.hundredsVisible = true;
-        GameDisplay.thousandsVisible = true;
+    public void increaseScoreThousands(int whatWillBeIncreased) {
+        gameDisplay.onesVisible = true;
+        gameDisplay.tensVisible = true;
+        gameDisplay.hundredsVisible = true;
+        gameDisplay.thousandsVisible = true;
         if ((whatWillBeIncreased < 9) && (whatWillBeIncreased > -1) && (!hasAchievedMaxScore)) {
             whatWillBeIncreased++;
-            GameDisplay.setThousands(whatWillBeIncreased);
+            gameDisplay.setThousands(whatWillBeIncreased);
         } else {
-            increaseScoreTenThousands(GameDisplay.tenThousands);
-            GameDisplay.setThousands(0);
+            increaseScoreTenThousands(gameDisplay.tenThousands);
+            gameDisplay.setThousands(0);
         }
         if (hasAchievedMaxScore) {
-            GameDisplay.setOnes(9);
-            GameDisplay.setTens(9);
-            GameDisplay.setHundreds(9);
-            GameDisplay.setThousands(9);
-            GameDisplay.setTenThousands(9);
-            GameDisplay.setHundredThousands(9);
+            gameDisplay.setMaxScore();
         }
     }
 
@@ -645,26 +599,21 @@ public class HugoSkiing {
      *
      * @param whatWillBeIncreased
      */
-    public static void increaseScoreTenThousands(int whatWillBeIncreased) {
-        GameDisplay.onesVisible = true;
-        GameDisplay.tensVisible = true;
-        GameDisplay.hundredsVisible = true;
-        GameDisplay.thousandsVisible = true;
-        GameDisplay.tenThousandsVisible = true;
+    public void increaseScoreTenThousands(int whatWillBeIncreased) {
+        gameDisplay.onesVisible = true;
+        gameDisplay.tensVisible = true;
+        gameDisplay.hundredsVisible = true;
+        gameDisplay.thousandsVisible = true;
+        gameDisplay.tenThousandsVisible = true;
         if ((whatWillBeIncreased < 9) && (whatWillBeIncreased > -1) && (!hasAchievedMaxScore)) {
             whatWillBeIncreased++;
-            GameDisplay.setTenThousands(whatWillBeIncreased);
+            gameDisplay.setTenThousands(whatWillBeIncreased);
         } else {
-            increaseScoreHundredThousands(GameDisplay.hundredThousands);
-            GameDisplay.setTenThousands(0);
+            increaseScoreHundredThousands(gameDisplay.hundredThousands);
+            gameDisplay.setTenThousands(0);
         }
         if (hasAchievedMaxScore) {
-            GameDisplay.setOnes(9);
-            GameDisplay.setTens(9);
-            GameDisplay.setHundreds(9);
-            GameDisplay.setThousands(9);
-            GameDisplay.setTenThousands(9);
-            GameDisplay.setHundredThousands(9);
+            gameDisplay.setMaxScore();
         }
     }
 
@@ -673,38 +622,33 @@ public class HugoSkiing {
      *
      * @param whatWillBeIncreased
      */
-    public static void increaseScoreHundredThousands(int whatWillBeIncreased) {
-        GameDisplay.onesVisible = true;
-        GameDisplay.tensVisible = true;
-        GameDisplay.hundredsVisible = true;
-        GameDisplay.thousandsVisible = true;
-        GameDisplay.tenThousandsVisible = true;
-        GameDisplay.hundredThousandsVisible = true;
+    public void increaseScoreHundredThousands(int whatWillBeIncreased) {
+        gameDisplay.onesVisible = true;
+        gameDisplay.tensVisible = true;
+        gameDisplay.hundredsVisible = true;
+        gameDisplay.thousandsVisible = true;
+        gameDisplay.tenThousandsVisible = true;
+        gameDisplay.hundredThousandsVisible = true;
         if ((whatWillBeIncreased < 9) && (whatWillBeIncreased > -1) && (!hasAchievedMaxScore)) {
             whatWillBeIncreased++;
-            GameDisplay.setHundredThousands(whatWillBeIncreased);
+            gameDisplay.setHundredThousands(whatWillBeIncreased);
         } else {
             hasAchievedMaxScore = true; // trying to increase when it's already 9
             System.out.println("THE PLAYER GOT A MILLION POINTS");
         }
         if (hasAchievedMaxScore) {
-            GameDisplay.setOnes(9);
-            GameDisplay.setTens(9);
-            GameDisplay.setHundreds(9);
-            GameDisplay.setThousands(9);
-            GameDisplay.setTenThousands(9);
-            GameDisplay.setHundredThousands(9);
+            gameDisplay.setMaxScore();
         }
     }
 
 
     /**
-     * Decreases lives by 1, call when hitting an enemy (4 possible enemies).
+     * Decreases lives by 1 call when hitting an enemy (4 possible enemies).
      *
      * @param lives
      */
-    public static void decreaseLives(int lives) {
+    public void decreaseLives(int lives) {
         lives--;
-        GameDisplay.setLives(lives);
+        gameDisplay.setLives(lives);
     }
 }

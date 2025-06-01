@@ -2,7 +2,11 @@ package hugohiihto;
 
 import javax.swing.*;
 
+import static hugohiihto.GameDisplay.GAMESPEED;
+import static hugohiihto.GameDisplay.VERSION;
+
 public class Main {
+
     /**
      * The main method. The program execution starts here.
      * Hugo Ski Game for Java, PC video game, designed for laptops and desktops.
@@ -19,22 +23,22 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> { // lambda expression, https://www.w3schools.com/java/java_lambda.asp
             try {
-                System.out.println("Hugo Skiing " + GameDisplay.VERSION + ", GAME SPEED (ms): " + GameDisplay.GAMESPEED + ", Finnish voices");
-                GameDisplay.f = new JFrame("HUGO - SKIING");
-                GameDisplay.f.setIconImage(new ImageIcon("res/favicon_corner.png").getImage());
-                GameDisplay.f.setSize(GameDisplay.d);
-                GameDisplay.f.setMaximumSize(GameDisplay.d); // changing the dimension affects how the graphics will show up, do not edit
-                GameDisplay.f.setResizable(false);
-                GameDisplay.f.setLocationRelativeTo(null);
-                GameDisplay.f.setVisible(true);
-                GameDisplay.f.setContentPane(new GameDisplay());
-                GameDisplay.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                System.out.println("Hugo Skiing " + VERSION + ", GAME SPEED (ms): " + GAMESPEED + ", Finnish voices");
+                JFrame f = new JFrame("HUGO - SKIING");
+                f.setIconImage(new ImageIcon("res/favicon_corner.png").getImage());
+                f.setSize(GameDisplay.d);
+                f.setMaximumSize(GameDisplay.d); // changing the dimension affects how the graphics will show up, do not edit
+                f.setResizable(false);
+                f.setLocationRelativeTo(null);
+                f.setVisible(true);
+                f.setContentPane(new GameDisplay());
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             } catch (Exception e) {
-                GameDisplay.f = new JFrame("SOME FILES ARE PROBABLY MISSING OR THEY HAVE BEEN RENAMED OR EDITED");
-                GameDisplay.f.setSize(GameDisplay.d);
-                GameDisplay.f.setLocationRelativeTo(null);
-                GameDisplay.f.setVisible(true);
-                GameDisplay.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                JFrame f = new JFrame("SOME FILES ARE PROBABLY MISSING OR THEY HAVE BEEN RENAMED OR EDITED");
+                f.setSize(GameDisplay.d);
+                f.setLocationRelativeTo(null);
+                f.setVisible(true);
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 System.out.println(e);
             }
         });

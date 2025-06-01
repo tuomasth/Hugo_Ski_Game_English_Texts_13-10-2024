@@ -140,18 +140,19 @@ import javax.swing.*;
  * @version 1.1.ENG
  */
 public final class GameDisplay extends JPanel {
-    static final String VERSION = "1.1.ENG";
-    static final int GAMESPEED = 1700;      // in milliseconds
+    public static final String VERSION = "1.1.ENG";
+    public static final int GAMESPEED = 1700;      // in milliseconds
+
     // does not update graphics!
-    int game_state = 0;      // 0 = Pre title no music,  1 = title screen and credits screen after beating the game,
+    int gameState = 0;      // 0 = Pre title no music,  1 = title screen and credits screen after beating the game,
     // 2 = showing a video,     3 = actual ski game,
     // 4 = remember two items,  5 = game over or beat the game + show score.
     // use state 6 or higher when moving from a video to another video
-    static int nextState = 0;
+    int nextState = 0;
     boolean useMP4 = false; // if false, use gifs that might flicker if made incorrectly 
     // should be false though because mp4s will open a new window currently, Windows Media Player for instance. 
     // The original Hugo graphics and sounds have been edited.
-    static int video = 0;
+    int video = 0;
     ImageIcon videoIMGicon;
     Image videoimg = null; // .gif expected + .aiff for sound 
     // 0 = Scylla intro,          1 = Hugo's first words hoplaa nyt hommiin,
@@ -163,35 +164,35 @@ public final class GameDisplay extends JPanel {
     // 12 = rope #2,              13 = rope #3,
     // 14 = snowman,              15 = snowball,
     // 16 = bomb,                 17 = beaver.
-    static boolean cheatBackflip180 = false;
-    static boolean key1 = false;
-    static boolean key2 = false;
-    static boolean key3 = false;
-    static boolean key4 = false;
-    static boolean key5 = false;
-    static boolean key6 = false;
-    static boolean key7 = false;
-    static boolean key8 = false;
-    static boolean key9 = false;
-    static boolean key10 = false;
-    static boolean key11 = false;
-    static boolean key12 = false;
-    static Player mediaPlayer = null;
-    static Clip clip0 = null; // music or sound
-    static Clip clip1 = null; // music or sound
-    static Clip clip2 = null; // music or sound
-    static Clip clip3 = null; // music or sound
-    static Clip clip4 = null; // music or sound
-    static Clip clipH = null; // music or sound, skiing
+    boolean cheatBackflip180 = false;
+    boolean key1 = false;
+    boolean key2 = false;
+    boolean key3 = false;
+    boolean key4 = false;
+    boolean key5 = false;
+    boolean key6 = false;
+    boolean key7 = false;
+    boolean key8 = false;
+    boolean key9 = false;
+    boolean key10 = false;
+    boolean key11 = false;
+    boolean key12 = false;
+    Player mediaPlayer = null;
+    Clip clip0 = null; // music or sound
+    Clip clip1 = null; // music or sound
+    Clip clip2 = null; // music or sound
+    Clip clip3 = null; // music or sound
+    Clip clip4 = null; // music or sound
+    Clip clipH = null; // music or sound, skiing
     // twistedwave.com sound edit tool is a helpful example tool when editing .wav or .aiff files
-    static Clip clipMoney = null;
-    static File fileMoney = new File("res/money.wav");
-    static Clip clipScore = null;
-    static File fileScore = new File("res/points_score.wav");
+    Clip clipMoney = null;
+    File fileMoney = new File("res/money.wav");
+    Clip clipScore = null;
+    File fileScore = new File("res/points_score.wav");
 
-    static File fileGameMusic0 = new File("res/music-ps1hugo2menu.wav");
-    static File fileGameMusic1 = new File("res/music-djhugopopcorn.wav");
-    static File fileGameMusic2 = new File("res/music_credits.wav");
+    File fileGameMusic0 = new File("res/music-ps1hugo2menu.wav");
+    File fileGameMusic1 = new File("res/music-djhugopopcorn.wav");
+    File fileGameMusic2 = new File("res/music_credits.wav");
     // 2 other musics but they go straight to "clip" use.
     //  Hugo 2 PlayStation 1 title/menu
     //  Popcorn Slotmachine featuring Gemini 7 (1993 Finnish DJ Hugo charity CD tr 8)
@@ -228,22 +229,21 @@ public final class GameDisplay extends JPanel {
      */
 
     // ezgif.com  &  redketchup.io/gif-resizer  were useful services for video gif polishing
-    static boolean pulled_rope_1 = false; // good ending        1
-    static boolean pulled_rope_2 = false; // bad ending         2
-    static boolean pulled_rope_3 = false; // the best ending    3
+    boolean pulled_rope_1 = false; // good ending        1
+    boolean pulled_rope_2 = false; // bad ending         2
+    boolean pulled_rope_3 = false; // the best ending    3
     Image r1;
     Image r2;
     Image r3;
 
-    static boolean gamePaused = false;
-    static boolean pausedWithEnter = false; // 2 types of pausing: interruption before a video and pause on purpose by the player
-    static String thingsToRemember = "dsHAcb";   // will be random later , end 0s and 1s are just extra if present
-    static boolean currentlyAllCorrect = true;
-    static boolean secondPhase = false; // these are in guessing 123 123 for the skull cave key
-    static boolean allCorrectInTheEnd = false;      // (Scylla has weird locks and why does she even give the 2 scroll key clues to Hugo?)
+    boolean gamePaused = false;
+    boolean pausedWithEnter = false; // 2 types of pausing: interruption before a video and pause on purpose by the player
+    String thingsToRemember = "dsHAcb";   // will be random later , end 0s and 1s are just extra if present
+    boolean currentlyAllCorrect = true;
+    boolean secondPhase = false; // these are in guessing 123 123 for the skull cave key
+    boolean allCorrectInTheEnd = false;      // (Scylla has weird locks and why does she even give the 2 scroll key clues to Hugo?)
 
-    static JFrame f = new JFrame();
-    static Dimension d = new Dimension(630, 500);
+    public static Dimension d = new Dimension(630, 500);
     int maxW = d.width - 220;
 
     int w_width = (int) d.getWidth() / 7; // hugo skiing animation
@@ -251,8 +251,8 @@ public final class GameDisplay extends JPanel {
     int e_width = (int) d.getWidth() / 7;
     int e_height = (int) d.getHeight() / 3;
 
-    static int x, y;
-    static int currentGrid = 0; // or line, should be 0, 1, 2 or 3, nothing else
+    int x, y;
+    int currentGrid = 0; // or line, should be 0, 1, 2 or 3, nothing else
     // Hugo will always go forward and <- & -> change the line on the current phase
 
     Image theVeryFirst;
@@ -272,7 +272,7 @@ public final class GameDisplay extends JPanel {
     Image cloud;
     int cloud_x_position;
     int cloud_y_position;
-    static boolean leftWind = false;
+    boolean leftWind = false;
 
     Image possibleTree1; // may be changed to something else than trees - if wanted to edit so
     int possibleTree1_x_position;
@@ -358,31 +358,31 @@ public final class GameDisplay extends JPanel {
     int pause_x_position;
     int pause_y_position;
 
-    static boolean vanish4Faster = false;
+    boolean vanish4Faster = false;
     Image currentHazardOrMoney1_image;
-    static int currentHazardOrMoney1_x_position;
-    static int currentHazardOrMoney1_y_position;
+    int currentHazardOrMoney1_x_position;
+    int currentHazardOrMoney1_y_position;
     Image currentHazardOrMoney2_image;
-    static int currentHazardOrMoney2_x_position;
-    static int currentHazardOrMoney2_y_position;
+    int currentHazardOrMoney2_x_position;
+    int currentHazardOrMoney2_y_position;
     Image currentHazardOrMoney3_image;
-    static int currentHazardOrMoney3_x_position;
-    static int currentHazardOrMoney3_y_position;
+    int currentHazardOrMoney3_x_position;
+    int currentHazardOrMoney3_y_position;
     Image currentHazardOrMoney4_image;
-    static int currentHazardOrMoney4_x_position;
-    static int currentHazardOrMoney4_y_position;
-    static String currentHazardOrMoney1 = "E";
-    static String currentHazardOrMoney2 = "E";
-    static String currentHazardOrMoney3 = "E";
-    static String currentHazardOrMoney4 = "E";
-    static int currentHazardOrMoney1w;
-    static int currentHazardOrMoney1h;
-    static int currentHazardOrMoney2w;
-    static int currentHazardOrMoney2h;
-    static int currentHazardOrMoney3w;
-    static int currentHazardOrMoney3h;
-    static int currentHazardOrMoney4w;
-    static int currentHazardOrMoney4h;
+    int currentHazardOrMoney4_x_position;
+    int currentHazardOrMoney4_y_position;
+    String currentHazardOrMoney1 = "E";
+    String currentHazardOrMoney2 = "E";
+    String currentHazardOrMoney3 = "E";
+    String currentHazardOrMoney4 = "E";
+    int currentHazardOrMoney1w;
+    int currentHazardOrMoney1h;
+    int currentHazardOrMoney2w;
+    int currentHazardOrMoney2h;
+    int currentHazardOrMoney3w;
+    int currentHazardOrMoney3h;
+    int currentHazardOrMoney4w;
+    int currentHazardOrMoney4h;
 
     int position1 = 10;
     int position2 = 130;
@@ -434,20 +434,20 @@ public final class GameDisplay extends JPanel {
     Image d3w;
 
     // for score digit values:
-    static int ones = 0;
-    static int tens = 0;
-    static int hundreds = 0;
-    static int thousands = 0;
-    static int tenThousands = 0;
-    static int hundredThousands = 0;
-    static boolean onesVisible = true;
-    static boolean tensVisible = false;
-    static boolean hundredsVisible = false;
-    static boolean thousandsVisible = false;
-    static boolean tenThousandsVisible = false;
-    static boolean hundredThousandsVisible = false;
+    int ones = 0;
+    int tens = 0;
+    int hundreds = 0;
+    int thousands = 0;
+    int tenThousands = 0;
+    int hundredThousands = 0;
+    boolean onesVisible = true;
+    boolean tensVisible = false;
+    boolean hundredsVisible = false;
+    boolean thousandsVisible = false;
+    boolean tenThousandsVisible = false;
+    boolean hundredThousandsVisible = false;
 
-    static int number_of_lives = 4;
+    int number_of_lives = 4;
     Clip clipChangeGrid = null;
     File fileChangeGrid = new File("res/ski_track_change.wav");
     Clip clipChangeGrid4 = null;
@@ -458,43 +458,44 @@ public final class GameDisplay extends JPanel {
     Clip clipCorrect = null;
     File fileCorrect = new File("res/correct_selection.wav");
 
+    HugoSkiing hugoSkiing;
+    
     /**
      * Game reset call.
      */
     public void reset() {
-        HugoSkiing.hugoHiihto = null;
-        HugoSkiing.gameReset(GAMESPEED); // creates a new game
+        hugoSkiing.gameReset(GAMESPEED); // creates a new game
     }
 
     /**
      * Resets the positions of 4 ski track objects.
      */
-    public static void reset4positions() {
-        if (HugoSkiing.tic) {
-            GameDisplay.currentHazardOrMoney1_x_position = (GameDisplay.d.width / 3) + 35;
-            GameDisplay.currentHazardOrMoney1_y_position = (int) (GameDisplay.d.height / 3);
-            if (HugoSkiing.currentStateAtTheLevel == 14 || HugoSkiing.currentStateAtTheLevel == 25) {
+    public void reset4positions() {
+        if (hugoSkiing.tic) {
+            currentHazardOrMoney1_x_position = (d.width / 3) + 35;
+            currentHazardOrMoney1_y_position = (int) (d.height / 3);
+            if (hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25) {
                 if (!pausedWithEnter) {
-                    GameDisplay.currentHazardOrMoney1_x_position = 20;
-                    GameDisplay.currentHazardOrMoney1_y_position = 30;
+                    currentHazardOrMoney1_x_position = 20;
+                    currentHazardOrMoney1_y_position = 30;
                 }
             }
-            GameDisplay.currentHazardOrMoney2_x_position = (GameDisplay.d.width / 3) + 58;
-            GameDisplay.currentHazardOrMoney2_y_position = (int) (GameDisplay.d.height / 3.1);
-            GameDisplay.currentHazardOrMoney3_x_position = (GameDisplay.d.width / 3) + 88;
-            GameDisplay.currentHazardOrMoney3_y_position = (int) (GameDisplay.d.height / 3.1);
-            GameDisplay.currentHazardOrMoney4_x_position = (GameDisplay.d.width / 3) + 130;
-            GameDisplay.currentHazardOrMoney4_y_position = (int) (GameDisplay.d.height / 3.1);
-            GameDisplay.currentHazardOrMoney1w = 1;
-            GameDisplay.currentHazardOrMoney1h = 1;
-            GameDisplay.currentHazardOrMoney2w = 1;
-            GameDisplay.currentHazardOrMoney2h = 1;
-            GameDisplay.currentHazardOrMoney3w = 1;
-            GameDisplay.currentHazardOrMoney3h = 1;
-            GameDisplay.currentHazardOrMoney4w = 1;
-            GameDisplay.currentHazardOrMoney4h = 1;
-            if (currentHazardOrMoney1_y_position > y && (HugoSkiing.currentStateAtTheLevel != 14
-                    && HugoSkiing.currentStateAtTheLevel != 25)) {
+            currentHazardOrMoney2_x_position = (d.width / 3) + 58;
+            currentHazardOrMoney2_y_position = (int) (d.height / 3.1);
+            currentHazardOrMoney3_x_position = (d.width / 3) + 88;
+            currentHazardOrMoney3_y_position = (int) (d.height / 3.1);
+            currentHazardOrMoney4_x_position = (d.width / 3) + 130;
+            currentHazardOrMoney4_y_position = (int) (d.height / 3.1);
+            currentHazardOrMoney1w = 1;
+            currentHazardOrMoney1h = 1;
+            currentHazardOrMoney2w = 1;
+            currentHazardOrMoney2h = 1;
+            currentHazardOrMoney3w = 1;
+            currentHazardOrMoney3h = 1;
+            currentHazardOrMoney4w = 1;
+            currentHazardOrMoney4h = 1;
+            if (currentHazardOrMoney1_y_position > y && (hugoSkiing.currentStateAtTheLevel != 14
+                    && hugoSkiing.currentStateAtTheLevel != 25)) {
                 currentHazardOrMoney1_y_position += 1000;
                 currentHazardOrMoney1_x_position += 1000;
             }
@@ -516,66 +517,66 @@ public final class GameDisplay extends JPanel {
     /**
      * Set lives, max is 4 in this version (1.1).
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setLives(int new_amount) {
-        if (new_amount < 5 && new_amount > -1) {
-            number_of_lives = new_amount;
+    public void setLives(int newAmount) {
+        if (newAmount < 5 && newAmount > -1) {
+            number_of_lives = newAmount;
         }
     }
 
     /**
      * Set ones.
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setOnes(int new_amount) {
-        ones = new_amount;
+    public void setOnes(int newAmount) {
+        ones = newAmount;
     }
 
     /**
      * Set tens.
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setTens(int new_amount) {
-        tens = new_amount;
+    public void setTens(int newAmount) {
+        tens = newAmount;
     }
 
     /**
      * Set hundreds.
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setHundreds(int new_amount) {
-        hundreds = new_amount;
+    public void setHundreds(int newAmount) {
+        hundreds = newAmount;
     }
 
     /**
      * Set thousands.
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setThousands(int new_amount) {
-        thousands = new_amount;
+    public void setThousands(int newAmount) {
+        thousands = newAmount;
     }
 
     /**
      * Set 10 000s.
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setTenThousands(int new_amount) {
-        tenThousands = new_amount;
+    public void setTenThousands(int newAmount) {
+        tenThousands = newAmount;
     }
 
     /**
      * Set 100 000s.
      *
-     * @param new_amount
+     * @param newAmount
      */
-    public static void setHundredThousands(int new_amount) {
-        hundredThousands = new_amount;
+    public void setHundredThousands(int newAmount) {
+        hundredThousands = newAmount;
     }
 
     /**
@@ -583,7 +584,7 @@ public final class GameDisplay extends JPanel {
      *
      * @param value
      */
-    public static void setcurrentHazardOrMoney1(String value) {
+    public void setcurrentHazardOrMoney1(String value) {
         currentHazardOrMoney1 = value;
     }
 
@@ -592,7 +593,7 @@ public final class GameDisplay extends JPanel {
      *
      * @param value
      */
-    public static void setcurrentHazardOrMoney2(String value) {
+    public void setcurrentHazardOrMoney2(String value) {
         currentHazardOrMoney2 = value;
     }
 
@@ -601,7 +602,7 @@ public final class GameDisplay extends JPanel {
      *
      * @param value
      */
-    public static void setcurrentHazardOrMoney3(String value) {
+    public void setcurrentHazardOrMoney3(String value) {
         currentHazardOrMoney3 = value;
     }
 
@@ -610,18 +611,18 @@ public final class GameDisplay extends JPanel {
      *
      * @param value
      */
-    public static void setcurrentHazardOrMoney4(String value) {
+    public void setcurrentHazardOrMoney4(String value) {
         currentHazardOrMoney4 = value;
     }
 
     /**
      * The constructor.
      *
-     * @throws Exception
      */
-    public GameDisplay() throws Exception {
-        addKeyListener(new AL(this));
-        constructFrames(game_state);
+    public GameDisplay() {
+        hugoSkiing = new HugoSkiing(this);
+        addKeyListener(new GameActionListener(hugoSkiing));
+        constructFrames(gameState);
         if (videoimg != null) {  // videos should always start at the beginning
             videoimg.flush();
             videoimg = null;
@@ -657,7 +658,7 @@ public final class GameDisplay extends JPanel {
                 gamePaused = true;
             }
 
-            if (HugoSkiing.currentStateAtTheLevel >= 71 && HugoSkiing.gameOver == false) {
+            if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
                 ImageIcon credits_icon = new ImageIcon("res/credits_screen.png");
                 int wi = (int) d.getWidth() - 2;
                 int he = (int) d.getHeight() - 37;
@@ -764,7 +765,7 @@ public final class GameDisplay extends JPanel {
                 try {
                     mediaURL = fi.toURL();
                 } catch (MalformedURLException ex) {
-                    Logger.getLogger(GameDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
                 }
 
                 try {
@@ -772,7 +773,7 @@ public final class GameDisplay extends JPanel {
                     mediaPlayer = Manager.createPlayer(mediaURL);
 
                 } catch (IOException | NoPlayerException ex) {
-                    Logger.getLogger(GameDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
                 }
                 // https://convertio.co/mp4-mov/
                 // https://www.oracle.com/java/technologies/javase/jmf-211-formats.html
@@ -1149,32 +1150,24 @@ public final class GameDisplay extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if ((double) game_state < 0.1) {
+        if ((double) gameState < 0.1) {
             super.paintComponent(g);
             g.drawImage(theVeryFirst, 0, 0, this);
             repaint();
 
-            if (nextState != game_state) {
-                System.out.println("------ State change from " + game_state + " to " + nextState);
-                game_state = nextState;
+            if (nextState != gameState) {
+                System.out.println("------ State change from " + gameState + " to " + nextState);
+                gameState = nextState;
                 //super.paintComponent(g);
-                constructFrames(game_state);
-                    /*
-                    try {
-                        f.setContentPane(new Game_Display());
-                    }
-                    catch (Exception ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    */
+                constructFrames(gameState);
                 repaint();
 
             }
         }
 
-        if ((double) game_state > 0.9 && (double) game_state < 1.1) {
+        if ((double) gameState > 0.9 && (double) gameState < 1.1) {
             super.paintComponent(g);
-            if (HugoSkiing.currentStateAtTheLevel >= 71 && HugoSkiing.gameOver == false) {
+            if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
                 //super.paintComponent(g);
                 g.drawImage(creditsScreen, 0, 0, this);
                 repaint();
@@ -1184,25 +1177,17 @@ public final class GameDisplay extends JPanel {
                 repaint();
             }
 
-            if (nextState != game_state) {
-                System.out.println("------ State change from " + game_state + " to " + nextState);
-                game_state = nextState;
+            if (nextState != gameState) {
+                System.out.println("------ State change from " + gameState + " to " + nextState);
+                gameState = nextState;
                 //super.paintComponent(g);
-                constructFrames(game_state);
-                    /*
-                    try {
-                        f.setContentPane(new Game_Display());
-                    }
-                    catch (Exception ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    */
+                constructFrames(gameState);
                 repaint();
 
             }
         }
 
-        if ((double) game_state > 1.9 && (double) game_state < 2.1) {
+        if ((double) gameState > 1.9 && (double) gameState < 2.1) {
             super.paintComponent(g);
 
             if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
@@ -1286,7 +1271,7 @@ public final class GameDisplay extends JPanel {
                 try {
                     Desktop.getDesktop().open(video_source); // opens Windows Media Player for instance
                 } catch (IOException ex) {                   // not the best way to display mp4s
-                    Logger.getLogger(GameDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {
@@ -1381,24 +1366,17 @@ public final class GameDisplay extends JPanel {
                 }
             }
 
-            if (nextState != game_state) {
-                System.out.println("------ State change from " + game_state + " to " + nextState);
-                game_state = nextState;
+            if (nextState != gameState) {
+                System.out.println("------ State change from " + gameState + " to " + nextState);
+                gameState = nextState;
                 //super.paintComponent(g);
-                constructFrames(game_state);
-                    /*
-                    try {
-                        f.setContentPane(new Game_Display());
-                    }
-                    catch (Exception ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    */
+                constructFrames(gameState);
+
                 repaint();
 
             }
         }
-        if ((double) game_state > 2.9 && (double) game_state < 3.1) {
+        if ((double) gameState > 2.9 && (double) gameState < 3.1) {
             super.paintComponent(g);
             g.drawImage(bg, 0, 0, null);
 
@@ -1856,16 +1834,16 @@ public final class GameDisplay extends JPanel {
                 public void run() {
                     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                     if (!gamePaused) {
-                        if (HugoSkiing.currentStateAtTheLevel == 15 || HugoSkiing.currentStateAtTheLevel == 26) {
+                        if (hugoSkiing.currentStateAtTheLevel == 15 || hugoSkiing.currentStateAtTheLevel == 26) {
                             currentHazardOrMoney1w = 1;
                             currentHazardOrMoney1h = 1;
                             currentHazardOrMoney1_y_position = 8000;
                             currentHazardOrMoney1_x_position = 8000;
                         }
-                        if (vanish4Faster && (HugoSkiing.currentStateAtTheLevel == 14 || HugoSkiing.currentStateAtTheLevel == 25)) {
+                        if (vanish4Faster && (hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25)) {
                             currentHazardOrMoney1_y_position += 4;
                         }
-                        if (HugoSkiing.currentStateAtTheLevel == 14 || HugoSkiing.currentStateAtTheLevel == 25) {
+                        if (hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25) {
                             if (currentHazardOrMoney1_x_position < 310) {
                                 currentHazardOrMoney1_x_position++;
                             } else {
@@ -1897,7 +1875,7 @@ public final class GameDisplay extends JPanel {
                             }
                             if (currentHazardOrMoney1_y_position > d.getHeight() - 230 ||
                                     currentHazardOrMoney1_x_position < 50 ||
-                                    !HugoSkiing.tic) {
+                                    !hugoSkiing.tic) {
                                 currentHazardOrMoney1_y_position = 8000;
                                 //System.out.println("Off screen 1");
                                 currentHazardOrMoney1w = 1;
@@ -1916,7 +1894,7 @@ public final class GameDisplay extends JPanel {
             if (!HAZ1.isAlive()) {
                 HAZ1.start();
             }
-            if (HugoSkiing.currentStateAtTheLevel > -2) {
+            if (hugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney1_image, currentHazardOrMoney1_x_position, currentHazardOrMoney1_y_position, this);
             }
 
@@ -1947,7 +1925,7 @@ public final class GameDisplay extends JPanel {
                             currentHazardOrMoney2h = 1;
                         }
                         if (currentHazardOrMoney2_y_position > d.getHeight() - 230 ||
-                                !HugoSkiing.tic) {
+                                !hugoSkiing.tic) {
                             //System.out.println("Off screen 2");
                             currentHazardOrMoney2_y_position = 8000;
                             currentHazardOrMoney2w = 1;
@@ -1969,7 +1947,7 @@ public final class GameDisplay extends JPanel {
             if (!HAZ2.isAlive()) {
                 HAZ2.start();
             }
-            if (HugoSkiing.currentStateAtTheLevel > -2) {
+            if (hugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney2_image, currentHazardOrMoney2_x_position, currentHazardOrMoney2_y_position, this);
             }
 
@@ -2000,7 +1978,7 @@ public final class GameDisplay extends JPanel {
                             currentHazardOrMoney3h = 1;
                         }
                         if (currentHazardOrMoney3_y_position > d.getHeight() - 230 ||
-                                !HugoSkiing.tic) {
+                                !hugoSkiing.tic) {
                             //System.out.println("Off screen 3");
                             currentHazardOrMoney3_y_position = 8000;
                             currentHazardOrMoney3w = 1;
@@ -2021,7 +1999,7 @@ public final class GameDisplay extends JPanel {
             if (!HAZ3.isAlive()) {
                 HAZ3.start();
             }
-            if (HugoSkiing.currentStateAtTheLevel > -2) {
+            if (hugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney3_image, currentHazardOrMoney3_x_position, currentHazardOrMoney3_y_position, this);
             }
 
@@ -2050,7 +2028,7 @@ public final class GameDisplay extends JPanel {
                             currentHazardOrMoney4h = 1;
                         }
                         if (currentHazardOrMoney4_y_position > d.getHeight() - 230 ||
-                                !HugoSkiing.tic) {
+                                !hugoSkiing.tic) {
                             //System.out.println("Off screen 4");
                             currentHazardOrMoney4_y_position = 8000;
                             currentHazardOrMoney4w = 1;
@@ -2072,7 +2050,7 @@ public final class GameDisplay extends JPanel {
             if (!HAZ4.isAlive()) {
                 HAZ4.start();
             }
-            if (HugoSkiing.currentStateAtTheLevel > -2) {
+            if (hugoSkiing.currentStateAtTheLevel > -2) {
                 g.drawImage(currentHazardOrMoney4_image, currentHazardOrMoney4_x_position, currentHazardOrMoney4_y_position, this);
             }
 
@@ -2178,24 +2156,16 @@ public final class GameDisplay extends JPanel {
                 }
             }
 
-            if (nextState != game_state) {
-                System.out.println("------ State change from " + game_state + " to " + nextState);
-                game_state = nextState;
+            if (nextState != gameState) {
+                System.out.println("------ State change from " + gameState + " to " + nextState);
+                gameState = nextState;
                 //super.paintComponent(g);
-                constructFrames(game_state);
-                    /*
-                    try {
-                        f.setContentPane(new Game_Display());
-                    }
-                    catch (Exception ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    */
+                constructFrames(gameState);
                 repaint();
 
             }
         }
-        if ((double) game_state > 3.9 && (double) game_state < 4.1) {
+        if ((double) gameState > 3.9 && (double) gameState < 4.1) {
             super.paintComponent(g);
 
             g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
@@ -2278,24 +2248,16 @@ public final class GameDisplay extends JPanel {
             }
             repaint();
 
-            if (nextState != game_state) {
-                System.out.println("------ State change from " + game_state + " to " + nextState);
-                game_state = nextState;
+            if (nextState != gameState) {
+                System.out.println("------ State change from " + gameState + " to " + nextState);
+                gameState = nextState;
                 //super.paintComponent(g);
-                constructFrames(game_state);
-                    /*
-                    try {
-                        f.setContentPane(new Game_Display());
-                    }
-                    catch (Exception ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    */
+                constructFrames(gameState);
                 repaint();
             }
         }
 
-        if ((double) game_state > 4.9 && (double) game_state < 5.1) {
+        if ((double) gameState > 4.9 && (double) gameState < 5.1) {
             super.paintComponent(g);
 
             cheatBackflip180 = false;
@@ -2416,31 +2378,53 @@ public final class GameDisplay extends JPanel {
 
             repaint();
 
-            if (nextState != game_state) {
-                System.out.println("------ State change from " + game_state + " to " + nextState);
-                game_state = nextState;
+            if (nextState != gameState) {
+                System.out.println("------ State change from " + gameState + " to " + nextState);
+                gameState = nextState;
                 //super.paintComponent(g);
-                constructFrames(game_state);
-                    /*
-                    try {
-                        f.setContentPane(new Game_Display());
-                    }
-                    catch (Exception ex) {
-                        Logger.getLogger(Game_Display.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    */
+                constructFrames(gameState);
                 repaint();
             }
         }
-        if ((double) game_state >= 5.1) {
+        if ((double) gameState >= 5.1) {
             // when moving from state 2 straight back to state 2, a workaround, show 2 videos in a row both with sound
             nextState = 2;
-            System.out.println("------ State change from " + game_state + " to " + nextState);
-            game_state = nextState;
+            System.out.println("------ State change from " + gameState + " to " + nextState);
+            gameState = nextState;
             //super.paintComponent(g);
-            constructFrames(game_state);
+            constructFrames(gameState);
         }
     }
+    
+    public void gameReset(){
+        currentGrid = 0;
+        pulled_rope_1 = false;
+        pulled_rope_2 = false;
+        pulled_rope_3 = false;
+        ones = 0;   // score digits (6)
+        tens = 0;
+        hundreds = 0;
+        thousands = 0;
+        tenThousands = 0;
+        hundredThousands = 0;
+        onesVisible = true;
+        tensVisible = false;
+        hundredsVisible = false;
+        thousandsVisible = false;
+        tenThousandsVisible = false;
+        hundredThousandsVisible = false;
+        number_of_lives = 4; // amount of lives
+        currentlyAllCorrect = true; // even though 0 guesses
+        secondPhase = false;
+        allCorrectInTheEnd = false;
+    }
 
-
+    public void setMaxScore() {
+        setOnes(9);
+        setTens(9);
+        setHundreds(9);
+        setThousands(9);
+        setTenThousands(9);
+        setHundredThousands(9);
+    }
 }
