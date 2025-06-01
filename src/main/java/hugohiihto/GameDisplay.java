@@ -146,11 +146,8 @@ public final class GameDisplay extends JPanel {
     public static final int GAMESPEED = 1700;      // in milliseconds
 
     // does not update graphics!
-    int gameState = 0;      // 0 = Pre title no music,  1 = title screen and credits screen after beating the game,
-    // 2 = showing a video,     3 = actual ski game,
-    // 4 = remember two items,  5 = game over or beat the game + show score.
-    // use state 6 or higher when moving from a video to another video
-    int nextState = 0;
+    GameState gameState = GameState.PRE_TITLE;
+    GameState nextState = GameState.PRE_TITLE;
     boolean useMP4 = false; // if false, use gifs that might flicker if made incorrectly
     // should be false though because mp4s will open a new window currently, Windows Media Player for instance. 
     // The original Hugo graphics and sounds have been edited.
@@ -645,13 +642,13 @@ public final class GameDisplay extends JPanel {
      *
      * @param gameState
      */
-    public void constructFrames(int gameState) {
+    public void constructFrames(GameState gameState) {
         repaint();
         if (gameState != nextState) {
             //System.out.println("gameState != nextState");
             return;
         }
-        if ((double) gameState < 0.1) {
+        if (gameState == GameState.PRE_TITLE) {
 
             ImageIcon theVeryFirst_icon = new ImageIcon("res/_the_very_1st_texts.png");
             int wi = (int) d.getWidth();
@@ -662,8 +659,8 @@ public final class GameDisplay extends JPanel {
             setFocusable(true);
 
         }
-        if ((double) gameState > 0.9 && (double) gameState < 1.1) {
-            if (gameState != 3 && nextState != 3) {
+        if (gameState == GameState.TITLE_SCREEN) {
+            if (gameState != GameState.SKI_GAME && nextState != GameState.SKI_GAME) {
                 gamePaused = true;
             }
 
@@ -685,7 +682,7 @@ public final class GameDisplay extends JPanel {
                 setFocusable(true);
             }
         }
-        if ((double) gameState > 1.9 && (double) gameState < 2.1) {
+        if (gameState == GameState.SHOWING_VIDEO) {
 
             setFocusable(true);
             if (!useMP4) {
@@ -709,7 +706,7 @@ public final class GameDisplay extends JPanel {
                 System.out.println("Playing sound for a video");
             }
         }
-        if ((double) gameState > 2.9 && (double) gameState < 3.1) {
+        if (gameState == GameState.SKI_GAME) {
             repaint();
             ImageIcon west = new ImageIcon("res/hugo_ski_L.gif");
             ImageIcon east = new ImageIcon("res/hugo_ski_R.gif");
@@ -865,7 +862,7 @@ public final class GameDisplay extends JPanel {
             scorebar = scorebaricon.getImage();
 
         }
-        if ((double) gameState > 3.9 && (double) gameState < 4.1) {
+        if (gameState == GameState.REMEMBER_ITEMS) {
 
             ImageIcon io = new ImageIcon("res/cave_entrance00.png");
             int wi = (int) d.getWidth() - 10;
@@ -874,8 +871,6 @@ public final class GameDisplay extends JPanel {
             bgCave = io.getImage();
 
             setFocusable(true);
-
-            //addKeyListener(new Game_Display.AL());// keyboard listener
 
             cave_x = 1;
             cave_y = 1;
@@ -1032,7 +1027,7 @@ public final class GameDisplay extends JPanel {
             }
 
         }
-        if ((double) gameState > 4.9 && (double) gameState < 5.1) {
+        if (gameState == GameState.GAME_OVER) {
             setFocusable(true);
 
             ImageIcon scoreBG = new ImageIcon("res/title_screen_nothing.png");
@@ -1063,7 +1058,7 @@ public final class GameDisplay extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if ((double) gameState < 0.1) {
+        if (gameState == GameState.PRE_TITLE) {
             super.paintComponent(g);
             g.drawImage(theVeryFirst, 0, 0, this);
             repaint();
@@ -1078,7 +1073,7 @@ public final class GameDisplay extends JPanel {
             }
         }
 
-        if ((double) gameState > 0.9 && (double) gameState < 1.1) {
+        if (gameState == GameState.TITLE_SCREEN) {
             super.paintComponent(g);
             if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
                 //super.paintComponent(g);
@@ -1100,7 +1095,7 @@ public final class GameDisplay extends JPanel {
             }
         }
 
-        if ((double) gameState > 1.9 && (double) gameState < 2.1) {
+        if (gameState == GameState.SHOWING_VIDEO) {
             super.paintComponent(g);
 
             if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
@@ -1140,7 +1135,7 @@ public final class GameDisplay extends JPanel {
 
             }
         }
-        if ((double) gameState > 2.9 && (double) gameState < 3.1) {
+        if ( gameState == GameState.SKI_GAME) {
             super.paintComponent(g);
             g.drawImage(bg, 0, 0, null);
 
@@ -1848,7 +1843,7 @@ public final class GameDisplay extends JPanel {
 
             }
         }
-        if ((double) gameState > 3.9 && (double) gameState < 4.1) {
+        if (gameState == GameState.REMEMBER_ITEMS) {
             super.paintComponent(g);
 
             g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
@@ -1893,12 +1888,12 @@ public final class GameDisplay extends JPanel {
                         g.drawImage(d3w, d3b_x_position, d3b_y_position, this);
                     }
                     video = 5;
-                    nextState = 6;
+                    nextState = GameState.VIDEO_TRANSITION;
                 }
             }
             if (!currentlyAllCorrect) {
                 video = 6;
-                nextState = 6;
+                nextState = GameState.VIDEO_TRANSITION;
             }
             repaint();
 
@@ -1910,7 +1905,7 @@ public final class GameDisplay extends JPanel {
             }
         }
 
-        if ((double) gameState > 4.9 && (double) gameState < 5.1) {
+        if ( gameState == GameState.GAME_OVER) {
             super.paintComponent(g);
 
             cheatBackflip180 = false;
@@ -2039,9 +2034,9 @@ public final class GameDisplay extends JPanel {
                 repaint();
             }
         }
-        if ((double) gameState >= 5.1) {
+        if (gameState == GameState.VIDEO_TRANSITION) {
             // when moving from state 2 straight back to state 2, a workaround, show 2 videos in a row both with sound
-            nextState = 2;
+            nextState = GameState.SHOWING_VIDEO;
             System.out.println("------ State change from " + gameState + " to " + nextState);
             gameState = nextState;
             //super.paintComponent(g);

@@ -77,7 +77,7 @@ public class GameActionListener extends KeyAdapter {
         }
 
 
-        if ((double) gameDisplay.gameState < 0.1) {
+        if (gameDisplay.gameState == GameState.PRE_TITLE) {
             if (keyCode == KeyEvent.VK_ENTER) {
 
                 gameDisplay.constructFrames(gameDisplay.gameState);
@@ -94,9 +94,9 @@ public class GameActionListener extends KeyAdapter {
                 }
 
                 gameDisplay.video = 0;
-                gameDisplay.nextState = 6;
+                gameDisplay.nextState = GameState.VIDEO_TRANSITION;
             }
-        } else if ((double) gameDisplay.gameState > 0.9 && (double) gameDisplay.gameState < 1.1) {
+        } else if ( gameDisplay.gameState == GameState.TITLE_SCREEN) {
             if (keyCode == KeyEvent.VK_ENTER) {
 
                 gameDisplay.videoFlush();
@@ -105,7 +105,7 @@ public class GameActionListener extends KeyAdapter {
                 gameDisplay.videoimg.setAccelerationPriority((float) 1.0); // from 0-> lowest to 1-> highest
 
                 if (hugoSkiing.currentStateAtTheLevel >= 71 && (gameDisplay.pulled_rope_3 || gameDisplay.pulled_rope_1)) {
-                    gameDisplay.nextState = 0;
+                    gameDisplay.nextState = GameState.PRE_TITLE;
                     hugoSkiing.currentStateAtTheLevel = -5;
                 } else {
                     if (hugoSkiing.gameOver) {
@@ -117,7 +117,7 @@ public class GameActionListener extends KeyAdapter {
                     gameDisplay.reset();
 
                     gameDisplay.video = 1;
-                    gameDisplay.nextState = 6;
+                    gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                     gameDisplay.constructFrames(gameDisplay.gameState);
                 }
             }
@@ -163,7 +163,7 @@ public class GameActionListener extends KeyAdapter {
             if (gameDisplay.key12) { // Activating the cheat mode!
                 gameDisplay.cheatBackflip180 = true;
             }
-        } else if ((double) gameDisplay.gameState > 1.9 && (double) gameDisplay.gameState < 2.1) {
+        } else if (gameDisplay.gameState == GameState.SHOWING_VIDEO) {
             // 0 = Scylla intro,          1 = Hugo's first words hoplaa nyt hommiin,
             // 2 = Scylla button,         3 = three ropes intro,
             // 4 = Hugo asks for two,     5 = two chosen correctly,
@@ -184,7 +184,7 @@ public class GameActionListener extends KeyAdapter {
                     }
 
                     gameDisplay.gamePaused = true;
-                    gameDisplay.nextState = 1;
+                    gameDisplay.nextState = GameState.TITLE_SCREEN;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -193,7 +193,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 1) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 3; // to the actual game
+                    gameDisplay.nextState = GameState.SKI_GAME; // to the actual game
                     gameDisplay.gamePaused = false;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -203,7 +203,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 2) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 3;
+                    gameDisplay.nextState = GameState.SKI_GAME;
                     gameDisplay.gamePaused = false;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -239,7 +239,7 @@ public class GameActionListener extends KeyAdapter {
                     hugoSkiing.increaseScoreOnes(gameDisplay.ones);
 
                     gameDisplay.video = 11;
-                    gameDisplay.nextState = 6; // use state 6 or higher when moving from a video to another video
+                    gameDisplay.nextState = GameState.VIDEO_TRANSITION; // use state 6 or higher when moving from a video to another video
                 }
                 if (keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_NUMPAD2) {
                     if (gameDisplay.mediaPlayer != null) {
@@ -251,7 +251,7 @@ public class GameActionListener extends KeyAdapter {
                     System.out.println("2 chosen!");
                     hugoSkiing.currentStateAtTheLevel = -5;
                     gameDisplay.video = 12;
-                    gameDisplay.nextState = 6;
+                    gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                 }
                 if (keyCode == KeyEvent.VK_3 || keyCode == KeyEvent.VK_NUMPAD3) {
                     if (gameDisplay.mediaPlayer != null) {
@@ -275,12 +275,12 @@ public class GameActionListener extends KeyAdapter {
                     hugoSkiing.increaseScoreOnes(gameDisplay.ones);
 
                     gameDisplay.video = 13;
-                    gameDisplay.nextState = 6;
+                    gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                 }
             }
             if (gameDisplay.video == 4) {    // hugo asks 2
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 4;
+                    gameDisplay.nextState = GameState.REMEMBER_ITEMS;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -301,7 +301,7 @@ public class GameActionListener extends KeyAdapter {
                     }
 
                     gameDisplay.video = 3;
-                    gameDisplay.nextState = 6;
+                    gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -311,7 +311,7 @@ public class GameActionListener extends KeyAdapter {
             if (gameDisplay.video == 6) {    // wrong
                 if (keyCode == KeyEvent.VK_ENTER) {
                     hugoSkiing.gameOver = true;
-                    gameDisplay.nextState = 5;
+                    gameDisplay.nextState = GameState.GAME_OVER;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -321,7 +321,7 @@ public class GameActionListener extends KeyAdapter {
             if (gameDisplay.video == 7) {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     gameDisplay.video = 4;
-                    gameDisplay.nextState = 6;
+                    gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -330,7 +330,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 8) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 3; // to the actual game
+                    gameDisplay.nextState = GameState.SKI_GAME; // to the actual game
                     gameDisplay.gamePaused = false;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -340,7 +340,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 9) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 3; // to the actual game
+                    gameDisplay.nextState = GameState.SKI_GAME; // to the actual game
                     gameDisplay.gamePaused = false;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -352,7 +352,7 @@ public class GameActionListener extends KeyAdapter {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     // cancel all timertasks!
                     hugoSkiing.gameOver = true;
-                    gameDisplay.nextState = 5;
+                    gameDisplay.nextState = GameState.GAME_OVER;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -361,7 +361,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 11) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 5;
+                    gameDisplay.nextState = GameState.GAME_OVER;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -370,7 +370,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 12) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 5;
+                    gameDisplay.nextState = GameState.GAME_OVER;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -379,7 +379,7 @@ public class GameActionListener extends KeyAdapter {
             }
             if (gameDisplay.video == 13) {
                 if (keyCode == KeyEvent.VK_ENTER) {
-                    gameDisplay.nextState = 5;
+                    gameDisplay.nextState = GameState.GAME_OVER;
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     System.gc();
@@ -395,14 +395,14 @@ public class GameActionListener extends KeyAdapter {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     if (gameDisplay.number_of_lives >= 2) {
                         gameDisplay.video = 8;
-                        gameDisplay.nextState = 6;
+                        gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                     } else {
                         if (gameDisplay.number_of_lives >= 1) {
                             gameDisplay.video = 9;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         } else {
                             gameDisplay.video = 10;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         }
                     }
 
@@ -421,14 +421,14 @@ public class GameActionListener extends KeyAdapter {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     if (gameDisplay.number_of_lives >= 2) {
                         gameDisplay.video = 8;
-                        gameDisplay.nextState = 6;
+                        gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                     } else {
                         if (gameDisplay.number_of_lives >= 1) {
                             gameDisplay.video = 9;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         } else {
                             gameDisplay.video = 10;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         }
                     }
 
@@ -447,14 +447,14 @@ public class GameActionListener extends KeyAdapter {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     if (gameDisplay.number_of_lives >= 2) {
                         gameDisplay.video = 8;
-                        gameDisplay.nextState = 6;
+                        gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                     } else {
                         if (gameDisplay.number_of_lives >= 1) {
                             gameDisplay.video = 9;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         } else {
                             gameDisplay.video = 10;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         }
                     }
 
@@ -473,14 +473,14 @@ public class GameActionListener extends KeyAdapter {
                 if (keyCode == KeyEvent.VK_ENTER) {
                     if (gameDisplay.number_of_lives >= 2) {
                         gameDisplay.video = 8;
-                        gameDisplay.nextState = 6;
+                        gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                     } else {
                         if (gameDisplay.number_of_lives >= 1) {
                             gameDisplay.video = 9;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         } else {
                             gameDisplay.video = 10;
-                            gameDisplay.nextState = 6;
+                            gameDisplay.nextState = GameState.VIDEO_TRANSITION;
                         }
                     }
 
@@ -490,7 +490,7 @@ public class GameActionListener extends KeyAdapter {
                     System.exit(0);
                 }
             }
-        } else if ((double) gameDisplay.gameState > 2.9 && (double) gameDisplay.gameState < 3.1) {
+        } else if (gameDisplay.gameState == GameState.SKI_GAME) {
 
             gameDisplay.maxW = gameDisplay.d.width - 220;
 
@@ -528,7 +528,7 @@ public class GameActionListener extends KeyAdapter {
                     gameDisplay.gamePaused = false;
                 }
             }
-        } else if ((double) gameDisplay.gameState > 3.9 && (double) gameDisplay.gameState < 4.1) {
+        } else if (gameDisplay.gameState == GameState.REMEMBER_ITEMS) {
             //keyCode = e.getKeyCode();
             // currentlyAllCorrect = true;
             if (keyCode == KeyEvent.VK_NUMPAD1 || keyCode == KeyEvent.VK_1) { // 1
@@ -638,19 +638,19 @@ public class GameActionListener extends KeyAdapter {
                 if (!gameDisplay.allCorrectInTheEnd) {
                     System.out.println("Wrong guess, not proceeding to ropes!");
 
-                    gameDisplay.nextState = 5;
+                    gameDisplay.nextState = GameState.GAME_OVER;
                 }
             }
             if (gameDisplay.allCorrectInTheEnd) {
                 System.out.println("Proceeding to ropes!");
                 gameDisplay.video = 3;
-                gameDisplay.nextState = 2;
+                gameDisplay.nextState = GameState.SHOWING_VIDEO;
             }
-        } else if ((double) gameDisplay.gameState > 4.9 && (double) gameDisplay.gameState < 5.1) {
+        } else if (gameDisplay.gameState == GameState.GAME_OVER) {
             if (keyCode == KeyEvent.VK_ENTER) {
                 if (gameDisplay.pulled_rope_1 || gameDisplay.pulled_rope_3) {
                     hugoSkiing.currentStateAtTheLevel = 71;
-                    gameDisplay.nextState = 1;
+                    gameDisplay.nextState = GameState.TITLE_SCREEN;
 
                     if (hugoSkiing.currentStateAtTheLevel >= 71) {
                         playSound(gameDisplay.fileGameMusic2, clip -> gameDisplay.clip3 = clip, -0.0f);
@@ -658,11 +658,11 @@ public class GameActionListener extends KeyAdapter {
                         playSound(gameDisplay.fileGameMusic0, clip -> gameDisplay.clip0 = clip, -0.0f);
                     }
                 } else {
-                    gameDisplay.nextState = 0;
+                    gameDisplay.nextState = GameState.PRE_TITLE;
                 }
             }
-        } else if ((double) gameDisplay.gameState >= 5.1) {
-            gameDisplay.nextState = 2;
+        } else if (gameDisplay.gameState == GameState.VIDEO_TRANSITION) {
+            gameDisplay.nextState = GameState.SHOWING_VIDEO;
             System.out.println(" --- keyPressed --- to state " + gameDisplay.nextState);
         }
     }
@@ -674,7 +674,7 @@ public class GameActionListener extends KeyAdapter {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        if (gameDisplay.gamePaused || gameDisplay.gameState != 3) return;
+        if (gameDisplay.gamePaused || gameDisplay.gameState != GameState.SKI_GAME) return;
 
         int keyCode = e.getKeyCode();
         if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
