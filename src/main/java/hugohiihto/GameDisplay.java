@@ -473,6 +473,10 @@ public final class GameDisplay extends JPanel {
         hugoSkiing = new HugoSkiing(this);
         addKeyListener(new GameActionListener(hugoSkiing));
         constructFrames(gameState);
+        videoFlush();
+    }
+
+    public void videoFlush(){
         if (videoimg != null) {  // videos should always start at the beginning
             videoimg.flush();
             videoimg = null;
@@ -1046,10 +1050,7 @@ public final class GameDisplay extends JPanel {
             star = staricon.getImage();
         }
 
-        if (videoimg != null) {  // videos should always start at the beginning
-            videoimg.flush();
-            videoimg = null;
-        }
+        videoFlush();
         repaint();
     }
 
@@ -2101,5 +2102,11 @@ public final class GameDisplay extends JPanel {
             "res/loselife_beaver"};
     private String getResourceAudioVideo(int index, String extension) {
         return files[index].concat(extension);
+    }
+
+    public void stopSound(){
+        if (this.mediaPlayer != null){
+            this.mediaPlayer.stop();
+        }
     }
 }

@@ -99,7 +99,8 @@ public class GameActionListener extends KeyAdapter {
         } else if ((double) gameDisplay.gameState > 0.9 && (double) gameDisplay.gameState < 1.1) {
             if (keyCode == KeyEvent.VK_ENTER) {
 
-                gameDisplay.videoimg = new ImageIcon("res/scylla_intro_s.gif").getImage();
+                gameDisplay.videoFlush();
+                gameDisplay.stopSound();
                 gameDisplay.videoimg = new ImageIcon("res/start_hoplaa_s.gif").getImage();
                 gameDisplay.videoimg.setAccelerationPriority((float) 1.0); // from 0-> lowest to 1-> highest
 

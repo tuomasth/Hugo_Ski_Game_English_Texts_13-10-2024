@@ -1,6 +1,7 @@
 package hugohiihto;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.TimerTask;
 
 /**
@@ -289,64 +290,30 @@ public class HugoSkiing {
         String[] s = new String[71];
         int haz[] = createStageHazards();
 
+        Map<Integer, String> hazardMap = Map.ofEntries(
+                Map.entry(0, "EEoE"),
+                Map.entry(1, "ME8E"),
+                Map.entry(2, "EM8E"),
+                Map.entry(3, "EEME"),
+                Map.entry(4, "E8EM"),
+                Map.entry(5, "8EEE"),
+                Map.entry(6, "EEE8"),
+                Map.entry(7, "EoEE"),
+                Map.entry(8, "EEEE"),
+                Map.entry(9, "QQEQ"),
+                Map.entry(10, "QEQQ"),
+                Map.entry(11, "EQQE"),
+                Map.entry(12, "QEMQ"),
+                Map.entry(13, "BMEE"),
+                Map.entry(14, "oBEE"),
+                Map.entry(15, "EEBo"),
+                Map.entry(16, "QEEB"),
+                Map.entry(17, "EoQQ")
+                // 18+ => handled separately
+        );
+
         for (int i = 0; i < 70; i++) {
-            if (haz[i] <= 0) {
-                s[i] = "EEoE";
-            }
-            if (haz[i] == 1) {
-                s[i] = "ME8E";
-            }
-            if (haz[i] == 2) {
-                s[i] = "EM8E";
-            }
-            if (haz[i] == 3) {
-                s[i] = "EEME";
-            }
-            if (haz[i] == 4) {
-                s[i] = "E8EM";
-            }
-            if (haz[i] == 5) {
-                s[i] = "8EEE";
-            }
-            if (haz[i] == 6) {
-                s[i] = "EEE8";
-            }
-            if (haz[i] == 7) {
-                s[i] = "EoEE";
-            }
-            if (haz[i] == 8) {
-                s[i] = "EEEE";
-            }
-            if (haz[i] == 9) {
-                s[i] = "QQEQ";
-            }
-            if (haz[i] == 10) {
-                s[i] = "QEQQ";
-            }
-            if (haz[i] == 11) {
-                s[i] = "EQQE";
-            }
-            if (haz[i] == 12) {
-                s[i] = "QEMQ";
-            }
-            if (haz[i] == 13) {
-                s[i] = "BMEE";
-            }
-            if (haz[i] == 14) {
-                s[i] = "oBEE";
-            }
-            if (haz[i] == 15) {
-                s[i] = "EEBo";
-            }
-            if (haz[i] == 16) {
-                s[i] = "QEEB";
-            }
-            if (haz[i] == 17) {
-                s[i] = "EoQQ";
-            }
-            if (haz[i] >= 18) {
-                s[i] = "QQoE";
-            }
+            s[i] = hazardMap.getOrDefault(haz[i], "QQoE"); // fallback >= 18
         }
 
         // zero counts as the 1st number,

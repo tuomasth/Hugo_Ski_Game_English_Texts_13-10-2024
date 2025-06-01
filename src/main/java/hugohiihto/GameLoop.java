@@ -6,6 +6,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -179,17 +180,11 @@ public class GameLoop extends TimerTask {
                         gameDisplay.currentHazardOrMoney3_y_position += 4;
                         gameDisplay.currentHazardOrMoney4_y_position += 4;
                         gameDisplay.vanish4Faster = true;
-                        if (gameDisplay.currentGrid == 0) {
-                            gameDisplay.currentHazardOrMoney1_y_position += 400;
-                        }
-                        if (gameDisplay.currentGrid == 1) {
-                            gameDisplay.currentHazardOrMoney2_y_position += 400;
-                        }
-                        if (gameDisplay.currentGrid == 2) {
-                            gameDisplay.currentHazardOrMoney3_y_position += 400;
-                        }
-                        if (gameDisplay.currentGrid == 3) {
-                            gameDisplay.currentHazardOrMoney4_y_position += 400;
+                        switch (gameDisplay.currentGrid) {
+                            case 0 -> gameDisplay.currentHazardOrMoney1_y_position += 400;
+                            case 1 -> gameDisplay.currentHazardOrMoney2_y_position += 400;
+                            case 2 -> gameDisplay.currentHazardOrMoney3_y_position += 400;
+                            case 3 -> gameDisplay.currentHazardOrMoney4_y_position += 400;
                         }
 
                         try {
@@ -299,59 +294,25 @@ public class GameLoop extends TimerTask {
                     gameDisplay.currentHazardOrMoney1_y_position = 30;
                 }
 
+                Set<Character> allowed = Set.of('E', 'M', '8', 'o', 'Q', 'B', '1', '2', 'S', 'F');
                 for (int i = 0; i < hugoSkiing.haz.length; i++) {
                     if (hugoSkiing.theFurthestThePlayerHasGot == i) {
                         System.out.print(" ... ABOUT TO GIVE THE NEXT 4 with index " + i + " --- " + hugoSkiing.haz[i]);
                         compareString = hugoSkiing.haz[i];
                         String values = hugoSkiing.haz[i];
-                        if (values.charAt(0) == 'E' ||
-                                values.charAt(0) == 'M' ||
-                                values.charAt(0) == '8' ||
-                                values.charAt(0) == 'o' ||
-                                values.charAt(0) == 'Q' ||
-                                values.charAt(0) == 'B' ||
-                                values.charAt(0) == '1' ||
-                                values.charAt(0) == '2' ||
-                                values.charAt(0) == 'S' ||
-                                values.charAt(0) == 'F') {
-                            gameDisplay.setcurrentHazardOrMoney1(String.valueOf(values.charAt(0)));
+
+                        for (int j = 0; j < 4; j++) {
+                            char c = values.charAt(j);
+                            if (allowed.contains(c)) {
+                                switch (j) {
+                                    case 0 -> gameDisplay.setcurrentHazardOrMoney1(String.valueOf(c));
+                                    case 1 -> gameDisplay.setcurrentHazardOrMoney2(String.valueOf(c));
+                                    case 2 -> gameDisplay.setcurrentHazardOrMoney3(String.valueOf(c));
+                                    case 3 -> gameDisplay.setcurrentHazardOrMoney4(String.valueOf(c));
+                                }
+                            }
                         }
-                        if (values.charAt(1) == 'E' ||
-                                values.charAt(1) == 'M' ||
-                                values.charAt(1) == '8' ||
-                                values.charAt(1) == 'o' ||
-                                values.charAt(1) == 'Q' ||
-                                values.charAt(1) == 'B' ||
-                                values.charAt(1) == '1' ||
-                                values.charAt(1) == '2' ||
-                                values.charAt(1) == 'S' ||
-                                values.charAt(1) == 'F') {
-                            gameDisplay.setcurrentHazardOrMoney2(String.valueOf(values.charAt(1)));
-                        }
-                        if (values.charAt(2) == 'E' ||
-                                values.charAt(2) == 'M' ||
-                                values.charAt(2) == '8' ||
-                                values.charAt(2) == 'o' ||
-                                values.charAt(2) == 'Q' ||
-                                values.charAt(2) == 'B' ||
-                                values.charAt(2) == '1' ||
-                                values.charAt(2) == '2' ||
-                                values.charAt(2) == 'S' ||
-                                values.charAt(2) == 'F') {
-                            gameDisplay.setcurrentHazardOrMoney3(String.valueOf(values.charAt(2)));
-                        }
-                        if (values.charAt(3) == 'E' ||
-                                values.charAt(3) == 'M' ||
-                                values.charAt(3) == '8' ||
-                                values.charAt(3) == 'o' ||
-                                values.charAt(3) == 'Q' ||
-                                values.charAt(3) == 'B' ||
-                                values.charAt(3) == '1' ||
-                                values.charAt(3) == '2' ||
-                                values.charAt(3) == 'S' ||
-                                values.charAt(3) == 'F') {
-                            gameDisplay.setcurrentHazardOrMoney4(String.valueOf(values.charAt(3)));
-                        }
+
 
                         if (!"FFFF".equals(hugoSkiing.haz[i])) {
                             hugoSkiing.haz[i] = "EEEE";
