@@ -1,4 +1,4 @@
-package hugohiihto;
+package hugohiihto.type;
 
 public enum GameState {
     PRE_TITLE,        // 0 - No music

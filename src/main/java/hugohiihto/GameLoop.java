@@ -1,5 +1,8 @@
 package hugohiihto;
 
+import hugohiihto.type.GameState;
+import hugohiihto.type.VideoType;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
@@ -41,7 +44,7 @@ public class GameLoop extends TimerTask {
             gameDisplay.gamePaused = true;
 
             if (hugoSkiing.currentStateAtTheLevel >= 71 && gameDisplay.gamePaused) {
-                gameDisplay.video = 7;
+                gameDisplay.video = VideoType.SKIING_FINISHED;
                 gameDisplay.nextState = GameState.VIDEO_TRANSITION;
             }
         }
@@ -92,35 +95,35 @@ public class GameLoop extends TimerTask {
                     if (compareString.charAt(gameDisplay.currentGrid) == '8') {
                         System.out.println("ENEMY HIT -1---- SNOWMAN" + ", line (from 0 to 3) is " + gameDisplay.currentGrid);
                         gameDisplay.gamePaused = true;
-                        gameDisplay.video = 14;
+                        gameDisplay.video = VideoType.SNOWMAN;
                         gameDisplay.nextState = GameState.SHOWING_VIDEO;
                         hugoSkiing.decreaseLives(gameDisplay.number_of_lives);
                     }
                     if (compareString.charAt(gameDisplay.currentGrid) == 'o') {
                         System.out.println("ENEMY HIT --2--- SNOWBALL" + ", line (from 0 to 3) is " + gameDisplay.currentGrid);
                         gameDisplay.gamePaused = true;
-                        gameDisplay.video = 15;
+                        gameDisplay.video = VideoType.SNOWBALL;
                         gameDisplay.nextState = GameState.SHOWING_VIDEO;
                         hugoSkiing.decreaseLives(gameDisplay.number_of_lives);
                     }
                     if (compareString.charAt(gameDisplay.currentGrid) == 'Q') {
                         System.out.println("ENEMY HIT ---3-- BOMB" + ", line (from 0 to 3) is " + gameDisplay.currentGrid);
                         gameDisplay.gamePaused = true;
-                        gameDisplay.video = 16;
+                        gameDisplay.video = VideoType.BOMB;
                         gameDisplay.nextState = GameState.SHOWING_VIDEO;
                         hugoSkiing.decreaseLives(gameDisplay.number_of_lives);
                     }
                     if (compareString.charAt(gameDisplay.currentGrid) == 'B') {
                         System.out.println("ENEMY HIT ----4- BEAVER" + ", line (from 0 to 3) is " + gameDisplay.currentGrid);
                         gameDisplay.gamePaused = true;
-                        gameDisplay.video = 17;
+                        gameDisplay.video = VideoType.BEAVER;
                         gameDisplay.nextState = GameState.SHOWING_VIDEO;
                         hugoSkiing.decreaseLives(gameDisplay.number_of_lives);
                     }
                     if (compareString.charAt(gameDisplay.currentGrid) == 'S') {
                         System.out.println("SCYLLA BUTTON PRESS");
                         gameDisplay.gamePaused = true;
-                        gameDisplay.video = 2;
+                        gameDisplay.video = VideoType.SCYLLA_BUTTON;
                         gameDisplay.nextState = GameState.SHOWING_VIDEO;
 
                         gameDisplay.clip4 = null; // clip variables are music or sound

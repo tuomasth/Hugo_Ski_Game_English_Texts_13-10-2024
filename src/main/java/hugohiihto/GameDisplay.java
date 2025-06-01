@@ -1,5 +1,8 @@
 package hugohiihto;
 
+import hugohiihto.type.GameState;
+import hugohiihto.type.VideoType;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -151,18 +154,9 @@ public final class GameDisplay extends JPanel {
     boolean useMP4 = false; // if false, use gifs that might flicker if made incorrectly
     // should be false though because mp4s will open a new window currently, Windows Media Player for instance. 
     // The original Hugo graphics and sounds have been edited.
-    int video = 0;
+    VideoType video = VideoType.SCYLLA_INTRO;
     ImageIcon videoIMGicon;
     Image videoimg = null; // .gif expected + .aiff for sound 
-    // 0 = Scylla intro,          1 = Hugo's first words hoplaa nyt hommiin,
-    // 2 = Scylla button,         3 = three ropes intro,
-    // 4 = Hugo asks for two,     5 = two chosen correctly,
-    // 6 = made a wrong choice,   7 = (knock) Hugo finished the skiing,
-    // 8 = [knock] wake up pahvi, 9 = (knock) now the last troll going,
-    // 10 = (knock) game over,    11 = rope #1,
-    // 12 = rope #2,              13 = rope #3,
-    // 14 = snowman,              15 = snowball,
-    // 16 = bomb,                 17 = beaver.
     boolean cheatBackflip180 = false;
     boolean key1 = false;
     boolean key2 = false;
@@ -473,7 +467,7 @@ public final class GameDisplay extends JPanel {
         videoFlush();
     }
 
-    public void videoFlush(){
+    public void videoFlush() {
         if (videoimg != null) {  // videos should always start at the beginning
             videoimg.flush();
             videoimg = null;
@@ -643,410 +637,422 @@ public final class GameDisplay extends JPanel {
      * @param gameState
      */
     public void constructFrames(GameState gameState) {
-        repaint();
         if (gameState != nextState) {
-            //System.out.println("gameState != nextState");
             return;
         }
-        if (gameState == GameState.PRE_TITLE) {
 
-            ImageIcon theVeryFirst_icon = new ImageIcon("res/_the_very_1st_texts.png");
-            int wi = (int) d.getWidth();
-            int he = (int) d.getHeight() - 35;
-            theVeryFirst_icon.setImage(theVeryFirst_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
-            theVeryFirst = theVeryFirst_icon.getImage();
+        repaint(); // Initial repaint
 
-            setFocusable(true);
-
-        }
-        if (gameState == GameState.TITLE_SCREEN) {
-            if (gameState != GameState.SKI_GAME && nextState != GameState.SKI_GAME) {
-                gamePaused = true;
+        switch (gameState) {
+            case PRE_TITLE -> preTitle();
+            case TITLE_SCREEN -> titleScreen(gameState);
+            case SHOWING_VIDEO -> showingVideo();
+            case SKI_GAME -> skiGame();
+            case REMEMBER_ITEMS -> rememberItems();
+            case GAME_OVER -> gameOver();
+            default -> {
+                // Handle unexpected states if needed
             }
-
-            if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
-                ImageIcon credits_icon = new ImageIcon("res/credits_screen.png");
-                int wi = (int) d.getWidth() - 2;
-                int he = (int) d.getHeight() - 37;
-                credits_icon.setImage(credits_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
-                creditsScreen = credits_icon.getImage();
-
-                setFocusable(true);
-            } else {
-                ImageIcon title_icon = new ImageIcon("res/title_screen.png");
-                int wi = (int) d.getWidth() - 15;
-                int he = (int) d.getHeight() - 20;
-                title_icon.setImage(title_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
-                titleScreen = title_icon.getImage();
-
-                setFocusable(true);
-            }
-        }
-        if (gameState == GameState.SHOWING_VIDEO) {
-
-            setFocusable(true);
-            if (!useMP4) {
-                String pathSound = getResourceAudioVideo(video, ".aiff");
-                File fi = new File(pathSound); // .aiff is a well-working sound format for the current video setup
-                URL mediaURL = null;
-                try {
-                    mediaURL = fi.toURL();
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
-                }
-
-                try {
-                    mediaPlayer = Manager.createPlayer(mediaURL);
-
-                } catch (IOException | NoPlayerException ex) {
-                    Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
-                }
-
-                mediaPlayer.start();
-                System.out.println("Playing sound for a video");
-            }
-        }
-        if (gameState == GameState.SKI_GAME) {
-            repaint();
-            ImageIcon west = new ImageIcon("res/hugo_ski_L.gif");
-            ImageIcon east = new ImageIcon("res/hugo_ski_R.gif");
-
-            w_width = 110;
-            west.setImage(west.getImage().getScaledInstance(w_width, w_height, Image.SCALE_DEFAULT));
-            sprite_L2 = west.getImage();
-
-            w_width = 90;
-            west.setImage(west.getImage().getScaledInstance(w_width, w_height, Image.SCALE_DEFAULT));
-            sprite_L = west.getImage();
-
-            e_width = 90;
-            east.setImage(east.getImage().getScaledInstance(e_width, e_height, Image.SCALE_DEFAULT));
-            sprite_R = east.getImage();
-
-            e_width = 110;
-            east.setImage(east.getImage().getScaledInstance(e_width, e_height, Image.SCALE_DEFAULT));
-            sprite_R2 = east.getImage();
-
-
-            ImageIcon j = new ImageIcon("res/background1.gif");
-            int wi = (int) d.getWidth() - 10;
-            int he = (int) d.getHeight() - 35;
-            j.setImage(j.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
-            bg = j.getImage();
-
-            setFocusable(true);
-
-            x = 55;
-            y = (int) ((int) d.getHeight() / 2.67);
-
-            // decoration graphics: trees, cloud(s) etc.
-            cloud_x_position = (int) ((int) d.getWidth() / 3);
-            cloud_y_position = (int) ((int) d.getHeight() / 25);
-            ImageIcon cloudicon = new ImageIcon("res/cloud.png");
-            int cloudiconw = cloudicon.getIconWidth();
-            int cloudiconh = cloudicon.getIconHeight();
-            cloudicon.setImage(cloudicon.getImage().getScaledInstance(cloudiconw, cloudiconh, Image.SCALE_DEFAULT));
-            cloud = cloudicon.getImage();
-
-            possibleTree1_x_position = (d.width / 5) - 40;
-            possibleTree1_y_position = (d.height / 17) + 20;
-            possibleTree1icon = new ImageIcon("res/trees2.png");
-            possibleTree1iconw = possibleTree1icon.getIconWidth();
-            possibleTree1iconh = possibleTree1icon.getIconHeight();
-            possibleTree1icon.setImage(possibleTree1icon.getImage()
-                    .getScaledInstance(possibleTree1iconw, possibleTree1iconh, Image.SCALE_DEFAULT));
-            possibleTree1 = possibleTree1icon.getImage();
-
-            possibleTree2_x_position = (d.width / 5) - 40;
-            possibleTree2_y_position = (d.height / 17) + 20;
-            possibleTree2icon = new ImageIcon("res/trees0.png");
-            possibleTree2iconw = possibleTree2icon.getIconWidth();
-            possibleTree2iconh = possibleTree2icon.getIconHeight();
-            possibleTree2icon.setImage(possibleTree2icon.getImage()
-                    .getScaledInstance(possibleTree2iconw, possibleTree2iconh, Image.SCALE_DEFAULT));
-            possibleTree2 = possibleTree2icon.getImage();
-
-            possibleTree3_x_position = (d.width / 5) - 40;
-            possibleTree3_y_position = (d.height / 17) + 20;
-            possibleTree3icon = new ImageIcon("res/trees1.png");
-            possibleTree3iconw = possibleTree3icon.getIconWidth();
-            possibleTree3iconh = possibleTree3icon.getIconHeight();
-            possibleTree3icon.setImage(possibleTree3icon.getImage()
-                    .getScaledInstance(possibleTree3iconw, possibleTree3iconh, Image.SCALE_DEFAULT));
-            possibleTree3 = possibleTree3icon.getImage();
-
-            possibleTree4_x_position = (int) ((int) d.getWidth() / 2) + 70;
-            possibleTree4_y_position = (int) ((int) d.getHeight() / 4) - 90;
-            possibleTree4icon = new ImageIcon("res/trees2.png");
-            possibleTree4iconw = possibleTree4icon.getIconWidth();
-            possibleTree4iconh = possibleTree4icon.getIconHeight();
-            possibleTree4icon.setImage(possibleTree4icon.getImage()
-                    .getScaledInstance(possibleTree4iconw, possibleTree4iconh, Image.SCALE_DEFAULT));
-            possibleTree4 = possibleTree4icon.getImage();
-
-            possibleTree5_x_position = (int) ((int) d.getWidth() / 2) + 70;
-            possibleTree5_y_position = (int) ((int) d.getHeight() / 4) - 90;
-            possibleTree5icon = new ImageIcon("res/trees0.png");
-            possibleTree5iconw = possibleTree5icon.getIconWidth();
-            possibleTree5iconh = possibleTree5icon.getIconHeight();
-            possibleTree5icon.setImage(possibleTree5icon.getImage()
-                    .getScaledInstance(possibleTree5iconw, possibleTree5iconh, Image.SCALE_DEFAULT));
-            possibleTree5 = possibleTree5icon.getImage();
-
-            possibleTree6_x_position = (int) ((int) d.getWidth() / 2) + 70;
-            possibleTree6_y_position = (int) ((int) d.getHeight() / 4) - 90;
-            possibleTree6icon = new ImageIcon("res/trees1.png");
-            possibleTree6iconw = possibleTree6icon.getIconWidth();
-            possibleTree6iconh = possibleTree6icon.getIconHeight();
-            possibleTree6icon.setImage(possibleTree6icon.getImage()
-                    .getScaledInstance(possibleTree6iconw, possibleTree6iconh, Image.SCALE_DEFAULT));
-            possibleTree6 = possibleTree6icon.getImage();
-
-            possibleTree7_x_position = (int) ((int) d.getWidth() / 2) + 72;
-            possibleTree7_y_position = (int) ((int) d.getHeight() / 4) - 92;
-            possibleTree7icon = new ImageIcon("res/trees2.png");
-            possibleTree7iconw = possibleTree7icon.getIconWidth();
-            possibleTree7iconh = possibleTree7icon.getIconHeight();
-            possibleTree7icon.setImage(possibleTree7icon.getImage()
-                    .getScaledInstance(possibleTree7iconw, possibleTree7iconh, Image.SCALE_DEFAULT));
-            possibleTree7 = possibleTree7icon.getImage();
-
-            possibleTree8_x_position = (d.width / 5) - 42;
-            possibleTree8_y_position = (d.height / 17) + 22;
-            possibleTree8icon = new ImageIcon("res/trees1.png");
-            possibleTree8iconw = possibleTree8icon.getIconWidth();
-            possibleTree8iconh = possibleTree8icon.getIconHeight();
-            possibleTree8icon.setImage(possibleTree8icon.getImage()
-                    .getScaledInstance(possibleTree8iconw, possibleTree8iconh, Image.SCALE_DEFAULT));
-            possibleTree8 = possibleTree8icon.getImage();
-
-
-            hugolife1_x_position = (int) ((int) d.getWidth() / 55);
-            hugolife1_y_position = (int) ((int) d.getHeight() / 1.3);
-            ImageIcon life1 = new ImageIcon("res/hugo_life.png");
-            int life1w = life1.getIconWidth();
-            int life1h = life1.getIconHeight();
-            life1.setImage(life1.getImage().getScaledInstance(life1w, life1h, Image.SCALE_DEFAULT));
-            hugolife1 = life1.getImage();
-
-            hugolife2_x_position = (int) ((int) d.getWidth() / 55) + 80;
-            hugolife2_y_position = (int) ((int) d.getHeight() / 1.3);
-            ImageIcon life2 = new ImageIcon("res/hugo_life.png");
-            int life2w = life2.getIconWidth();
-            int life2h = life2.getIconHeight();
-            life2.setImage(life2.getImage().getScaledInstance(life2w, life2h, Image.SCALE_DEFAULT));
-            hugolife2 = life2.getImage();
-
-            hugolife3_x_position = (int) ((int) d.getWidth() / 55) + 160;
-            hugolife3_y_position = (int) ((int) d.getHeight() / 1.3);
-            ImageIcon life3 = new ImageIcon("res/hugo_life.png");
-            int life3w = life3.getIconWidth();
-            int life3h = life3.getIconHeight();
-            life3.setImage(life3.getImage().getScaledInstance(life3w, life3h, Image.SCALE_DEFAULT));
-            hugolife3 = life3.getImage();
-
-            pause_x_position = (int) ((int) d.getWidth() / 6);
-            pause_y_position = (int) ((int) d.getHeight() / 3);
-            ImageIcon pauseicon = new ImageIcon("res/pause.png");
-            int pausew = pauseicon.getIconWidth();
-            int pauseh = pauseicon.getIconHeight();
-            pauseicon.setImage(pauseicon.getImage().getScaledInstance(pausew, pauseh, Image.SCALE_DEFAULT));
-            pause = pauseicon.getImage();
-
-            scorebar_x_position = 0;
-            scorebar_y_position = (int) ((int) d.getHeight() / 1.35);
-            ImageIcon scorebaricon = new ImageIcon("res/score-life-bar.png");
-            int scorebarw = scorebaricon.getIconWidth();
-            int scorebarh = scorebaricon.getIconHeight();
-            scorebaricon.setImage(scorebaricon.getImage().getScaledInstance(scorebarw * 5, scorebarh, Image.SCALE_DEFAULT));
-            scorebar = scorebaricon.getImage();
-
-        }
-        if (gameState == GameState.REMEMBER_ITEMS) {
-
-            ImageIcon io = new ImageIcon("res/cave_entrance00.png");
-            int wi = (int) d.getWidth() - 10;
-            int he = (int) d.getHeight() - 35;
-            io.setImage(io.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
-            bgCave = io.getImage();
-
-            setFocusable(true);
-
-            cave_x = 1;
-            cave_y = 1;
-
-            for (int i = 0; i < 6; i++) {
-                int pos = 0;
-                int hei = 0;
-                if (i == 0) {
-                    pos = position1;
-                    hei = heightLevel1;
-
-                    u1b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
-                    u1b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
-                    ImageIcon u1bicon = new ImageIcon("res/num_select1.png");
-                    ImageIcon u1wicon = new ImageIcon("res/num_selected1.png");
-                    int u1we = u1bicon.getIconWidth();
-                    int u1he = u1bicon.getIconHeight();
-                    u1bicon.setImage(u1bicon.getImage().getScaledInstance(u1we, u1he, Image.SCALE_DEFAULT));
-                    u1b = u1bicon.getImage();
-                    u1wicon.setImage(u1wicon.getImage().getScaledInstance(u1we, u1he, Image.SCALE_DEFAULT));
-                    u1w = u1wicon.getImage();
-                }
-                if (i == 1) {
-                    pos = position2;
-                    hei = heightLevel1;
-
-                    u2b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
-                    u2b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
-                    ImageIcon u2bicon = new ImageIcon("res/num_select2.png");
-                    ImageIcon u2wicon = new ImageIcon("res/num_selected2.png");
-                    int u2we = u2bicon.getIconWidth();
-                    int u2he = u2bicon.getIconHeight();
-                    u2bicon.setImage(u2bicon.getImage().getScaledInstance(u2we, u2he, Image.SCALE_DEFAULT));
-                    u2b = u2bicon.getImage();
-                    u2wicon.setImage(u2wicon.getImage().getScaledInstance(u2we, u2he, Image.SCALE_DEFAULT));
-                    u2w = u2wicon.getImage();
-                }
-                if (i == 2) {
-                    pos = position3;
-                    hei = heightLevel1;
-
-                    u3b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
-                    u3b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
-                    ImageIcon u3bicon = new ImageIcon("res/num_select3.png");
-                    ImageIcon u3wicon = new ImageIcon("res/num_selected3.png");
-                    int u3we = u3bicon.getIconWidth();
-                    int u3he = u3bicon.getIconHeight();
-                    u3bicon.setImage(u3bicon.getImage().getScaledInstance(u3we, u3he, Image.SCALE_DEFAULT));
-                    u3b = u3bicon.getImage();
-                    u3wicon.setImage(u3wicon.getImage().getScaledInstance(u3we, u3he, Image.SCALE_DEFAULT));
-                    u3w = u3wicon.getImage();
-                }
-                if (i == 3) {
-                    pos = position1;
-                    hei = heightLevel2;
-
-                    d1b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
-                    d1b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
-                    ImageIcon d1bicon = new ImageIcon("res/num_select1.png");
-                    ImageIcon d1wicon = new ImageIcon("res/num_selected1.png");
-                    int d1we = d1bicon.getIconWidth();
-                    int d1he = d1bicon.getIconHeight();
-                    d1bicon.setImage(d1bicon.getImage().getScaledInstance(d1we, d1he, Image.SCALE_DEFAULT));
-                    d1b = d1bicon.getImage();
-                    d1wicon.setImage(d1wicon.getImage().getScaledInstance(d1we, d1he, Image.SCALE_DEFAULT));
-                    d1w = d1wicon.getImage();
-                }
-                if (i == 4) {
-                    pos = position2;
-                    hei = heightLevel2;
-
-                    d2b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
-                    d2b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
-                    ImageIcon d2bicon = new ImageIcon("res/num_select2.png");
-                    ImageIcon d2wicon = new ImageIcon("res/num_selected2.png");
-                    int d2we = d2bicon.getIconWidth();
-                    int d2he = d2bicon.getIconHeight();
-                    d2bicon.setImage(d2bicon.getImage().getScaledInstance(d2we, d2he, Image.SCALE_DEFAULT));
-                    d2b = d2bicon.getImage();
-                    d2wicon.setImage(d2wicon.getImage().getScaledInstance(d2we, d2he, Image.SCALE_DEFAULT));
-                    d2w = d2wicon.getImage();
-                }
-                if (i == 5) {
-                    pos = position3;
-                    hei = heightLevel2;
-
-                    d3b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
-                    d3b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
-                    ImageIcon d3bicon = new ImageIcon("res/num_select3.png");
-                    ImageIcon d3wicon = new ImageIcon("res/num_selected3.png");
-                    int d3we = d3bicon.getIconWidth();
-                    int d3he = d3bicon.getIconHeight();
-                    d3bicon.setImage(d3bicon.getImage().getScaledInstance(d3we, d3he, Image.SCALE_DEFAULT));
-                    d3b = d3bicon.getImage();
-                    d3wicon.setImage(d3wicon.getImage().getScaledInstance(d3we, d3he, Image.SCALE_DEFAULT));
-                    d3w = d3wicon.getImage();
-                }
-
-                if (thingsToRemember.charAt(i) == 'a' || thingsToRemember.charAt(i) == 'A') {
-                    asterisk_x_position = (int) ((int) d.getWidth() / 6) + (pos);
-                    asterisk_y_position = (int) ((int) d.getHeight() / 19) + (hei);
-                    ImageIcon asteriskicon = new ImageIcon("res/remember_A_asterisk.png");
-                    int asteriskw = asteriskicon.getIconWidth();
-                    int asteriskh = asteriskicon.getIconHeight();
-                    asteriskicon.setImage(asteriskicon.getImage().getScaledInstance(asteriskw, asteriskh, Image.SCALE_DEFAULT));
-                    asterisk = asteriskicon.getImage();
-                }
-                if (thingsToRemember.charAt(i) == 'b' || thingsToRemember.charAt(i) == 'B') {
-                    bell_x_position = (int) ((int) d.getWidth() / 6) + (pos);
-                    bell_y_position = (int) ((int) d.getHeight() / 19) + (hei);
-                    ImageIcon bellicon = new ImageIcon("res/remember_B_bell.png");
-                    int bellw = bellicon.getIconWidth();
-                    int bellh = bellicon.getIconHeight();
-                    bellicon.setImage(bellicon.getImage().getScaledInstance(bellw, bellh, Image.SCALE_DEFAULT));
-                    bell = bellicon.getImage();
-                }
-                if (thingsToRemember.charAt(i) == 'c' || thingsToRemember.charAt(i) == 'C') {
-                    clock_x_position = (int) ((int) d.getWidth() / 6) + (pos);
-                    clock_y_position = (int) ((int) d.getHeight() / 19) + (hei);
-                    ImageIcon clockicon = new ImageIcon("res/remember_C_clock.png");
-                    int clockw = clockicon.getIconWidth();
-                    int clockh = clockicon.getIconHeight();
-                    clockicon.setImage(clockicon.getImage().getScaledInstance(clockw, clockh, Image.SCALE_DEFAULT));
-                    clock = clockicon.getImage();
-                }
-                if (thingsToRemember.charAt(i) == 'd' || thingsToRemember.charAt(i) == 'D') {
-                    diamond_x_position = (int) ((int) d.getWidth() / 6) + (pos);
-                    diamond_y_position = (int) ((int) d.getHeight() / 19) + (hei);
-                    ImageIcon diamondicon = new ImageIcon("res/remember_D_diamond.png");
-                    int diamondw = diamondicon.getIconWidth();
-                    int diamondh = diamondicon.getIconHeight();
-                    diamondicon.setImage(diamondicon.getImage().getScaledInstance(diamondw, diamondh, Image.SCALE_DEFAULT));
-                    diamond = diamondicon.getImage();
-                }
-                if (thingsToRemember.charAt(i) == 'h' || thingsToRemember.charAt(i) == 'H') {
-                    hashtag_x_position = (int) ((int) d.getWidth() / 6) + (pos);
-                    hashtag_y_position = (int) ((int) d.getHeight() / 19) + (hei);
-                    ImageIcon hashtagicon = new ImageIcon("res/remember_H_hash.png");
-                    int hashtagw = hashtagicon.getIconWidth();
-                    int hashtagh = hashtagicon.getIconHeight();
-                    hashtagicon.setImage(hashtagicon.getImage().getScaledInstance(hashtagw, hashtagh, Image.SCALE_DEFAULT));
-                    hashtag = hashtagicon.getImage();
-                }
-                if (thingsToRemember.charAt(i) == 's' || thingsToRemember.charAt(i) == 'S') {
-                    star_x_position = (int) ((int) d.getWidth() / 6) + (pos);
-                    star_y_position = (int) ((int) d.getHeight() / 19) + (hei);
-                    ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
-                    int starw = staricon.getIconWidth();
-                    int starh = staricon.getIconHeight();
-                    staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
-                    star = staricon.getImage();
-                }
-
-            }
-
-        }
-        if (gameState == GameState.GAME_OVER) {
-            setFocusable(true);
-
-            ImageIcon scoreBG = new ImageIcon("res/title_screen_nothing.png");
-            int wi = (int) d.getWidth();
-            int he = (int) d.getHeight();
-            scoreBG.setImage(scoreBG.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
-            scoreBGR = scoreBG.getImage();
-
-            star_x_position = (int) ((int) d.getWidth() / 6);
-            star_y_position = (int) ((int) d.getHeight() / 19);
-            ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
-            int starw = staricon.getIconWidth();
-            int starh = staricon.getIconHeight();
-            staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
-            star = staricon.getImage();
         }
 
         videoFlush();
+        repaint(); // Final repaint
+    }
+
+    private void gameOver() {
+        setFocusable(true);
+
+        ImageIcon scoreBG = new ImageIcon("res/title_screen_nothing.png");
+        int wi = (int) d.getWidth();
+        int he = (int) d.getHeight();
+        scoreBG.setImage(scoreBG.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
+        scoreBGR = scoreBG.getImage();
+
+        star_x_position = (int) ((int) d.getWidth() / 6);
+        star_y_position = (int) ((int) d.getHeight() / 19);
+        ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
+        int starw = staricon.getIconWidth();
+        int starh = staricon.getIconHeight();
+        staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
+        star = staricon.getImage();
+    }
+
+    private void rememberItems() {
+        ImageIcon io = new ImageIcon("res/cave_entrance00.png");
+        int wi = (int) d.getWidth() - 10;
+        int he = (int) d.getHeight() - 35;
+        io.setImage(io.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
+        bgCave = io.getImage();
+
+        setFocusable(true);
+
+        cave_x = 1;
+        cave_y = 1;
+
+        for (int i = 0; i < 6; i++) {
+            int pos = 0;
+            int hei = 0;
+            if (i == 0) {
+                pos = position1;
+                hei = heightLevel1;
+
+                u1b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                u1b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
+                ImageIcon u1bicon = new ImageIcon("res/num_select1.png");
+                ImageIcon u1wicon = new ImageIcon("res/num_selected1.png");
+                int u1we = u1bicon.getIconWidth();
+                int u1he = u1bicon.getIconHeight();
+                u1bicon.setImage(u1bicon.getImage().getScaledInstance(u1we, u1he, Image.SCALE_DEFAULT));
+                u1b = u1bicon.getImage();
+                u1wicon.setImage(u1wicon.getImage().getScaledInstance(u1we, u1he, Image.SCALE_DEFAULT));
+                u1w = u1wicon.getImage();
+            }
+            if (i == 1) {
+                pos = position2;
+                hei = heightLevel1;
+
+                u2b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                u2b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
+                ImageIcon u2bicon = new ImageIcon("res/num_select2.png");
+                ImageIcon u2wicon = new ImageIcon("res/num_selected2.png");
+                int u2we = u2bicon.getIconWidth();
+                int u2he = u2bicon.getIconHeight();
+                u2bicon.setImage(u2bicon.getImage().getScaledInstance(u2we, u2he, Image.SCALE_DEFAULT));
+                u2b = u2bicon.getImage();
+                u2wicon.setImage(u2wicon.getImage().getScaledInstance(u2we, u2he, Image.SCALE_DEFAULT));
+                u2w = u2wicon.getImage();
+            }
+            if (i == 2) {
+                pos = position3;
+                hei = heightLevel1;
+
+                u3b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                u3b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
+                ImageIcon u3bicon = new ImageIcon("res/num_select3.png");
+                ImageIcon u3wicon = new ImageIcon("res/num_selected3.png");
+                int u3we = u3bicon.getIconWidth();
+                int u3he = u3bicon.getIconHeight();
+                u3bicon.setImage(u3bicon.getImage().getScaledInstance(u3we, u3he, Image.SCALE_DEFAULT));
+                u3b = u3bicon.getImage();
+                u3wicon.setImage(u3wicon.getImage().getScaledInstance(u3we, u3he, Image.SCALE_DEFAULT));
+                u3w = u3wicon.getImage();
+            }
+            if (i == 3) {
+                pos = position1;
+                hei = heightLevel2;
+
+                d1b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                d1b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
+                ImageIcon d1bicon = new ImageIcon("res/num_select1.png");
+                ImageIcon d1wicon = new ImageIcon("res/num_selected1.png");
+                int d1we = d1bicon.getIconWidth();
+                int d1he = d1bicon.getIconHeight();
+                d1bicon.setImage(d1bicon.getImage().getScaledInstance(d1we, d1he, Image.SCALE_DEFAULT));
+                d1b = d1bicon.getImage();
+                d1wicon.setImage(d1wicon.getImage().getScaledInstance(d1we, d1he, Image.SCALE_DEFAULT));
+                d1w = d1wicon.getImage();
+            }
+            if (i == 4) {
+                pos = position2;
+                hei = heightLevel2;
+
+                d2b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                d2b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
+                ImageIcon d2bicon = new ImageIcon("res/num_select2.png");
+                ImageIcon d2wicon = new ImageIcon("res/num_selected2.png");
+                int d2we = d2bicon.getIconWidth();
+                int d2he = d2bicon.getIconHeight();
+                d2bicon.setImage(d2bicon.getImage().getScaledInstance(d2we, d2he, Image.SCALE_DEFAULT));
+                d2b = d2bicon.getImage();
+                d2wicon.setImage(d2wicon.getImage().getScaledInstance(d2we, d2he, Image.SCALE_DEFAULT));
+                d2w = d2wicon.getImage();
+            }
+            if (i == 5) {
+                pos = position3;
+                hei = heightLevel2;
+
+                d3b_x_position = (int) ((int) d.getWidth() / 6) + (pos - 2);
+                d3b_y_position = (int) ((int) d.getHeight() / 19) + (hei + 90);
+                ImageIcon d3bicon = new ImageIcon("res/num_select3.png");
+                ImageIcon d3wicon = new ImageIcon("res/num_selected3.png");
+                int d3we = d3bicon.getIconWidth();
+                int d3he = d3bicon.getIconHeight();
+                d3bicon.setImage(d3bicon.getImage().getScaledInstance(d3we, d3he, Image.SCALE_DEFAULT));
+                d3b = d3bicon.getImage();
+                d3wicon.setImage(d3wicon.getImage().getScaledInstance(d3we, d3he, Image.SCALE_DEFAULT));
+                d3w = d3wicon.getImage();
+            }
+
+            if (thingsToRemember.charAt(i) == 'a' || thingsToRemember.charAt(i) == 'A') {
+                asterisk_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                asterisk_y_position = (int) ((int) d.getHeight() / 19) + (hei);
+                ImageIcon asteriskicon = new ImageIcon("res/remember_A_asterisk.png");
+                int asteriskw = asteriskicon.getIconWidth();
+                int asteriskh = asteriskicon.getIconHeight();
+                asteriskicon.setImage(asteriskicon.getImage().getScaledInstance(asteriskw, asteriskh, Image.SCALE_DEFAULT));
+                asterisk = asteriskicon.getImage();
+            }
+            if (thingsToRemember.charAt(i) == 'b' || thingsToRemember.charAt(i) == 'B') {
+                bell_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                bell_y_position = (int) ((int) d.getHeight() / 19) + (hei);
+                ImageIcon bellicon = new ImageIcon("res/remember_B_bell.png");
+                int bellw = bellicon.getIconWidth();
+                int bellh = bellicon.getIconHeight();
+                bellicon.setImage(bellicon.getImage().getScaledInstance(bellw, bellh, Image.SCALE_DEFAULT));
+                bell = bellicon.getImage();
+            }
+            if (thingsToRemember.charAt(i) == 'c' || thingsToRemember.charAt(i) == 'C') {
+                clock_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                clock_y_position = (int) ((int) d.getHeight() / 19) + (hei);
+                ImageIcon clockicon = new ImageIcon("res/remember_C_clock.png");
+                int clockw = clockicon.getIconWidth();
+                int clockh = clockicon.getIconHeight();
+                clockicon.setImage(clockicon.getImage().getScaledInstance(clockw, clockh, Image.SCALE_DEFAULT));
+                clock = clockicon.getImage();
+            }
+            if (thingsToRemember.charAt(i) == 'd' || thingsToRemember.charAt(i) == 'D') {
+                diamond_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                diamond_y_position = (int) ((int) d.getHeight() / 19) + (hei);
+                ImageIcon diamondicon = new ImageIcon("res/remember_D_diamond.png");
+                int diamondw = diamondicon.getIconWidth();
+                int diamondh = diamondicon.getIconHeight();
+                diamondicon.setImage(diamondicon.getImage().getScaledInstance(diamondw, diamondh, Image.SCALE_DEFAULT));
+                diamond = diamondicon.getImage();
+            }
+            if (thingsToRemember.charAt(i) == 'h' || thingsToRemember.charAt(i) == 'H') {
+                hashtag_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                hashtag_y_position = (int) ((int) d.getHeight() / 19) + (hei);
+                ImageIcon hashtagicon = new ImageIcon("res/remember_H_hash.png");
+                int hashtagw = hashtagicon.getIconWidth();
+                int hashtagh = hashtagicon.getIconHeight();
+                hashtagicon.setImage(hashtagicon.getImage().getScaledInstance(hashtagw, hashtagh, Image.SCALE_DEFAULT));
+                hashtag = hashtagicon.getImage();
+            }
+            if (thingsToRemember.charAt(i) == 's' || thingsToRemember.charAt(i) == 'S') {
+                star_x_position = (int) ((int) d.getWidth() / 6) + (pos);
+                star_y_position = (int) ((int) d.getHeight() / 19) + (hei);
+                ImageIcon staricon = new ImageIcon("res/remember_S_star.png");
+                int starw = staricon.getIconWidth();
+                int starh = staricon.getIconHeight();
+                staricon.setImage(staricon.getImage().getScaledInstance(starw, starh, Image.SCALE_DEFAULT));
+                star = staricon.getImage();
+            }
+
+        }
+    }
+
+    private void skiGame() {
         repaint();
+        ImageIcon west = new ImageIcon("res/hugo_ski_L.gif");
+        ImageIcon east = new ImageIcon("res/hugo_ski_R.gif");
+
+        w_width = 110;
+        west.setImage(west.getImage().getScaledInstance(w_width, w_height, Image.SCALE_DEFAULT));
+        sprite_L2 = west.getImage();
+
+        w_width = 90;
+        west.setImage(west.getImage().getScaledInstance(w_width, w_height, Image.SCALE_DEFAULT));
+        sprite_L = west.getImage();
+
+        e_width = 90;
+        east.setImage(east.getImage().getScaledInstance(e_width, e_height, Image.SCALE_DEFAULT));
+        sprite_R = east.getImage();
+
+        e_width = 110;
+        east.setImage(east.getImage().getScaledInstance(e_width, e_height, Image.SCALE_DEFAULT));
+        sprite_R2 = east.getImage();
+
+
+        ImageIcon j = new ImageIcon("res/background1.gif");
+        int wi = (int) d.getWidth() - 10;
+        int he = (int) d.getHeight() - 35;
+        j.setImage(j.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
+        bg = j.getImage();
+
+        setFocusable(true);
+
+        x = 55;
+        y = (int) ((int) d.getHeight() / 2.67);
+
+        // decoration graphics: trees, cloud(s) etc.
+        cloud_x_position = (int) ((int) d.getWidth() / 3);
+        cloud_y_position = (int) ((int) d.getHeight() / 25);
+        ImageIcon cloudicon = new ImageIcon("res/cloud.png");
+        int cloudiconw = cloudicon.getIconWidth();
+        int cloudiconh = cloudicon.getIconHeight();
+        cloudicon.setImage(cloudicon.getImage().getScaledInstance(cloudiconw, cloudiconh, Image.SCALE_DEFAULT));
+        cloud = cloudicon.getImage();
+
+        possibleTree1_x_position = (d.width / 5) - 40;
+        possibleTree1_y_position = (d.height / 17) + 20;
+        possibleTree1icon = new ImageIcon("res/trees2.png");
+        possibleTree1iconw = possibleTree1icon.getIconWidth();
+        possibleTree1iconh = possibleTree1icon.getIconHeight();
+        possibleTree1icon.setImage(possibleTree1icon.getImage()
+                .getScaledInstance(possibleTree1iconw, possibleTree1iconh, Image.SCALE_DEFAULT));
+        possibleTree1 = possibleTree1icon.getImage();
+
+        possibleTree2_x_position = (d.width / 5) - 40;
+        possibleTree2_y_position = (d.height / 17) + 20;
+        possibleTree2icon = new ImageIcon("res/trees0.png");
+        possibleTree2iconw = possibleTree2icon.getIconWidth();
+        possibleTree2iconh = possibleTree2icon.getIconHeight();
+        possibleTree2icon.setImage(possibleTree2icon.getImage()
+                .getScaledInstance(possibleTree2iconw, possibleTree2iconh, Image.SCALE_DEFAULT));
+        possibleTree2 = possibleTree2icon.getImage();
+
+        possibleTree3_x_position = (d.width / 5) - 40;
+        possibleTree3_y_position = (d.height / 17) + 20;
+        possibleTree3icon = new ImageIcon("res/trees1.png");
+        possibleTree3iconw = possibleTree3icon.getIconWidth();
+        possibleTree3iconh = possibleTree3icon.getIconHeight();
+        possibleTree3icon.setImage(possibleTree3icon.getImage()
+                .getScaledInstance(possibleTree3iconw, possibleTree3iconh, Image.SCALE_DEFAULT));
+        possibleTree3 = possibleTree3icon.getImage();
+
+        possibleTree4_x_position = (int) ((int) d.getWidth() / 2) + 70;
+        possibleTree4_y_position = (int) ((int) d.getHeight() / 4) - 90;
+        possibleTree4icon = new ImageIcon("res/trees2.png");
+        possibleTree4iconw = possibleTree4icon.getIconWidth();
+        possibleTree4iconh = possibleTree4icon.getIconHeight();
+        possibleTree4icon.setImage(possibleTree4icon.getImage()
+                .getScaledInstance(possibleTree4iconw, possibleTree4iconh, Image.SCALE_DEFAULT));
+        possibleTree4 = possibleTree4icon.getImage();
+
+        possibleTree5_x_position = (int) ((int) d.getWidth() / 2) + 70;
+        possibleTree5_y_position = (int) ((int) d.getHeight() / 4) - 90;
+        possibleTree5icon = new ImageIcon("res/trees0.png");
+        possibleTree5iconw = possibleTree5icon.getIconWidth();
+        possibleTree5iconh = possibleTree5icon.getIconHeight();
+        possibleTree5icon.setImage(possibleTree5icon.getImage()
+                .getScaledInstance(possibleTree5iconw, possibleTree5iconh, Image.SCALE_DEFAULT));
+        possibleTree5 = possibleTree5icon.getImage();
+
+        possibleTree6_x_position = (int) ((int) d.getWidth() / 2) + 70;
+        possibleTree6_y_position = (int) ((int) d.getHeight() / 4) - 90;
+        possibleTree6icon = new ImageIcon("res/trees1.png");
+        possibleTree6iconw = possibleTree6icon.getIconWidth();
+        possibleTree6iconh = possibleTree6icon.getIconHeight();
+        possibleTree6icon.setImage(possibleTree6icon.getImage()
+                .getScaledInstance(possibleTree6iconw, possibleTree6iconh, Image.SCALE_DEFAULT));
+        possibleTree6 = possibleTree6icon.getImage();
+
+        possibleTree7_x_position = (int) ((int) d.getWidth() / 2) + 72;
+        possibleTree7_y_position = (int) ((int) d.getHeight() / 4) - 92;
+        possibleTree7icon = new ImageIcon("res/trees2.png");
+        possibleTree7iconw = possibleTree7icon.getIconWidth();
+        possibleTree7iconh = possibleTree7icon.getIconHeight();
+        possibleTree7icon.setImage(possibleTree7icon.getImage()
+                .getScaledInstance(possibleTree7iconw, possibleTree7iconh, Image.SCALE_DEFAULT));
+        possibleTree7 = possibleTree7icon.getImage();
+
+        possibleTree8_x_position = (d.width / 5) - 42;
+        possibleTree8_y_position = (d.height / 17) + 22;
+        possibleTree8icon = new ImageIcon("res/trees1.png");
+        possibleTree8iconw = possibleTree8icon.getIconWidth();
+        possibleTree8iconh = possibleTree8icon.getIconHeight();
+        possibleTree8icon.setImage(possibleTree8icon.getImage()
+                .getScaledInstance(possibleTree8iconw, possibleTree8iconh, Image.SCALE_DEFAULT));
+        possibleTree8 = possibleTree8icon.getImage();
+
+
+        hugolife1_x_position = (int) ((int) d.getWidth() / 55);
+        hugolife1_y_position = (int) ((int) d.getHeight() / 1.3);
+        ImageIcon life1 = new ImageIcon("res/hugo_life.png");
+        int life1w = life1.getIconWidth();
+        int life1h = life1.getIconHeight();
+        life1.setImage(life1.getImage().getScaledInstance(life1w, life1h, Image.SCALE_DEFAULT));
+        hugolife1 = life1.getImage();
+
+        hugolife2_x_position = (int) ((int) d.getWidth() / 55) + 80;
+        hugolife2_y_position = (int) ((int) d.getHeight() / 1.3);
+        ImageIcon life2 = new ImageIcon("res/hugo_life.png");
+        int life2w = life2.getIconWidth();
+        int life2h = life2.getIconHeight();
+        life2.setImage(life2.getImage().getScaledInstance(life2w, life2h, Image.SCALE_DEFAULT));
+        hugolife2 = life2.getImage();
+
+        hugolife3_x_position = (int) ((int) d.getWidth() / 55) + 160;
+        hugolife3_y_position = (int) ((int) d.getHeight() / 1.3);
+        ImageIcon life3 = new ImageIcon("res/hugo_life.png");
+        int life3w = life3.getIconWidth();
+        int life3h = life3.getIconHeight();
+        life3.setImage(life3.getImage().getScaledInstance(life3w, life3h, Image.SCALE_DEFAULT));
+        hugolife3 = life3.getImage();
+
+        pause_x_position = (int) ((int) d.getWidth() / 6);
+        pause_y_position = (int) ((int) d.getHeight() / 3);
+        ImageIcon pauseicon = new ImageIcon("res/pause.png");
+        int pausew = pauseicon.getIconWidth();
+        int pauseh = pauseicon.getIconHeight();
+        pauseicon.setImage(pauseicon.getImage().getScaledInstance(pausew, pauseh, Image.SCALE_DEFAULT));
+        pause = pauseicon.getImage();
+
+        scorebar_x_position = 0;
+        scorebar_y_position = (int) ((int) d.getHeight() / 1.35);
+        ImageIcon scorebaricon = new ImageIcon("res/score-life-bar.png");
+        int scorebarw = scorebaricon.getIconWidth();
+        int scorebarh = scorebaricon.getIconHeight();
+        scorebaricon.setImage(scorebaricon.getImage().getScaledInstance(scorebarw * 5, scorebarh, Image.SCALE_DEFAULT));
+        scorebar = scorebaricon.getImage();
+    }
+
+    private void showingVideo() {
+        setFocusable(true);
+        if (!useMP4) {
+            String pathSound = getResourceAudioVideo(video, ".aiff");
+            File fi = new File(pathSound); // .aiff is a well-working sound format for the current video setup
+            URL mediaURL = null;
+            try {
+                mediaURL = fi.toURL();
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                mediaPlayer = Manager.createPlayer(mediaURL);
+
+            } catch (IOException | NoPlayerException ex) {
+                Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
+            }
+
+            mediaPlayer.start();
+            System.out.println("Playing sound for a video");
+        }
+    }
+
+    private void titleScreen(GameState gameState) {
+        if (gameState != GameState.SKI_GAME && nextState != GameState.SKI_GAME) {
+            gamePaused = true;
+        }
+
+        if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
+            ImageIcon credits_icon = new ImageIcon("res/credits_screen.png");
+            int wi = (int) d.getWidth() - 2;
+            int he = (int) d.getHeight() - 37;
+            credits_icon.setImage(credits_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
+            creditsScreen = credits_icon.getImage();
+
+            setFocusable(true);
+        } else {
+            ImageIcon title_icon = new ImageIcon("res/title_screen.png");
+            int wi = (int) d.getWidth() - 15;
+            int he = (int) d.getHeight() - 20;
+            title_icon.setImage(title_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
+            titleScreen = title_icon.getImage();
+
+            setFocusable(true);
+        }
+    }
+
+    private void preTitle() {
+        ImageIcon theVeryFirst_icon = new ImageIcon("res/_the_very_1st_texts.png");
+        int wi = (int) d.getWidth();
+        int he = (int) d.getHeight() - 35;
+        theVeryFirst_icon.setImage(theVeryFirst_icon.getImage().getScaledInstance(wi, he, Image.SCALE_DEFAULT));
+        theVeryFirst = theVeryFirst_icon.getImage();
+
+        setFocusable(true);
     }
 
     /**
@@ -1135,7 +1141,7 @@ public final class GameDisplay extends JPanel {
 
             }
         }
-        if ( gameState == GameState.SKI_GAME) {
+        if (gameState == GameState.SKI_GAME) {
             super.paintComponent(g);
             g.drawImage(bg, 0, 0, null);
 
@@ -1887,12 +1893,12 @@ public final class GameDisplay extends JPanel {
                     if (allowedChars.contains(thingsToRemember.charAt(5))) {
                         g.drawImage(d3w, d3b_x_position, d3b_y_position, this);
                     }
-                    video = 5;
+                    video = VideoType.TWO_CHOSEN_CORRECTLY;
                     nextState = GameState.VIDEO_TRANSITION;
                 }
             }
             if (!currentlyAllCorrect) {
-                video = 6;
+                video = VideoType.WRONG_CHOICE;
                 nextState = GameState.VIDEO_TRANSITION;
             }
             repaint();
@@ -1905,7 +1911,7 @@ public final class GameDisplay extends JPanel {
             }
         }
 
-        if ( gameState == GameState.GAME_OVER) {
+        if (gameState == GameState.GAME_OVER) {
             super.paintComponent(g);
 
             cheatBackflip180 = false;
@@ -2077,7 +2083,7 @@ public final class GameDisplay extends JPanel {
         setHundredThousands(9);
     }
 
-    private String [] files = {"res/scylla_intro",
+    private String[] files = {"res/scylla_intro",
             "res/start_hoplaa",
             "res/scylla_button_press",
             "res/scylla0",
@@ -2095,12 +2101,13 @@ public final class GameDisplay extends JPanel {
             "res/loselife_snowball",
             "res/loselife_bomb",
             "res/loselife_beaver"};
-    private String getResourceAudioVideo(int index, String extension) {
-        return files[index].concat(extension);
+
+    private String getResourceAudioVideo(VideoType videoIndex, String extension) {
+        return files[videoIndex.getIndex()].concat(extension);
     }
 
-    public void stopSound(){
-        if (this.mediaPlayer != null){
+    public void stopSound() {
+        if (this.mediaPlayer != null) {
             this.mediaPlayer.stop();
         }
     }
