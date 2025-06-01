@@ -149,7 +149,7 @@ public final class GameDisplay extends JPanel {
     // 4 = remember two items,  5 = game over or beat the game + show score.
     // use state 6 or higher when moving from a video to another video
     int nextState = 0;
-    boolean useMP4 = false; // if false, use gifs that might flicker if made incorrectly 
+    boolean useMP4 = false; // if false, use gifs that might flicker if made incorrectly
     // should be false though because mp4s will open a new window currently, Windows Media Player for instance. 
     // The original Hugo graphics and sounds have been edited.
     int video = 0;
@@ -448,18 +448,21 @@ public final class GameDisplay extends JPanel {
     boolean hundredThousandsVisible = false;
 
     int number_of_lives = 4;
+
     Clip clipChangeGrid = null;
     File fileChangeGrid = new File("res/ski_track_change.wav");
+
     Clip clipChangeGrid4 = null;
     File fileChangeGrid4 = new File("res/button4sound.wav");
+
     Clip clipChangeGrid6 = null;
     File fileChangeGrid6 = new File("res/button6sound.wav");
 
     Clip clipCorrect = null;
     File fileCorrect = new File("res/correct_selection.wav");
 
-    HugoSkiing hugoSkiing;
-    
+    private final HugoSkiing hugoSkiing;
+
     /**
      * Game reset call.
      */
@@ -617,7 +620,6 @@ public final class GameDisplay extends JPanel {
 
     /**
      * The constructor.
-     *
      */
     public GameDisplay() {
         hugoSkiing = new HugoSkiing(this);
@@ -682,82 +684,30 @@ public final class GameDisplay extends JPanel {
             //addKeyListener(new AL());
             setFocusable(true);
             if (!useMP4) {
-                //String pathGif = "";
-                String pathSound = "";
-                switch (video) {
-                    case 0 -> {
-                        //pathGif = "res/scylla_intro.gif";
-                        pathSound = "res/scylla_intro.aiff";
-                    }
-                    case 1 -> {
-                        //pathGif = "res/start_hoplaa.gif";
-                        pathSound = "res/start_hoplaa.aiff";
-                    }
-                    case 2 -> {
-                        //pathGif = "res/scylla_button_press.gif";
-                        pathSound = "res/scylla_button_press.aiff";
-                    }
-                    case 3 -> {
-                        //pathGif = "res/scylla0.gif";
-                        pathSound = "res/scylla0.aiff";
-                    }
-                    case 4 -> {
-                        //pathGif = "res/remember2forKey_intro.gif";
-                        pathSound = "res/remember2forKey_intro.aiff";
-                    }
-                    case 5 -> {
-                        //pathGif = "res/remember2forKey_win.gif";
-                        pathSound = "res/remember2forKey_win.aiff";
-                    }
-                    case 6 -> {
-                        //pathGif = "res/remember2forKey_fail.gif";
-                        pathSound = "res/remember2forKey_fail.aiff";
-                    }
-                    case 7 -> {
-                        //pathGif = "res/screentalk_finish_line.gif";
-                        pathSound = "res/screentalk_finish_line.aiff";
-                    }
-                    case 8 -> {
-                        //pathGif = "res/screentalk_heraa_pahvi.gif";
-                        pathSound = "res/screentalk_heraa_pahvi.aiff";
-                    }
-                    case 9 -> {
-                        //pathGif = "res/screentalk_viimeista_viedaan.gif";
-                        pathSound = "res/screentalk_viimeista_viedaan.aiff";
-                    }
-                    case 10 -> {
-                        //pathGif = "res/screentalk_game_over.gif";
-                        pathSound = "res/screentalk_game_over.aiff";
-                    }
-                    case 11 -> {
-                        //pathGif = "res/scylla1.gif";
-                        pathSound = "res/scylla1.aiff";
-                    }
-                    case 12 -> {
-                        //pathGif = "res/scylla2.gif";
-                        pathSound = "res/scylla2.aiff";
-                    }
-                    case 13 -> {
-                        //pathGif = "res/scylla3.gif";
-                        pathSound = "res/scylla3.aiff";
-                    }
-                    case 14 -> {
-                        //pathGif = "res/loselife_snowman.gif";
-                        pathSound = "res/loselife_snowman.aiff";
-                    }
-                    case 15 -> {
-                        //pathGif = "res/loselife_snowball.gif";
-                        pathSound = "res/loselife_snowball.aiff";
-                    }
-                    case 16 -> {
-                        //pathGif = "res/loselife_bomb.gif";
-                        pathSound = "res/loselife_bomb.aiff";
-                    }
-                    case 17 -> {
-                        //pathGif = "res/loselife_beaver.gif";
-                        pathSound = "res/loselife_beaver.aiff";
-                    }
-                } // Important! Do not change the file names. Any renaming will cause problems.
+
+                String[] soundPaths = {
+                        "res/scylla_intro.aiff",
+                        "res/start_hoplaa.aiff",
+                        "res/scylla_button_press.aiff",
+                        "res/scylla0.aiff",
+                        "res/remember2forKey_intro.aiff",
+                        "res/remember2forKey_win.aiff",
+                        "res/remember2forKey_fail.aiff",
+                        "res/screentalk_finish_line.aiff",
+                        "res/screentalk_heraa_pahvi.aiff",
+                        "res/screentalk_viimeista_viedaan.aiff",
+                        "res/screentalk_game_over.aiff",
+                        "res/scylla1.aiff",
+                        "res/scylla2.aiff",
+                        "res/scylla3.aiff",
+                        "res/loselife_snowman.aiff",
+                        "res/loselife_snowball.aiff",
+                        "res/loselife_bomb.aiff",
+                        "res/loselife_beaver.aiff"
+                };
+                String pathSound = soundPaths[video];
+
+                // Important! Do not change the file names. Any renaming will cause problems.
 
                 File fi = new File(pathSound); // .aiff is a well-working sound format for the current video setup
 
@@ -1191,81 +1141,29 @@ public final class GameDisplay extends JPanel {
             super.paintComponent(g);
 
             if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
-                String pathMP4 = "";
-                switch (video) {
-                    case 0 -> {
-                        pathMP4 = "res/scylla_intro.mp4";
-                        //pathSound = "res/scylla_intro.aiff";
-                    }
-                    case 1 -> {
-                        pathMP4 = "res/start_hoplaa.mp4";
-                        //pathSound = "res/start_hoplaa.aiff";
-                    }
-                    case 2 -> {
-                        pathMP4 = "res/scylla_button_press.mp4";
-                        //pathSound = "res/scylla_button_press.aiff";
-                    }
-                    case 3 -> {
-                        pathMP4 = "res/scylla0.mp4";
-                        //pathSound = "res/scylla0.aiff";
-                    }
-                    case 4 -> {
-                        pathMP4 = "res/remember2forKey_intro.mp4";
-                        //pathSound = "res/remember2forKey_intro.aiff";
-                    }
-                    case 5 -> {
-                        pathMP4 = "res/remember2forKey_win.mp4";
-                        //pathSound = "res/remember2forKey_win.aiff";
-                    }
-                    case 6 -> {
-                        pathMP4 = "res/remember2forKey_fail.mp4";
-                        //pathSound = "res/remember2forKey_fail.aiff";
-                    }
-                    case 7 -> {
-                        pathMP4 = "res/screentalk_finish_line.mp4";
-                        //pathSound = "res/screentalk_finish_line.aiff";
-                    }
-                    case 8 -> {
-                        pathMP4 = "res/screentalk_heraa_pahvi.mp4";
-                        //pathSound = "res/screentalk_heraa_pahvi.aiff";
-                    }
-                    case 9 -> {
-                        pathMP4 = "res/screentalk_viimeista_viedaan.mp4";
-                        //pathSound = "res/screentalk_viimeista_viedaan.aiff";
-                    }
-                    case 10 -> {
-                        pathMP4 = "res/screentalk_game_over.mp4";
-                        //pathSound = "res/screentalk_game_over.aiff";
-                    }
-                    case 11 -> {
-                        pathMP4 = "res/scylla1.mp4";
-                        //pathSound = "res/scylla1.aiff";
-                    }
-                    case 12 -> {
-                        pathMP4 = "res/scylla2.mp4";
-                        //pathSound = "res/scylla2.aiff";
-                    }
-                    case 13 -> {
-                        pathMP4 = "res/scylla3.mp4";
-                        //pathSound = "res/scylla3.aiff";
-                    }
-                    case 14 -> {
-                        pathMP4 = "res/loselife_snowman.mp4";
-                        //pathSound = "res/loselife_snowman.aiff";
-                    }
-                    case 15 -> {
-                        pathMP4 = "res/loselife_snowball.mp4";
-                        //pathSound = "res/loselife_snowball.aiff";
-                    }
-                    case 16 -> {
-                        pathMP4 = "res/loselife_bomb.mp4";
-                        //pathSound = "res/loselife_bomb.aiff";
-                    }
-                    case 17 -> {
-                        pathMP4 = "res/loselife_beaver.mp4";
-                        //pathSound = "res/loselife_beaver.aiff";
-                    }
-                }
+
+                String[] mp4Files = {
+                        "res/scylla_intro.mp4",
+                        "res/start_hoplaa.mp4",
+                        "res/scylla_button_press.mp4",
+                        "res/scylla0.mp4",
+                        "res/remember2forKey_intro.mp4",
+                        "res/remember2forKey_win.mp4",
+                        "res/remember2forKey_fail.mp4",
+                        "res/screentalk_finish_line.mp4",
+                        "res/screentalk_heraa_pahvi.mp4",
+                        "res/screentalk_viimeista_viedaan.mp4",
+                        "res/screentalk_game_over.mp4",
+                        "res/scylla1.mp4",
+                        "res/scylla2.mp4",
+                        "res/scylla3.mp4",
+                        "res/loselife_snowman.mp4",
+                        "res/loselife_snowball.mp4",
+                        "res/loselife_bomb.mp4",
+                        "res/loselife_beaver.mp4"
+                };
+
+                String pathMP4 = mp4Files[video];
 
                 File video_source = new File(pathMP4);
                 try {
@@ -1275,82 +1173,27 @@ public final class GameDisplay extends JPanel {
                 }
 
             } else {
-                String pathGif = "";
-                //String pathSound = "";
-                switch (video) {
-                    case 0 -> {
-                        pathGif = "res/scylla_intro_s.gif";
-                        //pathSound = "res/scylla_intro.aiff";
-                    }
-                    case 1 -> {
-                        pathGif = "res/start_hoplaa_s.gif";
-                        //pathSound = "res/start_hoplaa.aiff";
-                    }
-                    case 2 -> {
-                        pathGif = "res/scylla_button_press_s.gif";
-                        //pathSound = "res/scylla_button_press.aiff";
-                    }
-                    case 3 -> {
-                        pathGif = "res/scylla0_s.gif";
-                        //pathSound = "res/scylla0.aiff";
-                    }
-                    case 4 -> {
-                        pathGif = "res/remember2forKey_intro_s.gif";
-                        //pathSound = "res/remember2forKey_intro.aiff";
-                    }
-                    case 5 -> {
-                        pathGif = "res/remember2forKey_win_s.gif";
-                        //pathSound = "res/remember2forKey_win.aiff";
-                    }
-                    case 6 -> {
-                        pathGif = "res/remember2forKey_fail_s.gif";
-                        //pathSound = "res/remember2forKey_fail.aiff";
-                    }
-                    case 7 -> {
-                        pathGif = "res/screentalk_finish_line_s.gif";
-                        //pathSound = "res/screentalk_finish_line.aiff";
-                    }
-                    case 8 -> {
-                        pathGif = "res/screentalk_heraa_pahvi_s.gif";
-                        //pathSound = "res/screentalk_heraa_pahvi.aiff";
-                    }
-                    case 9 -> {
-                        pathGif = "res/screentalk_viimeista_viedaan_s.gif";
-                        //pathSound = "res/screentalk_viimeista_viedaan.aiff";
-                    }
-                    case 10 -> {
-                        pathGif = "res/screentalk_game_over_s.gif";
-                        //pathSound = "res/screentalk_game_over.aiff";
-                    }
-                    case 11 -> {
-                        pathGif = "res/scylla1_s.gif";
-                        //pathSound = "res/scylla1.aiff";
-                    }
-                    case 12 -> {
-                        pathGif = "res/scylla2_s.gif";
-                        //pathSound = "res/scylla2.aiff";
-                    }
-                    case 13 -> {
-                        pathGif = "res/scylla3_s.gif";
-                        //pathSound = "res/scylla3.aiff";
-                    }
-                    case 14 -> {
-                        pathGif = "res/loselife_snowman_s.gif";
-                        //pathSound = "res/loselife_snowman.aiff";
-                    }
-                    case 15 -> {
-                        pathGif = "res/loselife_snowball_s.gif";
-                        //pathSound = "res/loselife_snowball.aiff";
-                    }
-                    case 16 -> {
-                        pathGif = "res/loselife_bomb_s.gif";
-                        //pathSound = "res/loselife_bomb.aiff";
-                    }
-                    case 17 -> {
-                        pathGif = "res/loselife_beaver_s.gif";
-                        //pathSound = "res/loselife_beaver.aiff";
-                    }
-                }   // Important! Do not change the file names.
+                String[] gifPaths = {
+                        "res/scylla_intro_s.gif",
+                        "res/start_hoplaa_s.gif",
+                        "res/scylla_button_press_s.gif",
+                        "res/scylla0_s.gif",
+                        "res/remember2forKey_intro_s.gif",
+                        "res/remember2forKey_win_s.gif",
+                        "res/remember2forKey_fail_s.gif",
+                        "res/screentalk_finish_line_s.gif",
+                        "res/screentalk_heraa_pahvi_s.gif",
+                        "res/screentalk_viimeista_viedaan_s.gif",
+                        "res/screentalk_game_over_s.gif",
+                        "res/scylla1_s.gif",
+                        "res/scylla2_s.gif",
+                        "res/scylla3_s.gif",
+                        "res/loselife_snowman_s.gif",
+                        "res/loselife_snowball_s.gif",
+                        "res/loselife_bomb_s.gif",
+                        "res/loselife_beaver_s.gif"
+                }; // Important! Do not change the file names.
+                String pathGif = gifPaths[video];
 
                 videoIMGicon = new ImageIcon(pathGif);
                 super.paintComponent(g);
@@ -2393,10 +2236,11 @@ public final class GameDisplay extends JPanel {
             gameState = nextState;
             //super.paintComponent(g);
             constructFrames(gameState);
+            repaint();
         }
     }
-    
-    public void gameReset(){
+
+    public void gameReset() {
         currentGrid = 0;
         pulled_rope_1 = false;
         pulled_rope_2 = false;

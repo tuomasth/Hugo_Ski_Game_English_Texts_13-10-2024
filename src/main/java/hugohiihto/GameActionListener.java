@@ -1,13 +1,12 @@
 package hugohiihto;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -158,20 +157,7 @@ public class GameActionListener extends KeyAdapter {
                 gameDisplay.key5 = true;
             }
             if (gameDisplay.cheatBackflip180) {
-                try {
-                    gameDisplay.clipMoney = AudioSystem.getClip();
-                } catch (LineUnavailableException ex) {
-                    Logger.getLogger(hugoSkiing.getClass().getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    gameDisplay.clipMoney.open(AudioSystem.getAudioInputStream(gameDisplay.fileMoney));
-                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                    Logger.getLogger(hugoSkiing.getClass().getName()).log(Level.SEVERE, null, ex);
-                }
-                FloatControl gainControl =
-                        (FloatControl) gameDisplay.clipMoney.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-0.0f); // volume setting
-                gameDisplay.clipMoney.start();
+                playSound(gameDisplay.fileMoney, clip -> gameDisplay.clipMoney = clip, -0.0f);
             }
             if (gameDisplay.key12) { // Activating the cheat mode!
                 gameDisplay.cheatBackflip180 = true;
@@ -191,35 +177,9 @@ public class GameActionListener extends KeyAdapter {
                 if (keyCode == KeyEvent.VK_ENTER) {
 
                     if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
-                        try {
-                            gameDisplay.clip3 = AudioSystem.getClip();
-                        } catch (LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        try {
-                            gameDisplay.clip3.open(AudioSystem.getAudioInputStream(gameDisplay.fileGameMusic2));
-                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        FloatControl gainControl =
-                                (FloatControl) gameDisplay.clip3.getControl(FloatControl.Type.MASTER_GAIN);
-                        gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                        gameDisplay.clip3.start();
+                        playSound(gameDisplay.fileGameMusic2, clip -> gameDisplay.clip3 = clip, -0.0f);
                     } else {
-                        try {
-                            gameDisplay.clip0 = AudioSystem.getClip();
-                        } catch (LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        try {
-                            gameDisplay.clip0.open(AudioSystem.getAudioInputStream(gameDisplay.fileGameMusic0));
-                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        FloatControl gainControl =
-                                (FloatControl) gameDisplay.clip0.getControl(FloatControl.Type.MASTER_GAIN);
-                        gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                        gameDisplay.clip0.start();
+                        playSound(gameDisplay.fileGameMusic0, clip -> gameDisplay.clip0 = clip, -0.0f);
                     }
 
                     gameDisplay.gamePaused = true;
@@ -671,20 +631,7 @@ public class GameActionListener extends KeyAdapter {
                             keyCode == KeyEvent.VK_NUMPAD1 ||
                             keyCode == KeyEvent.VK_NUMPAD2 ||
                             keyCode == KeyEvent.VK_NUMPAD3))) {
-                try {
-                    gameDisplay.clipCorrect = AudioSystem.getClip();
-                } catch (LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    gameDisplay.clipCorrect.open(AudioSystem.getAudioInputStream(gameDisplay.fileCorrect));
-                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                FloatControl gainControl =
-                        (FloatControl) gameDisplay.clipCorrect.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-0.0f); // volume setting if wanted
-                gameDisplay.clipCorrect.start();
+                playSound(gameDisplay.fileCorrect, clip -> gameDisplay.clipCorrect = clip, -0.0f);
             }
             if (!gameDisplay.currentlyAllCorrect) {
                 if (!gameDisplay.allCorrectInTheEnd) {
@@ -705,35 +652,9 @@ public class GameActionListener extends KeyAdapter {
                     gameDisplay.nextState = 1;
 
                     if (hugoSkiing.currentStateAtTheLevel >= 71) {
-                        try {
-                            gameDisplay.clip3 = AudioSystem.getClip();
-                        } catch (LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        try {
-                            gameDisplay.clip3.open(AudioSystem.getAudioInputStream(gameDisplay.fileGameMusic2));
-                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        FloatControl gainControl =
-                                (FloatControl) gameDisplay.clip3.getControl(FloatControl.Type.MASTER_GAIN);
-                        gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                        gameDisplay.clip3.start();
+                        playSound(gameDisplay.fileGameMusic2, clip -> gameDisplay.clip3 = clip, -0.0f);
                     } else {
-                        try {
-                            gameDisplay.clip0 = AudioSystem.getClip();
-                        } catch (LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        try {
-                            gameDisplay.clip0.open(AudioSystem.getAudioInputStream(gameDisplay.fileGameMusic0));
-                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        FloatControl gainControl =
-                                (FloatControl) gameDisplay.clip0.getControl(FloatControl.Type.MASTER_GAIN);
-                        gainControl.setValue(-0.0f); // volume setting for music, decreasing the volume if wanted
-                        gameDisplay.clip0.start();
+                        playSound(gameDisplay.fileGameMusic0, clip -> gameDisplay.clip0 = clip, -0.0f);
                     }
                 } else {
                     gameDisplay.nextState = 0;
@@ -752,50 +673,33 @@ public class GameActionListener extends KeyAdapter {
      */
     @Override
     public void keyReleased(KeyEvent e) {
+        if (gameDisplay.gamePaused || gameDisplay.gameState != 3) return;
 
-        if (!gameDisplay.gamePaused && gameDisplay.gameState == 3) {
-            if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                try {
-                    gameDisplay.clipChangeGrid = AudioSystem.getClip();
-                } catch (LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    gameDisplay.clipChangeGrid.open(AudioSystem.getAudioInputStream(gameDisplay.fileChangeGrid));
-                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                FloatControl gainControl =
-                        (FloatControl) gameDisplay.clipChangeGrid.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-23.0f); // volume setting, decreasing sfx volume a bit
-                gameDisplay.clipChangeGrid.start();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_4 || e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
-                try {
-                    gameDisplay.clipChangeGrid4 = AudioSystem.getClip();
-                } catch (LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    gameDisplay.clipChangeGrid4.open(AudioSystem.getAudioInputStream(gameDisplay.fileChangeGrid4));
-                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                gameDisplay.clipChangeGrid4.start();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_6 || e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
-                try {
-                    gameDisplay.clipChangeGrid6 = AudioSystem.getClip();
-                } catch (LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    gameDisplay.clipChangeGrid6.open(AudioSystem.getAudioInputStream(gameDisplay.fileChangeGrid6));
-                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                    Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
-                }
-                gameDisplay.clipChangeGrid6.start();
-            }
+        int keyCode = e.getKeyCode();
+        if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+            playSound(gameDisplay.fileChangeGrid, clip -> gameDisplay.clipChangeGrid = clip, -23.0f);
+        } else if (keyCode == KeyEvent.VK_4 || keyCode == KeyEvent.VK_NUMPAD4) {
+            playSound(gameDisplay.fileChangeGrid4, clip -> gameDisplay.clipChangeGrid4 = clip, null);
+        } else if (keyCode == KeyEvent.VK_6 || keyCode == KeyEvent.VK_NUMPAD6) {
+            playSound(gameDisplay.fileChangeGrid6, clip -> gameDisplay.clipChangeGrid6 = clip, null);
         }
     }
+
+    private void playSound(File audioFile, Consumer<Clip> clipSetter, Float volumeDb) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(audioFile));
+
+            if (volumeDb != null && clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(volumeDb);
+            }
+
+            clipSetter.accept(clip);
+            clip.start();
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
+            Logger.getLogger(gameDisplay.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
