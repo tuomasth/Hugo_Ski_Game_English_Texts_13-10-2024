@@ -391,6 +391,7 @@ public class HugoSkiing {
          *
          * // some will be overwritten with 2 must-remember-images etc.
          */
+
         int randomPrevious = 8;
         for (int i = 0; i < 40; i++) {
             int random = getRandom(0, 8);
@@ -428,6 +429,32 @@ public class HugoSkiing {
     public String[] giveStageHazards(boolean cheatBackflip180) {
         String[] s = new String[71];
         int haz[] = createStageHazards();
+
+        /*
+         * E- empty (even though E might not be needed to be read, it is meaningful to show positions)
+         * M- money
+         * 8- snowman
+         * o- snowball (small o)
+         * Q- bomb
+         * B- the beaver
+         * 1- thing to remember #1 (6 possible)
+         * 2- thing to remember #2 (6 possible (actually 5 because never same again allowed))
+         * S- Scylla button press with short horror music
+         * F- goal, just end the skiing session
+         *
+         * A-  black asterisk* as +correct
+         * a-  black asterisk* as incorrect-
+         * B-  yellow bell as +correct
+         * b-  yellow bell as incorrect-
+         * C-  red clock as +correct
+         * c-  red clock as incorrect-
+         * D-  red diamond as +correct
+         * d-  red diamond as incorrect-
+         * H-  black hash(tag#) as +correct
+         * h-  black hash(tag#) as incorrect-
+         * S-  yellow star as +correct
+         * s-  yellow star as incorrect-
+         */
 
         Map<Integer, String> hazardMap = Map.ofEntries(
                 Map.entry(0, "EEoE"),
