@@ -2,12 +2,11 @@ package hugohiihto;
 
 import hugohiihto.grid.GridS01Thread;
 import hugohiihto.grid.GridS23Thread;
-import hugohiihto.thread.*;
+import hugohiihto.sprite.Sprite;
 import hugohiihto.thread.hazard.HAZ1Thread;
 import hugohiihto.thread.hazard.HAZ2Thread;
 import hugohiihto.thread.hazard.HAZ3Thread;
 import hugohiihto.thread.hazard.HAZ4Thread;
-import hugohiihto.thread.tree.*;
 import hugohiihto.type.GameState;
 import hugohiihto.type.VideoType;
 
@@ -270,59 +269,7 @@ public final class GameDisplay extends JPanel {
     int cave_x, cave_y;
     Image bgCave;
 
-    Image cloud;
-    public int cloud_x_position;
-    int cloud_y_position;
     public boolean leftWind = false;
-
-    Image possibleTree1; // may be changed to something else than trees - if wanted to edit so
-    public int possibleTree1_x_position;
-    public int possibleTree1_y_position;
-    Image possibleTree2;
-    public int possibleTree2_x_position;
-    public int possibleTree2_y_position;
-    Image possibleTree3;
-    public int possibleTree3_x_position;
-    public int possibleTree3_y_position;
-    Image possibleTree4;
-    public int possibleTree4_x_position;
-    public int possibleTree4_y_position;
-    Image possibleTree5;
-    public int possibleTree5_x_position;
-    public int possibleTree5_y_position;
-    Image possibleTree6;
-    public int possibleTree6_x_position;
-    public int possibleTree6_y_position;
-    Image possibleTree7;
-    public int possibleTree7_x_position;
-    public int possibleTree7_y_position;
-    Image possibleTree8;
-    public int possibleTree8_x_position;
-    public int possibleTree8_y_position;
-    int possibleTree1iconw;
-    int possibleTree1iconh;
-    int possibleTree2iconw;
-    int possibleTree2iconh;
-    int possibleTree3iconw;
-    int possibleTree3iconh;
-    int possibleTree4iconw;
-    int possibleTree4iconh;
-    int possibleTree5iconw;
-    int possibleTree5iconh;
-    int possibleTree6iconw;
-    int possibleTree6iconh;
-    int possibleTree7iconw;
-    int possibleTree7iconh;
-    int possibleTree8iconw;
-    int possibleTree8iconh;
-    ImageIcon possibleTree1icon;
-    ImageIcon possibleTree2icon;
-    ImageIcon possibleTree3icon;
-    ImageIcon possibleTree4icon;
-    ImageIcon possibleTree5icon;
-    ImageIcon possibleTree6icon;
-    ImageIcon possibleTree7icon;
-    ImageIcon possibleTree8icon;
 
     Image scorebar; // blue score bar
     int scorebar_x_position;
@@ -463,6 +410,25 @@ public final class GameDisplay extends JPanel {
 
     Clip clipCorrect = null;
     File fileCorrect = new File("res/correct_selection.wav");
+
+    Sprite cloudSprite = new Sprite();
+
+    Sprite tree1Sprite = new Sprite();
+    Sprite tree2Sprite = new Sprite();
+    Sprite tree3Sprite = new Sprite();
+    Sprite tree4Sprite = new Sprite();
+    Sprite tree5Sprite = new Sprite();
+    Sprite tree6Sprite = new Sprite();
+    Sprite tree7Sprite = new Sprite();
+    Sprite tree8Sprite = new Sprite();
+
+    Sprite haz1Sprite = new Sprite();
+    Sprite haz2Sprite = new Sprite();
+    Sprite haz3Sprite = new Sprite();
+    Sprite haz4Sprite = new Sprite();
+
+    Sprite grids01Sprite = new Sprite();
+    Sprite grids23Sprite = new Sprite();
 
     public final HugoSkiing hugoSkiing;
 
@@ -884,87 +850,15 @@ public final class GameDisplay extends JPanel {
         x = 55;
         y = (int) ((int) d.getHeight() / 2.67);
 
-        // decoration graphics: trees, cloud(s) etc.
-        cloud_x_position = (int) ((int) d.getWidth() / 3);
-        cloud_y_position = (int) ((int) d.getHeight() / 25);
-        ImageIcon cloudicon = new ImageIcon("res/cloud.png");
-        int cloudiconw = cloudicon.getIconWidth();
-        int cloudiconh = cloudicon.getIconHeight();
-        cloudicon.setImage(cloudicon.getImage().getScaledInstance(cloudiconw, cloudiconh, Image.SCALE_DEFAULT));
-        cloud = cloudicon.getImage();
-
-        possibleTree1_x_position = (d.width / 5) - 40;
-        possibleTree1_y_position = (d.height / 17) + 20;
-        possibleTree1icon = new ImageIcon("res/trees2.png");
-        possibleTree1iconw = possibleTree1icon.getIconWidth();
-        possibleTree1iconh = possibleTree1icon.getIconHeight();
-        possibleTree1icon.setImage(possibleTree1icon.getImage()
-                .getScaledInstance(possibleTree1iconw, possibleTree1iconh, Image.SCALE_DEFAULT));
-        possibleTree1 = possibleTree1icon.getImage();
-
-        possibleTree2_x_position = (d.width / 5) - 40;
-        possibleTree2_y_position = (d.height / 17) + 20;
-        possibleTree2icon = new ImageIcon("res/trees0.png");
-        possibleTree2iconw = possibleTree2icon.getIconWidth();
-        possibleTree2iconh = possibleTree2icon.getIconHeight();
-        possibleTree2icon.setImage(possibleTree2icon.getImage()
-                .getScaledInstance(possibleTree2iconw, possibleTree2iconh, Image.SCALE_DEFAULT));
-        possibleTree2 = possibleTree2icon.getImage();
-
-        possibleTree3_x_position = (d.width / 5) - 40;
-        possibleTree3_y_position = (d.height / 17) + 20;
-        possibleTree3icon = new ImageIcon("res/trees1.png");
-        possibleTree3iconw = possibleTree3icon.getIconWidth();
-        possibleTree3iconh = possibleTree3icon.getIconHeight();
-        possibleTree3icon.setImage(possibleTree3icon.getImage()
-                .getScaledInstance(possibleTree3iconw, possibleTree3iconh, Image.SCALE_DEFAULT));
-        possibleTree3 = possibleTree3icon.getImage();
-
-        possibleTree4_x_position = (int) ((int) d.getWidth() / 2) + 70;
-        possibleTree4_y_position = (int) ((int) d.getHeight() / 4) - 90;
-        possibleTree4icon = new ImageIcon("res/trees2.png");
-        possibleTree4iconw = possibleTree4icon.getIconWidth();
-        possibleTree4iconh = possibleTree4icon.getIconHeight();
-        possibleTree4icon.setImage(possibleTree4icon.getImage()
-                .getScaledInstance(possibleTree4iconw, possibleTree4iconh, Image.SCALE_DEFAULT));
-        possibleTree4 = possibleTree4icon.getImage();
-
-        possibleTree5_x_position = (int) ((int) d.getWidth() / 2) + 70;
-        possibleTree5_y_position = (int) ((int) d.getHeight() / 4) - 90;
-        possibleTree5icon = new ImageIcon("res/trees0.png");
-        possibleTree5iconw = possibleTree5icon.getIconWidth();
-        possibleTree5iconh = possibleTree5icon.getIconHeight();
-        possibleTree5icon.setImage(possibleTree5icon.getImage()
-                .getScaledInstance(possibleTree5iconw, possibleTree5iconh, Image.SCALE_DEFAULT));
-        possibleTree5 = possibleTree5icon.getImage();
-
-        possibleTree6_x_position = (int) ((int) d.getWidth() / 2) + 70;
-        possibleTree6_y_position = (int) ((int) d.getHeight() / 4) - 90;
-        possibleTree6icon = new ImageIcon("res/trees1.png");
-        possibleTree6iconw = possibleTree6icon.getIconWidth();
-        possibleTree6iconh = possibleTree6icon.getIconHeight();
-        possibleTree6icon.setImage(possibleTree6icon.getImage()
-                .getScaledInstance(possibleTree6iconw, possibleTree6iconh, Image.SCALE_DEFAULT));
-        possibleTree6 = possibleTree6icon.getImage();
-
-        possibleTree7_x_position = (int) ((int) d.getWidth() / 2) + 72;
-        possibleTree7_y_position = (int) ((int) d.getHeight() / 4) - 92;
-        possibleTree7icon = new ImageIcon("res/trees2.png");
-        possibleTree7iconw = possibleTree7icon.getIconWidth();
-        possibleTree7iconh = possibleTree7icon.getIconHeight();
-        possibleTree7icon.setImage(possibleTree7icon.getImage()
-                .getScaledInstance(possibleTree7iconw, possibleTree7iconh, Image.SCALE_DEFAULT));
-        possibleTree7 = possibleTree7icon.getImage();
-
-        possibleTree8_x_position = (d.width / 5) - 42;
-        possibleTree8_y_position = (d.height / 17) + 22;
-        possibleTree8icon = new ImageIcon("res/trees1.png");
-        possibleTree8iconw = possibleTree8icon.getIconWidth();
-        possibleTree8iconh = possibleTree8icon.getIconHeight();
-        possibleTree8icon.setImage(possibleTree8icon.getImage()
-                .getScaledInstance(possibleTree8iconw, possibleTree8iconh, Image.SCALE_DEFAULT));
-        possibleTree8 = possibleTree8icon.getImage();
-
+        cloudSprite.load("res/cloud.png", (int) d.getWidth() / 3, (int) d.getHeight() / 25);
+        tree1Sprite.load("res/trees2.png", (d.width / 5) - 40,  (d.height / 17) + 20);
+        tree2Sprite.load("res/trees0.png", (d.width / 5) - 40,  (d.height / 17) + 20);
+        tree3Sprite.load("res/trees1.png", (d.width / 5) - 40,  (d.height / 17) + 20);
+        tree4Sprite.load("res/trees2.png", (int)(d.getWidth() / 2) + 70,  (int) (d.getHeight() / 4) - 90);
+        tree5Sprite.load("res/trees0.png", ((int) d.getWidth() / 2) + 7,  ((int) d.getHeight() / 4) - 90);
+        tree6Sprite.load("res/trees1.png", ((int) d.getWidth() / 2) + 70,  ((int) d.getHeight() / 4) - 90);
+        tree7Sprite.load("res/trees2.png", ((int) d.getWidth() / 2) + 72,  ((int) d.getHeight() / 4) - 92);
+        tree8Sprite.load("res/trees1.png", (d.width / 5) - 42,  (d.height / 17) + 22);
 
         hugolife1_x_position = (int) ((int) d.getWidth() / 55);
         hugolife1_y_position = (int) ((int) d.getHeight() / 1.3);
@@ -1220,7 +1114,6 @@ public final class GameDisplay extends JPanel {
         if (nextState != gameState) {
             System.out.println("------ State change from " + gameState + " to " + nextState);
             gameState = nextState;
-            //super.paintComponent(g);
             constructFrames(gameState);
             repaint();
         }
@@ -1292,55 +1185,168 @@ public final class GameDisplay extends JPanel {
         super.paintComponent(g);
         g.drawImage(bg, 0, 0, null);
 
-
-        Thread Cloud = new CloudThread(this);
+        Thread Cloud = new Thread(()->{
+                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+                if (System.currentTimeMillis() % 19 == 0) {
+                    if (leftWind) {
+                        cloudSprite.x--;
+                    } else {
+                        cloudSprite.x++;
+                    }
+                }
+                if (cloudSprite.getX() < -300 && leftWind) {
+                    cloudSprite.setX(d.width);
+                }
+                if (cloudSprite.getX() > 700 && !leftWind) {
+                    cloudSprite.setX(cloudSprite.getX() - 1000);
+                }
+        });
         if (!Cloud.isAlive()) {
             Cloud.start();
         }
 
-        Thread Tr1 = new Tree1Thread(this);
+        Thread Tr1 = new Thread(() -> {
+                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+                if (!gamePaused) {
+                    if (System.currentTimeMillis() % 2 == 0) {
+                        tree1Sprite.x -= 2;
+                        tree1Sprite.y++;
+                    }
+                    if (tree1Sprite.x < -340) {
+                        tree1Sprite.x = (d.width / 8) - 7;
+                        tree1Sprite.y = (d.height / 12) + 20;
+                    }
+            }
+        });
         if (!Tr1.isAlive()) {
             Tr1.start();
         }
-        Thread Tr2 = new Tree2Thread(this);
+
+
+        Thread Tr2 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree2Sprite.x -= 2;
+                    tree2Sprite.y++;
+                }
+                if (tree2Sprite.x < -400) {
+                    tree2Sprite.x = (d.width / 4) - 4;
+                    tree2Sprite.y = (d.height / 8) + 20;
+                }
+            }
+        });
         if (!Tr2.isAlive()) {
             Tr2.start();
         }
-        Thread Tr3 = new Tree3Thread(this);
+        Thread Tr3 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree3Sprite.x -= 2;
+                    tree3Sprite.y++;
+                }
+                if (tree3Sprite.x < -500) {
+                    tree3Sprite.x = (d.width / 5) - 4;
+                    tree3Sprite.y = (d.height / 17) + 20;
+                }
+            }
+        });
         if (!Tr3.isAlive()) {
             Tr3.start();
         }
-        Thread Tr4 = new Tree4Thread(this);
+        Thread Tr4 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree4Sprite.x += 2;
+                    tree4Sprite.y++;
+                }
+                if (tree4Sprite.x > 640) {
+                    tree4Sprite.x = ((int) d.getWidth() / 2) + 40;
+                    tree4Sprite.y = ((int) d.getHeight() / 3) - 100;
+                }
+            }
+        });
         if (!Tr4.isAlive()) {
             Tr4.start();
         }
-        Thread Tr5 = new Tree5Thread(this);
+        Thread Tr5 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree5Sprite.x += 2;
+                    tree5Sprite.y++;
+                }
+                if (tree5Sprite.x > 760) {
+                    tree5Sprite.x = ((int) d.getWidth() / 2) + 40;
+                    tree5Sprite.y = ((int) d.getHeight() / 3) - 80;
+                }
+            }
+        });
         if (!Tr5.isAlive()) {
             Tr5.start();
         }
-        Thread Tr6 = new Tree6Thread(this);
+        Thread Tr6 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree6Sprite.x += 2;
+                    tree6Sprite.y++;
+                }
+                if (tree6Sprite.x > 800) {
+                    tree6Sprite.x = ((int) d.getWidth() / 2) + 40;
+                    tree6Sprite.y = ((int) d.getHeight() / 3) - 80;
+                }
+            }
+        });
         if (!Tr6.isAlive()) {
             Tr6.start();
         }
-        Thread Tr7 = new Tree7Thread(this);
+        Thread Tr7 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree7Sprite.x += 2;
+                    tree7Sprite.y++;
+                }
+                if (tree7Sprite.x > 753) {
+                    tree7Sprite.x = ((int) d.getWidth() / 2) + 42;
+                    tree7Sprite.y = ((int) d.getHeight() / 3) - 82;
+                }
+            }
+        });
         if (!Tr7.isAlive()) {
             Tr7.start();
         }
-        Thread Tr8 = new Tree8Thread(this);
+        Thread Tr8 = new Thread(()->{
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree8Sprite.x -= 2;
+                    tree8Sprite.y++;
+                }
+                if (tree8Sprite.x < -574) {
+                    tree8Sprite.x = (d.width / 9);
+                    tree8Sprite.y = (d.height / 7) + 32;
+                }
+            }
+        });
         if (!Tr8.isAlive()) {
             Tr8.start();
         }
 
         // finally drawing the graphical decorations:
-        g.drawImage(cloud, cloud_x_position, cloud_y_position, this);
-        g.drawImage(possibleTree1, possibleTree1_x_position, possibleTree1_y_position, this);
-        g.drawImage(possibleTree2, possibleTree2_x_position, possibleTree2_y_position, this);
-        g.drawImage(possibleTree3, possibleTree3_x_position, possibleTree3_y_position, this);
-        g.drawImage(possibleTree4, possibleTree4_x_position, possibleTree4_y_position, this);
-        g.drawImage(possibleTree5, possibleTree5_x_position, possibleTree5_y_position, this);
-        g.drawImage(possibleTree6, possibleTree6_x_position, possibleTree6_y_position, this);
-        g.drawImage(possibleTree7, possibleTree7_x_position, possibleTree7_y_position, this);
-        g.drawImage(possibleTree8, possibleTree8_x_position, possibleTree8_y_position, this);
+        g.drawImage(cloudSprite.getImage(), cloudSprite.getX(), cloudSprite.getY(), this);
+
+        g.drawImage(tree1Sprite.getImage(), tree1Sprite.getX(), tree1Sprite.getY(), this);
+        g.drawImage(tree2Sprite.getImage(), tree2Sprite.getX(), tree2Sprite.getY(), this);
+        g.drawImage(tree3Sprite.getImage(), tree3Sprite.getX(), tree3Sprite.getY(), this);
+        g.drawImage(tree4Sprite.getImage(), tree4Sprite.getX(), tree4Sprite.getY(), this);
+        g.drawImage(tree5Sprite.getImage(), tree5Sprite.getX(), tree5Sprite.getY(), this);
+        g.drawImage(tree6Sprite.getImage(), tree6Sprite.getX(), tree6Sprite.getY(), this);
+        g.drawImage(tree7Sprite.getImage(), tree7Sprite.getX(), tree7Sprite.getY(), this);
+        g.drawImage(tree8Sprite.getImage(), tree8Sprite.getX(), tree8Sprite.getY(), this);
 
         Set<String> ignored = Set.of("E", "S", "F");
         if (ignored.contains(currentHazardOrMoney1)) currentHazardOrMoney1_image = null;
