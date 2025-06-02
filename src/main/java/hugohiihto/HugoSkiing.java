@@ -147,8 +147,8 @@ public class HugoSkiing {
      */
     public HugoSkiing(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
-        this.gameDisplay.leftWind = (boolean) (Math.random() < 0.5);
-        haz = giveStageHazards();
+        this.gameDisplay.leftWind = (Math.random() < 0.5);
+        haz = giveStageHazards(gameDisplay.cheatBackflip180);
         rem = giveThingsToRemember();
     }
 
@@ -193,290 +193,6 @@ public class HugoSkiing {
      */
     public String getREM() {
         return this.rem;
-    }
-
-    /**
-     * Create a random integer, Java's own Math.random() has been used.
-     *
-     * @param min
-     * @param max_that_does_not_count
-     * @return int
-     */
-    public int getRandom(int min, int max_that_does_not_count) {
-        int random = (int) ((Math.random() * (max_that_does_not_count - min)) + min);
-        return random; // max_that_does_not_count if zero counts
-    }
-
-    /**
-     * Creating the stage hazards to the 1d array called hazards.
-     * Length is 71, negative values = the stage is about to begin soon, and Hugo is just skiing.
-     * In a previous version, the game array was longer.
-     *
-     * @return int[]
-     */
-    public int[] createStageHazards() {
-        int[] hazards = new int[71];
-        /*
-         * E- empty
-         * M- money
-         * 8- snowman
-         * o- snowball
-         * Q- bomb
-         * B- Masi the beaver (in Finland he is called Masi)
-         *
-         * 1- thing to remember #1 (6 possible)
-         * 2- thing to remember #2 (6 possible (actually 5 because no same again))
-         * S- Scylla button press with short horror music
-         * F- goal, just end the skiing session
-         *
-         *
-         * 0 = empty, empty, SNOWBALL, empty
-         * 1 = MONEY, empty, SNOWMAN, empty
-         * 2 = empty, MONEY, SNOWMAN, empty
-         * 3 = empty, empty, MONEY, empty
-         * 4 = empty, SNOWMAN, empty, MONEY
-         * 5 = SNOWMAN, empty, empty, empty
-         * 6 = empty, empty, empty, SNOWMAN
-         * 7 = empty, SNOWBALL, empty, empty
-         * 8 = empty, empty, empty, empty
-         * 9 = BOMB, BOMB, empty, BOMB
-         * 10 = BOMB, empty, BOMB, BOMB
-         * 11 = empty, BOMB, BOMB, empty
-         * 12 = BOMB, empty, MONEY, BOMB
-         * 13 = BEAVER, MONEY, empty, empty
-         * 14 = SNOWBALL, BEAVER, empty, empty
-         * 15 = empty, empty, BEAVER, SNOWBALL
-         * 16 = BOMB, empty, empty, BEAVER
-         * 17 = empty, SNOWBALL, BOMB, BOMB
-         * 18 = BOMB, BOMB, SNOWBALL, empty
-         *
-         * // some will be overwritten with 2 must-remember-images etc.
-         */
-        int randomPrevious = 8;
-        for (int i = 0; i < 40; i++) {
-            int random = getRandom(0, 8);
-            while (randomPrevious == random) { // avoids getting the same number again
-                random = getRandom(0, 8);
-            }
-            hazards[i] = random;
-            randomPrevious = hazards[i];
-        }
-        for (int i = 40; i < hazards.length; i++) {
-            int random = getRandom(5, 19);
-            while (randomPrevious == random) {
-                random = getRandom(5, 19);
-            }
-            hazards[i] = random;
-            randomPrevious = hazards[i];
-        }
-        for (int i = 8; i < 40; i++) {
-            if (i % 2 == 0) {
-                hazards[i] = 8; // every 2nd empty, a selected range
-            }
-            if (i == 14 || i == 25 || i == 15 || i == 26 || i == 16 || i == 27 || i == 17 || i == 28) {
-                hazards[i] = 8;
-            }
-        }
-        System.out.println(Arrays.toString(hazards));
-        return hazards;
-    }
-
-    /**
-     * Getting the stage hazards.
-     *
-     * @return String[]
-     */
-    public String[] giveStageHazards() {
-        String[] s = new String[71];
-        int haz[] = createStageHazards();
-
-        Map<Integer, String> hazardMap = Map.ofEntries(
-                Map.entry(0, "EEoE"),
-                Map.entry(1, "ME8E"),
-                Map.entry(2, "EM8E"),
-                Map.entry(3, "EEME"),
-                Map.entry(4, "E8EM"),
-                Map.entry(5, "8EEE"),
-                Map.entry(6, "EEE8"),
-                Map.entry(7, "EoEE"),
-                Map.entry(8, "EEEE"),
-                Map.entry(9, "QQEQ"),
-                Map.entry(10, "QEQQ"),
-                Map.entry(11, "EQQE"),
-                Map.entry(12, "QEMQ"),
-                Map.entry(13, "BMEE"),
-                Map.entry(14, "oBEE"),
-                Map.entry(15, "EEBo"),
-                Map.entry(16, "QEEB"),
-                Map.entry(17, "EoQQ")
-                // 18+ => handled separately
-        );
-
-        for (int i = 0; i < 70; i++) {
-            s[i] = hazardMap.getOrDefault(haz[i], "QQoE"); // fallback >= 18
-        }
-
-        // zero counts as the 1st number,
-
-        // from 0 to 14:    casual easy
-        // the 15th:          the 1st to remember
-        // from 16 to 25:   casual easy
-        // the 26th:          the 2nd to remember
-        // from 27 to 38:   casual easy
-        // the 39th:          Scylla's button press, popcorn starts
-        // from 40 to 69:   hardcore bombing
-        // the 70th:          the finish line
-        // "memory game"
-        // 3 ropes
-        s[39] = "SSSS";
-        if (gameDisplay.cheatBackflip180) {
-            for (int i = 0; i < 1; i++) {
-                s[i] = "SSSS";
-            }
-            for (int i = 1; i < 4; i++) {
-                s[i] = "QBo8";
-            }
-            for (int i = 4; i < 15; i++) {
-                s[i] = "EMME";
-            }
-            for (int i = 17; i < 26; i++) {
-                s[i] = "EMME";
-            }
-            for (int i = 28; i < 63; i++) {
-                s[i] = "EMME";
-            }
-            for (int i = 63; i < 70; i++) {
-                s[i] = "FFFF";
-            }
-        }
-        s[15] = "1111";
-        s[16] = "EEEE"; // always an empty set after a scroll (1 and 2).
-        s[26] = "2222";
-        s[27] = "EEEE";
-        s[70] = "FFFF";
-        System.out.println(Arrays.toString(s));
-        return s;
-    }
-
-    /**
-     * Generate what 2 things must be remembered when Hugo is at the goal.
-     *
-     * @return int
-     */
-    public int generateIntToRemember() {
-        /*
-         * 1 = asterisk & bell
-         * 2 = asterisk & clock
-         * 3 = asterisk & diamond
-         * 4 = asterisk & hashtag
-         * 5 = asterisk & star  // "tähti, tähti"
-         * 6 = bell & clock     // "kello, kello"
-         * 7 = bell & diamond
-         * 8 = bell & hashtag
-         * 9 = bell & star
-         * 10 = clock & diamond
-         * 11 = clock & hashtag
-         * 12 = clock & star
-         * 13 = diamond & hashtag // "ruutu, ruutu"
-         * 14 = diamond & star
-         * 15 = hashtag & star
-         *
-         * Wrong answers when 3+3 are shown to the player:
-         * 1 clock, diamond; hashtag, star
-         * 2 bell, diamond; hashtag, star
-         * 3 bell, clock; hashtag, star
-         * 4 bell, clock; diamond, star
-         * 5 bell, clock; diamond, hashtag
-         * 6 asterisk, diamond; hashtag, star
-         * 7 asterisk, clock; hashtag, star
-         * 8 asterisk, clock; diamond, star
-         * 9 asterisk, clock; diamond, hashtag
-         * 10 asterisk, bell; hashtag, star
-         * 11 asterisk, bell; diamond, star
-         * 12 asterisk, bell; diamond, hashtag
-         * 13 asterisk, bell; clock, star
-         * 14 asterisk, bell; clock, hashtag
-         * 15 asterisk, bell; clock, diamond
-         *
-         */
-        int items = getRandom(0, 16); // some may have more probability to become chosen
-        return items;
-    }
-
-    /**
-     * Give the 2 items to remember to get the skull cave key at the end.
-     *
-     * @return String
-     */
-    public String giveThingsToRemember() {
-        int problem = generateIntToRemember();
-        boolean[][] problem2array = new boolean[3][3];
-        // asterisk a, bell b, clock c, diamond d, hashtag h, star s
-        // caps means the right answer
-        String s = "";
-        if (problem <= 1) {
-            problem2array[0][0] = true; // Acd Bhs
-            s = "AcdBhs100100";
-        }
-        if (problem == 2) {
-            problem2array[0][1] = true; // Ads bCh
-            s = "AdsbCh100010";
-        }
-        if (problem == 3) {
-            problem2array[0][2] = true; // Acb shD
-            s = "AcbshD100001";
-        }
-        if (problem == 4) {
-            problem2array[1][0] = true; // bAc Hds
-            s = "bAcHds010100";
-        }
-        if (problem == 5) {
-            problem2array[1][1] = true; // cAb hSd
-            s = "cAbhSd010010";
-        }
-        if (problem == 6) {
-            problem2array[1][2] = true; // aBd hsC
-            s = "aBdhsC010001";
-        }
-        if (problem == 7) {
-            problem2array[2][0] = true; // chB Das
-            s = "chBDas001100";
-        }
-        if (problem == 8) {
-            problem2array[2][1] = true; // acB sHd
-            s = "acBsHd001010";
-        }
-        if (problem == 9) {
-            problem2array[2][2] = true; // haB cdS
-            s = "haBcdS001001";
-        }
-        if (problem == 10) {
-            problem2array[0][0] = true; // Cab Dsh
-            s = "CabDsh100100";
-        }
-        if (problem == 11) {
-            problem2array[0][1] = true; // Cbd aHs
-            s = "CbdaHs100010";
-        }
-        if (problem == 12) {
-            problem2array[2][2] = true; // haC dbS
-            s = "haCdbS001001";
-        }
-        if (problem == 13) {
-            problem2array[0][0] = true; // Das Hbc
-            s = "DasHbc100100";
-        }
-        if (problem == 14) {
-            problem2array[1][1] = true; // aDb cSh
-            s = "aDbcSh010010";
-        }
-        if (problem >= 15) {
-            problem2array[0][0] = true; // Hba Sdc
-            s = "HbaSdc100100";
-        }
-
-        System.out.println(s);
-        return s;
     }
 
     /**
@@ -608,7 +324,6 @@ public class HugoSkiing {
         }
     }
 
-
     /**
      * Decreases lives by 1 call when hitting an enemy (4 possible enemies).
      *
@@ -617,5 +332,290 @@ public class HugoSkiing {
     public void decreaseLives(int lives) {
         lives--;
         gameDisplay.setLives(lives);
+    }
+
+    /**
+     * Create a random integer, Java's own Math.random() has been used.
+     *
+     * @param min
+     * @param max_that_does_not_count
+     * @return int
+     */
+    public int getRandom(int min, int max_that_does_not_count) {
+        int random = (int) ((Math.random() * (max_that_does_not_count - min)) + min);
+        return random; // max_that_does_not_count if zero counts
+    }
+
+    /**
+     * Creating the stage hazards to the 1d array called hazards.
+     * Length is 71, negative values = the stage is about to begin soon, and Hugo is just skiing.
+     * In a previous version, the game array was longer.
+     *
+     * @return int[]
+     */
+    public int[] createStageHazards() {
+        int[] hazards = new int[71];
+        /*
+         * E- empty
+         * M- money
+         * 8- snowman
+         * o- snowball
+         * Q- bomb
+         * B- Masi the beaver (in Finland he is called Masi)
+         *
+         * 1- thing to remember #1 (6 possible)
+         * 2- thing to remember #2 (6 possible (actually 5 because no same again))
+         * S- Scylla button press with short horror music
+         * F- goal, just end the skiing session
+         *
+         *
+         * 0 = empty, empty, SNOWBALL, empty
+         * 1 = MONEY, empty, SNOWMAN, empty
+         * 2 = empty, MONEY, SNOWMAN, empty
+         * 3 = empty, empty, MONEY, empty
+         * 4 = empty, SNOWMAN, empty, MONEY
+         * 5 = SNOWMAN, empty, empty, empty
+         * 6 = empty, empty, empty, SNOWMAN
+         * 7 = empty, SNOWBALL, empty, empty
+         * 8 = empty, empty, empty, empty
+         * 9 = BOMB, BOMB, empty, BOMB
+         * 10 = BOMB, empty, BOMB, BOMB
+         * 11 = empty, BOMB, BOMB, empty
+         * 12 = BOMB, empty, MONEY, BOMB
+         * 13 = BEAVER, MONEY, empty, empty
+         * 14 = SNOWBALL, BEAVER, empty, empty
+         * 15 = empty, empty, BEAVER, SNOWBALL
+         * 16 = BOMB, empty, empty, BEAVER
+         * 17 = empty, SNOWBALL, BOMB, BOMB
+         * 18 = BOMB, BOMB, SNOWBALL, empty
+         *
+         * // some will be overwritten with 2 must-remember-images etc.
+         */
+        int randomPrevious = 8;
+        for (int i = 0; i < 40; i++) {
+            int random = getRandom(0, 8);
+            while (randomPrevious == random) { // avoids getting the same number again
+                random = getRandom(0, 8);
+            }
+            hazards[i] = random;
+            randomPrevious = hazards[i];
+        }
+        for (int i = 40; i < hazards.length; i++) {
+            int random = getRandom(5, 19);
+            while (randomPrevious == random) {
+                random = getRandom(5, 19);
+            }
+            hazards[i] = random;
+            randomPrevious = hazards[i];
+        }
+        for (int i = 8; i < 40; i++) {
+            if (i % 2 == 0) {
+                hazards[i] = 8; // every 2nd empty, a selected range
+            }
+            if (i == 14 || i == 25 || i == 15 || i == 26 || i == 16 || i == 27 || i == 17 || i == 28) {
+                hazards[i] = 8;
+            }
+        }
+        System.out.println(Arrays.toString(hazards));
+        return hazards;
+    }
+
+    /**
+     * Getting the stage hazards.
+     *
+     * @return String[]
+     */
+    public String[] giveStageHazards(boolean cheatBackflip180) {
+        String[] s = new String[71];
+        int haz[] = createStageHazards();
+
+        Map<Integer, String> hazardMap = Map.ofEntries(
+                Map.entry(0, "EEoE"),
+                Map.entry(1, "ME8E"),
+                Map.entry(2, "EM8E"),
+                Map.entry(3, "EEME"),
+                Map.entry(4, "E8EM"),
+                Map.entry(5, "8EEE"),
+                Map.entry(6, "EEE8"),
+                Map.entry(7, "EoEE"),
+                Map.entry(8, "EEEE"),
+                Map.entry(9, "QQEQ"),
+                Map.entry(10, "QEQQ"),
+                Map.entry(11, "EQQE"),
+                Map.entry(12, "QEMQ"),
+                Map.entry(13, "BMEE"),
+                Map.entry(14, "oBEE"),
+                Map.entry(15, "EEBo"),
+                Map.entry(16, "QEEB"),
+                Map.entry(17, "EoQQ")
+                // 18+ => handled separately
+        );
+
+        for (int i = 0; i < 70; i++) {
+            s[i] = hazardMap.getOrDefault(haz[i], "QQoE"); // fallback >= 18
+        }
+
+        // zero counts as the 1st number,
+
+        // from 0 to 14:    casual easy
+        // the 15th:          the 1st to remember
+        // from 16 to 25:   casual easy
+        // the 26th:          the 2nd to remember
+        // from 27 to 38:   casual easy
+        // the 39th:          Scylla's button press, popcorn starts
+        // from 40 to 69:   hardcore bombing
+        // the 70th:          the finish line
+        // "memory game"
+        // 3 ropes
+        s[39] = "SSSS";
+        if (cheatBackflip180) {
+            for (int i = 0; i < 1; i++) {
+                s[i] = "SSSS";
+            }
+            for (int i = 1; i < 4; i++) {
+                s[i] = "QBo8";
+            }
+            for (int i = 4; i < 15; i++) {
+                s[i] = "EMME";
+            }
+            for (int i = 17; i < 26; i++) {
+                s[i] = "EMME";
+            }
+            for (int i = 28; i < 63; i++) {
+                s[i] = "EMME";
+            }
+            for (int i = 63; i < 70; i++) {
+                s[i] = "FFFF";
+            }
+        }
+        s[15] = "1111";
+        s[16] = "EEEE"; // always an empty set after a scroll (1 and 2).
+        s[26] = "2222";
+        s[27] = "EEEE";
+        s[70] = "FFFF";
+        System.out.println(Arrays.toString(s));
+        return s;
+    }
+
+
+    /**
+     * Generate what 2 things must be remembered when Hugo is at the goal.
+     *
+     * @return int
+     */
+    public int generateIntToRemember() {
+        /*
+         * 1 = asterisk & bell
+         * 2 = asterisk & clock
+         * 3 = asterisk & diamond
+         * 4 = asterisk & hashtag
+         * 5 = asterisk & star  // "tähti, tähti"
+         * 6 = bell & clock     // "kello, kello"
+         * 7 = bell & diamond
+         * 8 = bell & hashtag
+         * 9 = bell & star
+         * 10 = clock & diamond
+         * 11 = clock & hashtag
+         * 12 = clock & star
+         * 13 = diamond & hashtag // "ruutu, ruutu"
+         * 14 = diamond & star
+         * 15 = hashtag & star
+         *
+         * Wrong answers when 3+3 are shown to the player:
+         * 1 clock, diamond; hashtag, star
+         * 2 bell, diamond; hashtag, star
+         * 3 bell, clock; hashtag, star
+         * 4 bell, clock; diamond, star
+         * 5 bell, clock; diamond, hashtag
+         * 6 asterisk, diamond; hashtag, star
+         * 7 asterisk, clock; hashtag, star
+         * 8 asterisk, clock; diamond, star
+         * 9 asterisk, clock; diamond, hashtag
+         * 10 asterisk, bell; hashtag, star
+         * 11 asterisk, bell; diamond, star
+         * 12 asterisk, bell; diamond, hashtag
+         * 13 asterisk, bell; clock, star
+         * 14 asterisk, bell; clock, hashtag
+         * 15 asterisk, bell; clock, diamond
+         *
+         */
+        int items = getRandom(0, 16); // some may have more probability to become chosen
+        return items;
+    }
+
+    /**
+     * Give the 2 items to remember to get the skull cave key at the end.
+     *
+     * @return String
+     */
+    public String giveThingsToRemember() {
+        int problem = generateIntToRemember();
+        boolean[][] problem2array = new boolean[3][3];
+        // asterisk a, bell b, clock c, diamond d, hashtag h, star s
+        // caps means the right answer
+        String s = "";
+        if (problem <= 1) {
+            problem2array[0][0] = true; // Acd Bhs
+            s = "AcdBhs100100";
+        }
+        if (problem == 2) {
+            problem2array[0][1] = true; // Ads bCh
+            s = "AdsbCh100010";
+        }
+        if (problem == 3) {
+            problem2array[0][2] = true; // Acb shD
+            s = "AcbshD100001";
+        }
+        if (problem == 4) {
+            problem2array[1][0] = true; // bAc Hds
+            s = "bAcHds010100";
+        }
+        if (problem == 5) {
+            problem2array[1][1] = true; // cAb hSd
+            s = "cAbhSd010010";
+        }
+        if (problem == 6) {
+            problem2array[1][2] = true; // aBd hsC
+            s = "aBdhsC010001";
+        }
+        if (problem == 7) {
+            problem2array[2][0] = true; // chB Das
+            s = "chBDas001100";
+        }
+        if (problem == 8) {
+            problem2array[2][1] = true; // acB sHd
+            s = "acBsHd001010";
+        }
+        if (problem == 9) {
+            problem2array[2][2] = true; // haB cdS
+            s = "haBcdS001001";
+        }
+        if (problem == 10) {
+            problem2array[0][0] = true; // Cab Dsh
+            s = "CabDsh100100";
+        }
+        if (problem == 11) {
+            problem2array[0][1] = true; // Cbd aHs
+            s = "CbdaHs100010";
+        }
+        if (problem == 12) {
+            problem2array[2][2] = true; // haC dbS
+            s = "haCdbS001001";
+        }
+        if (problem == 13) {
+            problem2array[0][0] = true; // Das Hbc
+            s = "DasHbc100100";
+        }
+        if (problem == 14) {
+            problem2array[1][1] = true; // aDb cSh
+            s = "aDbcSh010010";
+        }
+        if (problem >= 15) {
+            problem2array[0][0] = true; // Hba Sdc
+            s = "HbaSdc100100";
+        }
+
+        System.out.println(s);
+        return s;
     }
 }

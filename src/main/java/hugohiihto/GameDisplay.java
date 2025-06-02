@@ -271,10 +271,6 @@ public final class GameDisplay extends JPanel {
 
     public boolean leftWind = false;
 
-    Image scorebar; // blue score bar
-    int scorebar_x_position;
-    int scorebar_y_position;
-
     Sprite hugolife1Sprite = new Sprite();
     Sprite hugolife2Sprite = new Sprite();
     Sprite hugolife3Sprite = new Sprite();
@@ -297,9 +293,6 @@ public final class GameDisplay extends JPanel {
     Image digitFromLeft6image;
     int digitFromLeft6_x_position;
     int digitFromLeft6_y_position;
-    Image pause;
-    int pause_x_position;
-    int pause_y_position;
 
     public boolean vanish4Faster = false;
     Image currentHazardOrMoney1_image;
@@ -416,6 +409,9 @@ public final class GameDisplay extends JPanel {
     Sprite tree6Sprite = new Sprite();
     Sprite tree7Sprite = new Sprite();
     Sprite tree8Sprite = new Sprite();
+
+    Sprite pauseSprite = new Sprite();
+    Sprite scoreBarSprite = new Sprite();
 
     public final HugoSkiing hugoSkiing;
 
@@ -850,21 +846,8 @@ public final class GameDisplay extends JPanel {
         hugolife2Sprite.load("res/hugo_life.png", ((int) d.getWidth() / 55) + 80, (int) ((int) d.getHeight() / 1.3));
         hugolife3Sprite.load("res/hugo_life.png", ((int) d.getWidth() / 55) + 160, (int) ((int) d.getHeight() / 1.3));
 
-        pause_x_position = ((int) d.getWidth() / 6);
-        pause_y_position = ((int) d.getHeight() / 3);
-        ImageIcon pauseicon = new ImageIcon("res/pause.png");
-        int pausew = pauseicon.getIconWidth();
-        int pauseh = pauseicon.getIconHeight();
-        pauseicon.setImage(pauseicon.getImage().getScaledInstance(pausew, pauseh, Image.SCALE_DEFAULT));
-        pause = pauseicon.getImage();
-
-        scorebar_x_position = 0;
-        scorebar_y_position = (int) ((int) d.getHeight() / 1.35);
-        ImageIcon scorebaricon = new ImageIcon("res/score-life-bar.png");
-        int scorebarw = scorebaricon.getIconWidth();
-        int scorebarh = scorebaricon.getIconHeight();
-        scorebaricon.setImage(scorebaricon.getImage().getScaledInstance(scorebarw * 5, scorebarh, Image.SCALE_DEFAULT));
-        scorebar = scorebaricon.getImage();
+        pauseSprite.load("res/pause.png", (int) d.getWidth() / 6, (int) d.getHeight() / 3);
+        scoreBarSprite.load("res/score-life-bar.png.png", 0, (int) ((int) d.getHeight() / 1.35));
     }
 
     private void showingVideo() {
@@ -1496,7 +1479,7 @@ public final class GameDisplay extends JPanel {
             g.drawImage(currentHazardOrMoney4_image, currentHazardOrMoney4_x_position, currentHazardOrMoney4_y_position, this);
         }
 
-        g.drawImage(scorebar, scorebar_x_position, scorebar_y_position, this);
+        g.drawImage(scoreBarSprite.getImage(), scoreBarSprite.getX(), scoreBarSprite.getY(), this);
 
         if (hundredThousandsVisible)
             g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
@@ -1548,7 +1531,7 @@ public final class GameDisplay extends JPanel {
         // Order matters,
         if (gamePaused) { // pause should be written last because it should always be on top of everything.
             if (pausedWithEnter) {
-                g.drawImage(pause, pause_x_position, pause_y_position, this);
+                g.drawImage(pauseSprite.getImage(), pauseSprite.getX(), pauseSprite.getY(), this);
             }
         }
 
