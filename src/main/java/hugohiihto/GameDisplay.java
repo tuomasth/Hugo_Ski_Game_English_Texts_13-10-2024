@@ -1,5 +1,13 @@
 package hugohiihto;
 
+import hugohiihto.grid.GridS01Thread;
+import hugohiihto.grid.GridS23Thread;
+import hugohiihto.thread.*;
+import hugohiihto.thread.hazard.HAZ1Thread;
+import hugohiihto.thread.hazard.HAZ2Thread;
+import hugohiihto.thread.hazard.HAZ3Thread;
+import hugohiihto.thread.hazard.HAZ4Thread;
+import hugohiihto.thread.tree.*;
 import hugohiihto.type.GameState;
 import hugohiihto.type.VideoType;
 
@@ -229,7 +237,7 @@ public final class GameDisplay extends JPanel {
     Image r2;
     Image r3;
 
-    boolean gamePaused = false;
+    public boolean gamePaused = false;
     boolean pausedWithEnter = false; // 2 types of pausing: interruption before a video and pause on purpose by the player
     String thingsToRemember = "dsHAcb";   // will be random later , end 0s and 1s are just extra if present
     boolean currentlyAllCorrect = true;
@@ -237,15 +245,15 @@ public final class GameDisplay extends JPanel {
     boolean allCorrectInTheEnd = false;      // (Scylla has weird locks and why does she even give the 2 scroll key clues to Hugo?)
 
     public static Dimension d = new Dimension(630, 500);
-    int maxW = d.width - 220;
+    public int maxW = d.width - 220;
 
     int w_width = (int) d.getWidth() / 7; // hugo skiing animation
     int w_height = (int) d.getHeight() / 3;
     int e_width = (int) d.getWidth() / 7;
     int e_height = (int) d.getHeight() / 3;
 
-    int x, y;
-    int currentGrid = 0; // or line, should be 0, 1, 2 or 3, nothing else
+    public int x, y;
+    public int currentGrid = 0; // or line, should be 0, 1, 2 or 3, nothing else
     // Hugo will always go forward and <- & -> change the line on the current phase
 
     Image theVeryFirst;
@@ -263,34 +271,34 @@ public final class GameDisplay extends JPanel {
     Image bgCave;
 
     Image cloud;
-    int cloud_x_position;
+    public int cloud_x_position;
     int cloud_y_position;
-    boolean leftWind = false;
+    public boolean leftWind = false;
 
     Image possibleTree1; // may be changed to something else than trees - if wanted to edit so
-    int possibleTree1_x_position;
-    int possibleTree1_y_position;
+    public int possibleTree1_x_position;
+    public int possibleTree1_y_position;
     Image possibleTree2;
-    int possibleTree2_x_position;
-    int possibleTree2_y_position;
+    public int possibleTree2_x_position;
+    public int possibleTree2_y_position;
     Image possibleTree3;
-    int possibleTree3_x_position;
-    int possibleTree3_y_position;
+    public int possibleTree3_x_position;
+    public int possibleTree3_y_position;
     Image possibleTree4;
-    int possibleTree4_x_position;
-    int possibleTree4_y_position;
+    public int possibleTree4_x_position;
+    public int possibleTree4_y_position;
     Image possibleTree5;
-    int possibleTree5_x_position;
-    int possibleTree5_y_position;
+    public int possibleTree5_x_position;
+    public int possibleTree5_y_position;
     Image possibleTree6;
-    int possibleTree6_x_position;
-    int possibleTree6_y_position;
+    public int possibleTree6_x_position;
+    public int possibleTree6_y_position;
     Image possibleTree7;
-    int possibleTree7_x_position;
-    int possibleTree7_y_position;
+    public int possibleTree7_x_position;
+    public int possibleTree7_y_position;
     Image possibleTree8;
-    int possibleTree8_x_position;
-    int possibleTree8_y_position;
+    public int possibleTree8_x_position;
+    public int possibleTree8_y_position;
     int possibleTree1iconw;
     int possibleTree1iconh;
     int possibleTree2iconw;
@@ -351,31 +359,33 @@ public final class GameDisplay extends JPanel {
     int pause_x_position;
     int pause_y_position;
 
-    boolean vanish4Faster = false;
+    public boolean vanish4Faster = false;
     Image currentHazardOrMoney1_image;
-    int currentHazardOrMoney1_x_position;
-    int currentHazardOrMoney1_y_position;
+    public int currentHazardOrMoney1_x_position;
+    public int currentHazardOrMoney1_y_position;
     Image currentHazardOrMoney2_image;
-    int currentHazardOrMoney2_x_position;
-    int currentHazardOrMoney2_y_position;
+    public int currentHazardOrMoney2_x_position;
+    public int currentHazardOrMoney2_y_position;
+
     Image currentHazardOrMoney3_image;
-    int currentHazardOrMoney3_x_position;
-    int currentHazardOrMoney3_y_position;
+    public int currentHazardOrMoney3_x_position;
+    public int currentHazardOrMoney3_y_position;
+
     Image currentHazardOrMoney4_image;
-    int currentHazardOrMoney4_x_position;
-    int currentHazardOrMoney4_y_position;
+    public int currentHazardOrMoney4_x_position;
+    public int currentHazardOrMoney4_y_position;
     String currentHazardOrMoney1 = "E";
     String currentHazardOrMoney2 = "E";
     String currentHazardOrMoney3 = "E";
     String currentHazardOrMoney4 = "E";
-    int currentHazardOrMoney1w;
-    int currentHazardOrMoney1h;
-    int currentHazardOrMoney2w;
-    int currentHazardOrMoney2h;
-    int currentHazardOrMoney3w;
-    int currentHazardOrMoney3h;
-    int currentHazardOrMoney4w;
-    int currentHazardOrMoney4h;
+    public int currentHazardOrMoney1w;
+    public int currentHazardOrMoney1h;
+    public int currentHazardOrMoney2w;
+    public int currentHazardOrMoney2h;
+    public int currentHazardOrMoney3w;
+    public int currentHazardOrMoney3h;
+    public int currentHazardOrMoney4w;
+    public int currentHazardOrMoney4h;
 
     int position1 = 10;
     int position2 = 130;
@@ -454,7 +464,7 @@ public final class GameDisplay extends JPanel {
     Clip clipCorrect = null;
     File fileCorrect = new File("res/correct_selection.wav");
 
-    private final HugoSkiing hugoSkiing;
+    public final HugoSkiing hugoSkiing;
 
     /**
      * The constructor.
@@ -1064,988 +1074,587 @@ public final class GameDisplay extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (gameState == GameState.PRE_TITLE) {
-            super.paintComponent(g);
-            g.drawImage(theVeryFirst, 0, 0, this);
-            repaint();
+        switch (gameState) {
+            case PRE_TITLE -> paintPreTitle(g);
+            case TITLE_SCREEN -> paintTitleScreen(g);
+            case SHOWING_VIDEO -> paintShowingVideo(g);
+            case SKI_GAME -> paintSkiGame(g);
+            case REMEMBER_ITEMS -> paintRememberItems(g);
+            case GAME_OVER -> paintGameOver(g);
+            case VIDEO_TRANSITION -> paintVideoTransition();
+        }
+    }
 
-            if (nextState != gameState) {
-                System.out.println("------ State change from " + gameState + " to " + nextState);
-                gameState = nextState;
-                //super.paintComponent(g);
-                constructFrames(gameState);
-                repaint();
 
-            }
+    private void paintVideoTransition() {
+        // when moving from state 2 straight back to state 2, a workaround, show 2 videos in a row both with sound
+        nextState = GameState.SHOWING_VIDEO;
+        System.out.println("------ State change from " + gameState + " to " + nextState);
+        gameState = nextState;
+
+        constructFrames(gameState);
+        repaint();
+    }
+
+    private void paintGameOver(Graphics g) {
+        super.paintComponent(g);
+
+        cheatBackflip180 = false;
+        key12 = false; // Even if something else was pressed when inputting the 12 numbers, it does not matter.
+        key11 = false; // You may press for example "9700  2  4954 4744" where 2 is an unnecessary extra press.
+        key10 = false;
+        key9 = false;
+        key8 = false;
+        key7 = false;
+        key6 = false;
+        key5 = false;
+        key4 = false;
+        key3 = false;
+        key2 = false;
+        key1 = false;
+
+        String onesToDraw_path = "res/numbers" + ones + ".png";
+        String tensToDraw_path = "res/numbers" + tens + ".png";
+        String hundredsToDraw_path = "res/numbers" + hundreds + ".png";
+        String thousandsToDraw_path = "res/numbers" + thousands + ".png";
+        String tenThousandsToDraw_path = "res/numbers" + tenThousands + ".png";
+        String hundredThousandsToDraw_path = "res/numbers" + hundredThousands + ".png";
+
+        digitFromLeft1_x_position = (int) ((int) d.getWidth() / 11);
+        digitFromLeft1_y_position = (int) ((int) d.getHeight() / 2.2);
+        ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
+        int digitFromLeft1w = digitFromLeft1.getIconWidth();
+        int digitFromLeft1h = digitFromLeft1.getIconHeight();
+        digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(
+                digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
+        digitFromLeft1image = digitFromLeft1.getImage();
+
+        digitFromLeft2_x_position = (int) ((int) d.getWidth() / 11) + 50;
+        digitFromLeft2_y_position = (int) ((int) d.getHeight() / 2.2);
+        ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
+        int digitFromLeft2w = digitFromLeft2.getIconWidth();
+        int digitFromLeft2h = digitFromLeft2.getIconHeight();
+        digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(
+                digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
+        digitFromLeft2image = digitFromLeft2.getImage();
+
+        digitFromLeft3_x_position = (int) ((int) d.getWidth() / 11) + 100;
+        digitFromLeft3_y_position = (int) ((int) d.getHeight() / 2.2);
+        ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
+        int digitFromLeft3w = digitFromLeft3.getIconWidth();
+        int digitFromLeft3h = digitFromLeft3.getIconHeight();
+        digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(
+                digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
+        digitFromLeft3image = digitFromLeft3.getImage();
+
+        digitFromLeft4_x_position = (int) ((int) d.getWidth() / 11) + 150;
+        digitFromLeft4_y_position = (int) ((int) d.getHeight() / 2.2);
+        ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
+        int digitFromLeft4w = digitFromLeft4.getIconWidth();
+        int digitFromLeft4h = digitFromLeft4.getIconHeight();
+        digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(
+                digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
+        digitFromLeft4image = digitFromLeft4.getImage();
+
+        digitFromLeft5_x_position = (int) ((int) d.getWidth() / 11) + 200;
+        digitFromLeft5_y_position = (int) ((int) d.getHeight() / 2.2);
+        ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
+        int digitFromLeft5w = digitFromLeft5.getIconWidth();
+        int digitFromLeft5h = digitFromLeft5.getIconHeight();
+        digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(
+                digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
+        digitFromLeft5image = digitFromLeft5.getImage();
+
+        digitFromLeft6_x_position = (int) ((int) d.getWidth() / 11) + 250;
+        digitFromLeft6_y_position = (int) ((int) d.getHeight() / 2.2);
+        ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
+        int digitFromLeft6w = digitFromLeft6.getIconWidth();
+        int digitFromLeft6h = digitFromLeft6.getIconHeight();
+        digitFromLeft6.setImage(digitFromLeft6.getImage().getScaledInstance(
+                digitFromLeft6w, digitFromLeft6h, Image.SCALE_DEFAULT));
+        digitFromLeft6image = digitFromLeft6.getImage();
+
+        g.drawImage(scoreBGR, -10, -18, null);
+        repaint();
+
+        if (pulled_rope_1) {
+            ImageIcon r1_icon = new ImageIcon("res/rope1good.png");
+            int r1_iconw = r1_icon.getIconWidth();
+            int r1_iconh = r1_icon.getIconHeight();
+            r1_icon.setImage(r1_icon.getImage().getScaledInstance(r1_iconw - 30, r1_iconh - 30, Image.SCALE_DEFAULT));
+            r1 = r1_icon.getImage();
+            g.drawImage(r1, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
+        }
+        if (pulled_rope_2 == true || (pulled_rope_1 == false && pulled_rope_2 == false && pulled_rope_3 == false)) {
+            ImageIcon r2_icon = new ImageIcon("res/rope2bad.png");
+            int r2_iconw = r2_icon.getIconWidth();
+            int r2_iconh = r2_icon.getIconHeight();
+            r2_icon.setImage(r2_icon.getImage().getScaledInstance(r2_iconw - 30, r2_iconh - 30, Image.SCALE_DEFAULT));
+            r2 = r2_icon.getImage();
+            g.drawImage(r2, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
+        }
+        if (pulled_rope_3) {
+            ImageIcon r3_icon = new ImageIcon("res/rope3best.png");
+            int r3_iconw = r3_icon.getIconWidth();
+            int r3_iconh = r3_icon.getIconHeight();
+            r3_icon.setImage(r3_icon.getImage().getScaledInstance(r3_iconw - 30, r3_iconh - 30, Image.SCALE_DEFAULT));
+            r3 = r3_icon.getImage();
+            g.drawImage(r3, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
         }
 
-        if (gameState == GameState.TITLE_SCREEN) {
-            super.paintComponent(g);
-            if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
-                //super.paintComponent(g);
-                g.drawImage(creditsScreen, 0, 0, this);
-                repaint();
-            } else {
-                //super.paintComponent(g);
-                g.drawImage(titleScreen, 0, 0, this);
-                repaint();
-            }
+        if (hundredThousandsVisible)
+            g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
+        if (tenThousandsVisible)
+            g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
+        if (thousandsVisible)
+            g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
+        if (hundredsVisible)
+            g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
+        if (tensVisible)
+            g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
+        if (onesVisible)
+            g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
 
-            if (nextState != gameState) {
-                System.out.println("------ State change from " + gameState + " to " + nextState);
-                gameState = nextState;
-                //super.paintComponent(g);
-                constructFrames(gameState);
-                repaint();
+        repaint();
 
-            }
-        }
-
-        if (gameState == GameState.SHOWING_VIDEO) {
-            super.paintComponent(g);
-
-            if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
-                String pathMP4 = getResourceAudioVideo(video, ".mp4");
-
-                File video_source = new File(pathMP4);
-                try {
-                    Desktop.getDesktop().open(video_source); // opens Windows Media Player for instance
-                } catch (IOException ex) {                   // not the best way to display mp4s
-                    Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
-                }
-
-            } else {
-                String pathGif = getResourceAudioVideo(video, "_s.gif");
-
-                videoIMGicon = new ImageIcon(pathGif);
-                super.paintComponent(g);
-                videoimg = null; // .gif
-                videoimg = videoIMGicon.getImage();
-                int wi = (int) (d.getWidth());
-                int he = (int) (d.getHeight() - 40);
-                videoimg.setAccelerationPriority((float) 1.0); // from 0-> lowest to 1-> highest
-
-                g.drawImage(videoimg, 0, 0, wi, he, null);
-                for (int i = 0; i < 30000; i++) {
-                    repaint(); // Important repaint lines
-                }
-            }
-
-            if (nextState != gameState) {
-                System.out.println("------ State change from " + gameState + " to " + nextState);
-                gameState = nextState;
-                //super.paintComponent(g);
-                constructFrames(gameState);
-
-                repaint();
-
-            }
-        }
-        if (gameState == GameState.SKI_GAME) {
-            super.paintComponent(g);
-            g.drawImage(bg, 0, 0, null);
-
-
-            Thread Cloud = new Thread() {
-                @Override
-                /**
-                 * Run (cloud) object 0 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (System.currentTimeMillis() % 19 == 0) {
-                        if (leftWind) {
-                            cloud_x_position--;
-                        } else {
-                            cloud_x_position++;
-                        }
-                    }
-                    if (cloud_x_position < -300 && leftWind) {
-                        cloud_x_position = d.width;
-                    }
-                    if (cloud_x_position > 700 && !leftWind) {
-                        cloud_x_position -= 1000;
-                    }
-                }
-            };
-            if (!Cloud.isAlive()) {
-                Cloud.start();
-            }
-
-            Thread Tr1 = new Thread() {
-                @Override
-                /**
-                 * Run object 1 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree1_x_position -= 2;
-                            possibleTree1_y_position++;
-                        }
-                        if (possibleTree1_x_position < -340) {
-                            possibleTree1_x_position = (d.width / 8) - 7;
-                            possibleTree1_y_position = (d.height / 12) + 20;
-                        }
-                    }
-                }
-            };
-            if (!Tr1.isAlive()) {
-                Tr1.start();
-            }
-            Thread Tr2 = new Thread() {
-                @Override
-                /**
-                 * Run object 2 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree2_x_position -= 2;
-                            possibleTree2_y_position++;
-                        }
-                        if (possibleTree2_x_position < -400) {
-                            possibleTree2_x_position = (d.width / 4) - 4;
-                            possibleTree2_y_position = (d.height / 8) + 20;
-                        }
-                    }
-                }
-            };
-            if (!Tr2.isAlive()) {
-                Tr2.start();
-            }
-            Thread Tr3 = new Thread() {
-                @Override
-                /**
-                 * Run object 3 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree3_x_position -= 2;
-                            possibleTree3_y_position++;
-                        }
-                        if (possibleTree3_x_position < -500) {
-                            possibleTree3_x_position = (d.width / 5) - 4;
-                            possibleTree3_y_position = (d.height / 17) + 20;
-                        }
-                    }
-                }
-            };
-            if (!Tr3.isAlive()) {
-                Tr3.start();
-            }
-            Thread Tr4 = new Thread() {
-                @Override
-                /**
-                 * Run object 4 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree4_x_position += 2;
-                            possibleTree4_y_position++;
-                        }
-                        if (possibleTree4_x_position > 640) {
-                            possibleTree4_x_position = (int) ((int) d.getWidth() / 2) + 40;
-                            possibleTree4_y_position = (int) ((int) d.getHeight() / 3) - 100;
-                        }
-                    }
-                }
-            };
-            if (!Tr4.isAlive()) {
-                Tr4.start();
-            }
-            Thread Tr5 = new Thread() {
-                @Override
-                /**
-                 * Run object 5 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree5_x_position += 2;
-                            possibleTree5_y_position++;
-                        }
-                        if (possibleTree5_x_position > 760) {
-                            possibleTree5_x_position = (int) ((int) d.getWidth() / 2) + 40;
-                            possibleTree5_y_position = (int) ((int) d.getHeight() / 3) - 80;
-                        }
-                    }
-                }
-            };
-            if (!Tr5.isAlive()) {
-                Tr5.start();
-            }
-            Thread Tr6 = new Thread() {
-                @Override
-                /**
-                 * Run object 6 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree6_x_position += 2;
-                            possibleTree6_y_position++;
-                        }
-                        if (possibleTree6_x_position > 800) {
-                            possibleTree6_x_position = (int) ((int) d.getWidth() / 2) + 40;
-                            possibleTree6_y_position = (int) ((int) d.getHeight() / 3) - 80;
-                        }
-                    }
-                }
-            };
-            if (!Tr6.isAlive()) {
-                Tr6.start();
-            }
-            Thread Tr7 = new Thread() {
-                @Override
-                /**
-                 * Run object 7 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree7_x_position += 2;
-                            possibleTree7_y_position++;
-                        }
-                        if (possibleTree7_x_position > 753) {
-                            possibleTree7_x_position = (int) ((int) d.getWidth() / 2) + 42;
-                            possibleTree7_y_position = (int) ((int) d.getHeight() / 3) - 82;
-                        }
-                    }
-                }
-            };
-            if (!Tr7.isAlive()) {
-                Tr7.start();
-            }
-            Thread Tr8 = new Thread() {
-                @Override
-                /**
-                 * Run object 8 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 2 == 0) {
-                            possibleTree8_x_position -= 2;
-                            possibleTree8_y_position++;
-                        }
-                        if (possibleTree8_x_position < -574) {
-                            possibleTree8_x_position = (d.width / 9);
-                            possibleTree8_y_position = (d.height / 7) + 32;
-                        }
-                    }
-                }
-            };
-            if (!Tr8.isAlive()) {
-                Tr8.start();
-            }
-
-            // finally drawing the graphical decorations:
-            g.drawImage(cloud, cloud_x_position, cloud_y_position, this);
-            g.drawImage(possibleTree1, possibleTree1_x_position, possibleTree1_y_position, this);
-            g.drawImage(possibleTree2, possibleTree2_x_position, possibleTree2_y_position, this);
-            g.drawImage(possibleTree3, possibleTree3_x_position, possibleTree3_y_position, this);
-            g.drawImage(possibleTree4, possibleTree4_x_position, possibleTree4_y_position, this);
-            g.drawImage(possibleTree5, possibleTree5_x_position, possibleTree5_y_position, this);
-            g.drawImage(possibleTree6, possibleTree6_x_position, possibleTree6_y_position, this);
-            g.drawImage(possibleTree7, possibleTree7_x_position, possibleTree7_y_position, this);
-            g.drawImage(possibleTree8, possibleTree8_x_position, possibleTree8_y_position, this);
-
-            Set<String> ignored = Set.of("E", "S", "F");
-            if (ignored.contains(currentHazardOrMoney1)) currentHazardOrMoney1_image = null;
-            if (ignored.contains(currentHazardOrMoney2)) currentHazardOrMoney2_image = null;
-            if (ignored.contains(currentHazardOrMoney3)) currentHazardOrMoney3_image = null;
-            if (ignored.contains(currentHazardOrMoney4)) currentHazardOrMoney4_image = null;
-
-            Map<String, String> hazardPaths = Map.of(
-                    "M", "res/money.png",
-                    "8", "res/enemy_snowman.png",
-                    "o", "res/enemy_snowball.png",
-                    "Q", "res/enemy_bomb.png",
-                    "B", "res/enemy_beaver_masi.png"
-            );
-            String path_of_hazard_1 = hazardPaths.getOrDefault(currentHazardOrMoney1, "");
-            String path_of_hazard_2 = hazardPaths.getOrDefault(currentHazardOrMoney2, "");
-            String path_of_hazard_3 = hazardPaths.getOrDefault(currentHazardOrMoney3, "");
-            String path_of_hazard_4 = hazardPaths.getOrDefault(currentHazardOrMoney4, "");
-            if (currentHazardOrMoney1.equals("1")) {
-                path_of_hazard_2 = "";
-                currentHazardOrMoney2_image = null;
-                path_of_hazard_3 = "";
-                currentHazardOrMoney3_image = null;
-                path_of_hazard_4 = "";
-                currentHazardOrMoney4_image = null;
-                Map<Character, String> hazardMap = Map.of(
-                        'A', "res/remember_A_asterisk.png",
-                        'B', "res/remember_B_bell.png",
-                        'C', "res/remember_C_clock.png",
-                        'D', "res/remember_D_diamond.png",
-                        'H', "res/remember_H_hash.png",
-                        'S', "res/remember_S_star.png"
-                );
-
-                for (int i = 0; i < 3; i++) {
-                    char c = thingsToRemember.charAt(i);
-                    if (hazardMap.containsKey(c)) {
-                        path_of_hazard_1 = hazardMap.get(c);
-                    }
-                }
-            }
-            if (currentHazardOrMoney1.equals("2")) {
-                path_of_hazard_2 = "";
-                currentHazardOrMoney2_image = null;
-                path_of_hazard_3 = "";
-                currentHazardOrMoney3_image = null;
-                path_of_hazard_4 = "";
-                currentHazardOrMoney4_image = null;
-                for (int i = 3; i < 6; i++) {
-                    if (thingsToRemember.charAt(i) == 'A') {
-                        path_of_hazard_1 = "res/remember_A_asterisk.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'B') {
-                        path_of_hazard_1 = "res/remember_B_bell.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'C') {
-                        path_of_hazard_1 = "res/remember_C_clock.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'D') {
-                        path_of_hazard_1 = "res/remember_D_diamond.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'H') {
-                        path_of_hazard_1 = "res/remember_H_hash.png";
-                    }
-                    if (thingsToRemember.charAt(i) == 'S') {
-                        path_of_hazard_1 = "res/remember_S_star.png";
-                    }
-                }
-            }
-            // file names should remain exactly original
-
-            if (!"".equals(path_of_hazard_1)) {
-                ImageIcon currentHazardOrMoney_1 = new ImageIcon(path_of_hazard_1);
-                currentHazardOrMoney_1.setImage(currentHazardOrMoney_1.getImage()
-                        .getScaledInstance(currentHazardOrMoney1w, currentHazardOrMoney1h, Image.SCALE_DEFAULT));
-                currentHazardOrMoney1_image = currentHazardOrMoney_1.getImage();
-            }
-            if (!"".equals(path_of_hazard_2)) {
-                ImageIcon currentHazardOrMoney_2 = new ImageIcon(path_of_hazard_2);
-                currentHazardOrMoney_2.setImage(currentHazardOrMoney_2.getImage()
-                        .getScaledInstance(currentHazardOrMoney2w, currentHazardOrMoney2h, Image.SCALE_DEFAULT));
-                currentHazardOrMoney2_image = currentHazardOrMoney_2.getImage();
-            }
-            if (!"".equals(path_of_hazard_3)) {
-                ImageIcon currentHazardOrMoney_3 = new ImageIcon(path_of_hazard_3);
-                currentHazardOrMoney_3.setImage(currentHazardOrMoney_3.getImage()
-                        .getScaledInstance(currentHazardOrMoney3w, currentHazardOrMoney3h, Image.SCALE_DEFAULT));
-                currentHazardOrMoney3_image = currentHazardOrMoney_3.getImage();
-            }
-            if (!"".equals(path_of_hazard_4)) {
-                ImageIcon currentHazardOrMoney_4 = new ImageIcon(path_of_hazard_4);
-                currentHazardOrMoney_4.setImage(currentHazardOrMoney_4.getImage()
-                        .getScaledInstance(currentHazardOrMoney4w, currentHazardOrMoney4h, Image.SCALE_DEFAULT));
-                currentHazardOrMoney4_image = currentHazardOrMoney_4.getImage();
-            }
-
-            String onesToDraw_path = "res/numbers" + (ones) + ".png";
-            String tensToDraw_path = "res/numbers" + (tens) + ".png";
-            String hundredsToDraw_path = "res/numbers" + (hundreds) + ".png";
-            String thousandsToDraw_path = "res/numbers" + (thousands) + ".png";
-            String tenThousandsToDraw_path = "res/numbers" + (tenThousands) + ".png";
-            String hundredThousandsToDraw_path = "res/numbers" + (hundredThousands) + ".png";
-
-            digitFromLeft1_x_position = (int) ((int) d.getWidth() / 2);
-            digitFromLeft1_y_position = (int) ((int) d.getHeight() / 1.27);
-            ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
-            int digitFromLeft1w = digitFromLeft1.getIconWidth();
-            int digitFromLeft1h = digitFromLeft1.getIconHeight();
-            digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
-            digitFromLeft1image = digitFromLeft1.getImage();
-
-            digitFromLeft2_x_position = (int) ((int) d.getWidth() / 2) + 45;
-            digitFromLeft2_y_position = (int) ((int) d.getHeight() / 1.27);
-            ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
-            int digitFromLeft2w = digitFromLeft2.getIconWidth();
-            int digitFromLeft2h = digitFromLeft2.getIconHeight();
-            digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
-            digitFromLeft2image = digitFromLeft2.getImage();
-
-            digitFromLeft3_x_position = (int) ((int) d.getWidth() / 2) + 90;
-            digitFromLeft3_y_position = (int) ((int) d.getHeight() / 1.27);
-            ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
-            int digitFromLeft3w = digitFromLeft3.getIconWidth();
-            int digitFromLeft3h = digitFromLeft3.getIconHeight();
-            digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
-            digitFromLeft3image = digitFromLeft3.getImage();
-
-            digitFromLeft4_x_position = (int) ((int) d.getWidth() / 2) + 135;
-            digitFromLeft4_y_position = (int) ((int) d.getHeight() / 1.27);
-            ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
-            int digitFromLeft4w = digitFromLeft4.getIconWidth();
-            int digitFromLeft4h = digitFromLeft4.getIconHeight();
-            digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
-            digitFromLeft4image = digitFromLeft4.getImage();
-
-            digitFromLeft5_x_position = (int) ((int) d.getWidth() / 2) + 180;
-            digitFromLeft5_y_position = (int) ((int) d.getHeight() / 1.27);
-            ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
-            int digitFromLeft5w = digitFromLeft5.getIconWidth();
-            int digitFromLeft5h = digitFromLeft5.getIconHeight();
-            digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
-            digitFromLeft5image = digitFromLeft5.getImage();
-
-            digitFromLeft6_x_position = (int) ((int) d.getWidth() / 2) + 225;
-            digitFromLeft6_y_position = (int) ((int) d.getHeight() / 1.27);
-            ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
-            int digitFromLeft6w = digitFromLeft6.getIconWidth();
-            int digitFromLeft6h = digitFromLeft6.getIconHeight();
-            digitFromLeft6.setImage(digitFromLeft6.getImage().getScaledInstance(digitFromLeft6w, digitFromLeft6h, Image.SCALE_DEFAULT));
-            digitFromLeft6image = digitFromLeft6.getImage();
-
-            Thread HAZ1 = new Thread() {
-                @Override
-                /**
-                 * Run ski track 1 thread.
-                 */
-                public void run() {
-                    Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if (!gamePaused) {
-                        if (hugoSkiing.currentStateAtTheLevel == 15 || hugoSkiing.currentStateAtTheLevel == 26) {
-                            currentHazardOrMoney1w = 1;
-                            currentHazardOrMoney1h = 1;
-                            currentHazardOrMoney1_y_position = 8000;
-                            currentHazardOrMoney1_x_position = 8000;
-                        }
-                        if (vanish4Faster && (hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25)) {
-                            currentHazardOrMoney1_y_position += 4;
-                        }
-                        if (hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25) {
-                            if (currentHazardOrMoney1_x_position < 310) {
-                                currentHazardOrMoney1_x_position++;
-                            } else {
-                                currentHazardOrMoney1_y_position += 3;
-                            }
-                            currentHazardOrMoney1w = 120;
-                            currentHazardOrMoney1h = 120;
-                            if (currentHazardOrMoney1_x_position < 180 || vanish4Faster) {
-                                currentHazardOrMoney1_x_position++;
-                            }
-                        } else {
-                            if (System.currentTimeMillis() % 3 == 0) {
-                                currentHazardOrMoney1_x_position -= 2;
-                                currentHazardOrMoney1_y_position -= 2;
-                                currentHazardOrMoney1w++;
-                                currentHazardOrMoney1h += 2;
-                            }
-                            //
-                            if (currentHazardOrMoney1_y_position < 185) {
-                                currentHazardOrMoney1_y_position += 2;
-                            } else if (currentHazardOrMoney1_y_position > y - 25 && System.currentTimeMillis() % 5 == 0) {
-                                currentHazardOrMoney1_x_position--;
-                                currentHazardOrMoney1_y_position++;
-                            }
-                            if (currentHazardOrMoney1_y_position > d.getHeight() - 230) {
-                                currentHazardOrMoney1_x_position = (int) (d.getWidth() + 1000);
-                                currentHazardOrMoney1w = 1;
-                                currentHazardOrMoney1h = 1;
-                            }
-                            if (currentHazardOrMoney1_y_position > d.getHeight() - 230 ||
-                                    currentHazardOrMoney1_x_position < 50 ||
-                                    !hugoSkiing.tic) {
-                                currentHazardOrMoney1_y_position = 8000;
-                                //System.out.println("Off screen 1");
-                                currentHazardOrMoney1w = 1;
-                                currentHazardOrMoney1h = 1;
-                            }
-                        }
-                        if (vanish4Faster) {
-                            currentHazardOrMoney1_y_position += 3;
-                            currentHazardOrMoney1_x_position -= 5;
-                            currentHazardOrMoney1w += 3;
-                            currentHazardOrMoney1h += 3;
-                        }
-                    }
-                }
-            };
-            if (!HAZ1.isAlive()) {
-                HAZ1.start();
-            }
-            if (hugoSkiing.currentStateAtTheLevel > -2) {
-                g.drawImage(currentHazardOrMoney1_image, currentHazardOrMoney1_x_position, currentHazardOrMoney1_y_position, this);
-            }
-
-            Thread HAZ2 = new Thread() {
-                @Override
-                /**
-                 * Run ski track 2 thread.
-                 */
-                public void run() {
-                    repaint();
-                    Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 3 == 0) {
-                            currentHazardOrMoney2_y_position++;
-                            currentHazardOrMoney2w++;
-                            currentHazardOrMoney2h += 2;
-                        }
-                        //
-                        if (currentHazardOrMoney2_y_position < 175) {
-                            currentHazardOrMoney2_y_position++;
-                        }
-                        if (System.currentTimeMillis() % 3 == 0 && currentHazardOrMoney2_x_position > 192) {
-                            currentHazardOrMoney2_x_position--;
-                        }
-                        if (currentHazardOrMoney2_y_position > d.getHeight() - 230) {
-                            currentHazardOrMoney2_x_position = (int) (d.getWidth() + 1000);
-                            currentHazardOrMoney2w = 1;
-                            currentHazardOrMoney2h = 1;
-                        }
-                        if (currentHazardOrMoney2_y_position > d.getHeight() - 230 ||
-                                !hugoSkiing.tic) {
-                            //System.out.println("Off screen 2");
-                            currentHazardOrMoney2_y_position = 8000;
-                            currentHazardOrMoney2w = 1;
-                            currentHazardOrMoney2h = 1;
-                            repaint();
-                        }
-                        if (currentHazardOrMoney2_y_position > y + 30 && System.currentTimeMillis() % 5 == 0) {
-                            currentHazardOrMoney2_y_position++;
-                        }
-                        if (vanish4Faster) {
-                            currentHazardOrMoney2_y_position += 3;
-                            currentHazardOrMoney2_x_position--;
-                            currentHazardOrMoney2w += 3;
-                            currentHazardOrMoney2h += 3;
-                        }
-                    }
-                }
-            };
-            if (!HAZ2.isAlive()) {
-                HAZ2.start();
-            }
-            if (hugoSkiing.currentStateAtTheLevel > -2) {
-                g.drawImage(currentHazardOrMoney2_image, currentHazardOrMoney2_x_position, currentHazardOrMoney2_y_position, this);
-            }
-
-            Thread HAZ3 = new Thread() {
-                @Override
-                /**
-                 * Run ski track 3 thread.
-                 */
-                public void run() {
-                    repaint();
-                    Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 3 == 0) {
-                            currentHazardOrMoney3_y_position++;
-                            currentHazardOrMoney3w++;
-                            currentHazardOrMoney3h += 2;
-                        }
-                        //
-                        if (currentHazardOrMoney3_y_position < 175) {
-                            currentHazardOrMoney3_y_position++;
-                        }
-                        if (System.currentTimeMillis() % 3 == 0 && currentHazardOrMoney3_x_position < 340) {
-                            currentHazardOrMoney3_x_position++;
-                        }
-                        if (currentHazardOrMoney3_y_position > d.getHeight() - 230) {
-                            currentHazardOrMoney3_x_position = (int) (d.getWidth() + 1000);
-                            currentHazardOrMoney3w = 1;
-                            currentHazardOrMoney3h = 1;
-                        }
-                        if (currentHazardOrMoney3_y_position > d.getHeight() - 230 ||
-                                !hugoSkiing.tic) {
-                            //System.out.println("Off screen 3");
-                            currentHazardOrMoney3_y_position = 8000;
-                            currentHazardOrMoney3w = 1;
-                            currentHazardOrMoney3h = 1;
-                            repaint();
-                        }
-                        if (currentHazardOrMoney3_y_position > y + 30 && System.currentTimeMillis() % 5 == 0) {
-                            currentHazardOrMoney3_y_position++;
-                        }
-                        if (vanish4Faster) {
-                            currentHazardOrMoney3_y_position += 3;
-                            currentHazardOrMoney3w += 3;
-                            currentHazardOrMoney3h += 3;
-                        }
-                    }
-                }
-            };
-            if (!HAZ3.isAlive()) {
-                HAZ3.start();
-            }
-            if (hugoSkiing.currentStateAtTheLevel > -2) {
-                g.drawImage(currentHazardOrMoney3_image, currentHazardOrMoney3_x_position, currentHazardOrMoney3_y_position, this);
-            }
-
-            Thread HAZ4 = new Thread() {
-                @Override
-                /**
-                 * Run ski track 4 thread.
-                 */
-                public void run() {
-                    repaint();
-                    Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                    if (!gamePaused) {
-                        if (System.currentTimeMillis() % 3 == 0) {
-                            currentHazardOrMoney4_x_position += 2;
-                            currentHazardOrMoney4_y_position++;
-                            currentHazardOrMoney4w++;
-                            currentHazardOrMoney4h += 2;
-                        }
-                        //
-                        if (currentHazardOrMoney4_y_position < 165) {
-                            currentHazardOrMoney4_y_position++;
-                        }
-                        if (currentHazardOrMoney4_y_position > d.getHeight() - 230) {
-                            currentHazardOrMoney4_x_position = (int) (d.getWidth() + 1000);
-                            currentHazardOrMoney4w = 1;
-                            currentHazardOrMoney4h = 1;
-                        }
-                        if (currentHazardOrMoney4_y_position > d.getHeight() - 230 ||
-                                !hugoSkiing.tic) {
-                            //System.out.println("Off screen 4");
-                            currentHazardOrMoney4_y_position = 8000;
-                            currentHazardOrMoney4w = 1;
-                            currentHazardOrMoney4h = 1;
-                            repaint();
-                        }
-                        if (currentHazardOrMoney4_y_position > y + 30 && System.currentTimeMillis() % 5 == 0) {
-                            currentHazardOrMoney4_y_position++;
-                        }
-                        if (vanish4Faster) {
-                            currentHazardOrMoney4_y_position += 3;
-                            currentHazardOrMoney4_x_position += 3;
-                            currentHazardOrMoney4w += 3;
-                            currentHazardOrMoney4h += 3;
-                        }
-                    }
-                }
-            };
-            if (!HAZ4.isAlive()) {
-                HAZ4.start();
-            }
-            if (hugoSkiing.currentStateAtTheLevel > -2) {
-                g.drawImage(currentHazardOrMoney4_image, currentHazardOrMoney4_x_position, currentHazardOrMoney4_y_position, this);
-            }
-
-            g.drawImage(scorebar, scorebar_x_position, scorebar_y_position, this);
-
-            if (hundredThousandsVisible)
-                g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
-            if (tenThousandsVisible)
-                g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
-            if (thousandsVisible)
-                g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
-            if (hundredsVisible)
-                g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
-            if (tensVisible)
-                g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
-            if (onesVisible)
-                g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
-
-            repaint();
-
-            if ((double) number_of_lives > 1.5) {
-                g.drawImage(hugolife1, hugolife1_x_position, hugolife1_y_position, this);
-            }
-            if ((double) number_of_lives > 2.5) {
-                g.drawImage(hugolife2, hugolife2_x_position, hugolife2_y_position, this);
-            }
-            if ((double) number_of_lives > 3.5) {
-                g.drawImage(hugolife3, hugolife3_x_position, hugolife3_y_position, this);
-            }
-
-            if (currentGrid < 2) { // Hugo ski animation
-                Thread GRIDS01 = new Thread() {
-                    @Override
-                    /**
-                     * Run Hugo L thread.
-                     */
-                    public void run() {
-                        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                        int target = 55;
-                        if (currentGrid == 0) {
-                            target = 55;
-                        }
-                        if (currentGrid == 1) {
-                            target = 55 + (maxW / 3);
-                        }
-                        if (x > target) {
-                            x -= 6;
-                            repaint();
-                        }
-                        if (x < target) {
-                            x += 6;
-                            repaint();
-                        }
-                    }
-                };
-                if (!GRIDS01.isAlive()) {
-                    GRIDS01.start();
-                }
-                if (currentGrid == 0) {
-                    g.drawImage(sprite_L2, x, y, this);
-                } else {
-                    g.drawImage(sprite_L, x, y, this);
-                }
-            } else {
-                Thread GRIDS23 = new Thread() {
-                    @Override
-                    /**
-                     * Run Hugo R thread.
-                     */
-                    public void run() {
-                        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-                        int target = 55;
-                        if (currentGrid == 2) {
-                            target = 55 + (maxW / 3) * 2;
-                        }
-                        if (currentGrid == 3) {
-                            target = 55 + (maxW / 3) * 3;
-                        }
-                        if (x > target) {
-                            x -= 6;
-                            repaint();
-                        }
-                        if (x < target) {
-                            x += 6; // 6 is the speed of changing grid
-                            repaint();
-                        }
-                    }
-                };
-                if (!GRIDS23.isAlive()) {
-                    GRIDS23.start();
-                }
-                if (currentGrid == 3) {
-                    g.drawImage(sprite_R2, x, y, this);
-                } else {
-                    g.drawImage(sprite_R, x, y, this);
-                }
-            }
-
-            // Order matters,
-            if (gamePaused) { // pause should be written last because it should always be on top of everything.
-                if (pausedWithEnter) {
-                    g.drawImage(pause, pause_x_position, pause_y_position, this);
-                }
-            }
-
-            if (nextState != gameState) {
-                System.out.println("------ State change from " + gameState + " to " + nextState);
-                gameState = nextState;
-                //super.paintComponent(g);
-                constructFrames(gameState);
-                repaint();
-
-            }
-        }
-        if (gameState == GameState.REMEMBER_ITEMS) {
-            super.paintComponent(g);
-
-            g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
-
-            g.drawImage(asterisk, asterisk_x_position, asterisk_y_position, this);
-            g.drawImage(bell, bell_x_position, bell_y_position, this);
-            g.drawImage(clock, clock_x_position, clock_y_position, this);
-            g.drawImage(diamond, diamond_x_position, diamond_y_position, this);
-            g.drawImage(hashtag, hashtag_x_position, hashtag_y_position, this);
-            g.drawImage(star, star_x_position, star_y_position, this);
-
-            if (currentlyAllCorrect) {
-                g.drawImage(u1b, u1b_x_position, u1b_y_position, this);
-                g.drawImage(u2b, u2b_x_position, u2b_y_position, this);
-                g.drawImage(u3b, u3b_x_position, u3b_y_position, this);
-            }
-
-            Set<Character> allowedChars = Set.of('A', 'B', 'C', 'D', 'H', 'S');
-            if (secondPhase && currentlyAllCorrect) {
-                if (allowedChars.contains(thingsToRemember.charAt(0))) {
-                    g.drawImage(u1w, u1b_x_position, u1b_y_position, this);
-                }
-                if (allowedChars.contains(thingsToRemember.charAt(1))) {
-                    g.drawImage(u2w, u2b_x_position, u2b_y_position, this);
-                }
-                if (allowedChars.contains(thingsToRemember.charAt(2))) {
-                    g.drawImage(u3w, u3b_x_position, u3b_y_position, this);
-                }
-
-                g.drawImage(d1b, d1b_x_position, d1b_y_position, this);
-                g.drawImage(d2b, d2b_x_position, d2b_y_position, this);
-                g.drawImage(d3b, d3b_x_position, d3b_y_position, this);
-
-                if (allCorrectInTheEnd) {
-                    if (allowedChars.contains(thingsToRemember.charAt(3))) {
-                        g.drawImage(d1w, d1b_x_position, d1b_y_position, this);
-                    }
-                    if (allowedChars.contains(thingsToRemember.charAt(4))) {
-                        g.drawImage(d2w, d2b_x_position, d2b_y_position, this);
-                    }
-                    if (allowedChars.contains(thingsToRemember.charAt(5))) {
-                        g.drawImage(d3w, d3b_x_position, d3b_y_position, this);
-                    }
-                    video = VideoType.TWO_CHOSEN_CORRECTLY;
-                    nextState = GameState.VIDEO_TRANSITION;
-                }
-            }
-            if (!currentlyAllCorrect) {
-                video = VideoType.WRONG_CHOICE;
-                nextState = GameState.VIDEO_TRANSITION;
-            }
-            repaint();
-
-            if (nextState != gameState) {
-                System.out.println("------ State change from " + gameState + " to " + nextState);
-                gameState = nextState;
-                constructFrames(gameState);
-                repaint();
-            }
-        }
-
-        if (gameState == GameState.GAME_OVER) {
-            super.paintComponent(g);
-
-            cheatBackflip180 = false;
-            key12 = false; // Even if something else was pressed when inputting the 12 numbers, it does not matter.
-            key11 = false; // You may press for example "9700  2  4954 4744" where 2 is an unnecessary extra press.
-            key10 = false;
-            key9 = false;
-            key8 = false;
-            key7 = false;
-            key6 = false;
-            key5 = false;
-            key4 = false;
-            key3 = false;
-            key2 = false;
-            key1 = false;
-
-            String onesToDraw_path = "res/numbers" + ones + ".png";
-            String tensToDraw_path = "res/numbers" + tens + ".png";
-            String hundredsToDraw_path = "res/numbers" + hundreds + ".png";
-            String thousandsToDraw_path = "res/numbers" + thousands + ".png";
-            String tenThousandsToDraw_path = "res/numbers" + tenThousands + ".png";
-            String hundredThousandsToDraw_path = "res/numbers" + hundredThousands + ".png";
-
-            digitFromLeft1_x_position = (int) ((int) d.getWidth() / 11);
-            digitFromLeft1_y_position = (int) ((int) d.getHeight() / 2.2);
-            ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
-            int digitFromLeft1w = digitFromLeft1.getIconWidth();
-            int digitFromLeft1h = digitFromLeft1.getIconHeight();
-            digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(
-                    digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
-            digitFromLeft1image = digitFromLeft1.getImage();
-
-            digitFromLeft2_x_position = (int) ((int) d.getWidth() / 11) + 50;
-            digitFromLeft2_y_position = (int) ((int) d.getHeight() / 2.2);
-            ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
-            int digitFromLeft2w = digitFromLeft2.getIconWidth();
-            int digitFromLeft2h = digitFromLeft2.getIconHeight();
-            digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(
-                    digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
-            digitFromLeft2image = digitFromLeft2.getImage();
-
-            digitFromLeft3_x_position = (int) ((int) d.getWidth() / 11) + 100;
-            digitFromLeft3_y_position = (int) ((int) d.getHeight() / 2.2);
-            ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
-            int digitFromLeft3w = digitFromLeft3.getIconWidth();
-            int digitFromLeft3h = digitFromLeft3.getIconHeight();
-            digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(
-                    digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
-            digitFromLeft3image = digitFromLeft3.getImage();
-
-            digitFromLeft4_x_position = (int) ((int) d.getWidth() / 11) + 150;
-            digitFromLeft4_y_position = (int) ((int) d.getHeight() / 2.2);
-            ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
-            int digitFromLeft4w = digitFromLeft4.getIconWidth();
-            int digitFromLeft4h = digitFromLeft4.getIconHeight();
-            digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(
-                    digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
-            digitFromLeft4image = digitFromLeft4.getImage();
-
-            digitFromLeft5_x_position = (int) ((int) d.getWidth() / 11) + 200;
-            digitFromLeft5_y_position = (int) ((int) d.getHeight() / 2.2);
-            ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
-            int digitFromLeft5w = digitFromLeft5.getIconWidth();
-            int digitFromLeft5h = digitFromLeft5.getIconHeight();
-            digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(
-                    digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
-            digitFromLeft5image = digitFromLeft5.getImage();
-
-            digitFromLeft6_x_position = (int) ((int) d.getWidth() / 11) + 250;
-            digitFromLeft6_y_position = (int) ((int) d.getHeight() / 2.2);
-            ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
-            int digitFromLeft6w = digitFromLeft6.getIconWidth();
-            int digitFromLeft6h = digitFromLeft6.getIconHeight();
-            digitFromLeft6.setImage(digitFromLeft6.getImage().getScaledInstance(
-                    digitFromLeft6w, digitFromLeft6h, Image.SCALE_DEFAULT));
-            digitFromLeft6image = digitFromLeft6.getImage();
-
-            g.drawImage(scoreBGR, -10, -18, null);
-            repaint();
-
-            if (pulled_rope_1) {
-                ImageIcon r1_icon = new ImageIcon("res/rope1good.png");
-                int r1_iconw = r1_icon.getIconWidth();
-                int r1_iconh = r1_icon.getIconHeight();
-                r1_icon.setImage(r1_icon.getImage().getScaledInstance(r1_iconw - 30, r1_iconh - 30, Image.SCALE_DEFAULT));
-                r1 = r1_icon.getImage();
-                g.drawImage(r1, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
-            }
-            if (pulled_rope_2 == true || (pulled_rope_1 == false && pulled_rope_2 == false && pulled_rope_3 == false)) {
-                ImageIcon r2_icon = new ImageIcon("res/rope2bad.png");
-                int r2_iconw = r2_icon.getIconWidth();
-                int r2_iconh = r2_icon.getIconHeight();
-                r2_icon.setImage(r2_icon.getImage().getScaledInstance(r2_iconw - 30, r2_iconh - 30, Image.SCALE_DEFAULT));
-                r2 = r2_icon.getImage();
-                g.drawImage(r2, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
-            }
-            if (pulled_rope_3) {
-                ImageIcon r3_icon = new ImageIcon("res/rope3best.png");
-                int r3_iconw = r3_icon.getIconWidth();
-                int r3_iconh = r3_icon.getIconHeight();
-                r3_icon.setImage(r3_icon.getImage().getScaledInstance(r3_iconw - 30, r3_iconh - 30, Image.SCALE_DEFAULT));
-                r3 = r3_icon.getImage();
-                g.drawImage(r3, digitFromLeft1_x_position - 40, digitFromLeft1_y_position + 70, this);
-            }
-
-            if (hundredThousandsVisible)
-                g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
-            if (tenThousandsVisible)
-                g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
-            if (thousandsVisible)
-                g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
-            if (hundredsVisible)
-                g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
-            if (tensVisible)
-                g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
-            if (onesVisible)
-                g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
-
-            repaint();
-
-            if (nextState != gameState) {
-                System.out.println("------ State change from " + gameState + " to " + nextState);
-                gameState = nextState;
-                //super.paintComponent(g);
-                constructFrames(gameState);
-                repaint();
-            }
-        }
-        if (gameState == GameState.VIDEO_TRANSITION) {
-            // when moving from state 2 straight back to state 2, a workaround, show 2 videos in a row both with sound
-            nextState = GameState.SHOWING_VIDEO;
+        if (nextState != gameState) {
             System.out.println("------ State change from " + gameState + " to " + nextState);
             gameState = nextState;
             //super.paintComponent(g);
+            constructFrames(gameState);
+            repaint();
+        }
+    }
+
+    private void paintRememberItems(Graphics g) {
+        super.paintComponent(g);
+
+        g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
+
+        g.drawImage(asterisk, asterisk_x_position, asterisk_y_position, this);
+        g.drawImage(bell, bell_x_position, bell_y_position, this);
+        g.drawImage(clock, clock_x_position, clock_y_position, this);
+        g.drawImage(diamond, diamond_x_position, diamond_y_position, this);
+        g.drawImage(hashtag, hashtag_x_position, hashtag_y_position, this);
+        g.drawImage(star, star_x_position, star_y_position, this);
+
+        if (currentlyAllCorrect) {
+            g.drawImage(u1b, u1b_x_position, u1b_y_position, this);
+            g.drawImage(u2b, u2b_x_position, u2b_y_position, this);
+            g.drawImage(u3b, u3b_x_position, u3b_y_position, this);
+        }
+
+        Set<Character> allowedChars = Set.of('A', 'B', 'C', 'D', 'H', 'S');
+        if (secondPhase && currentlyAllCorrect) {
+            if (allowedChars.contains(thingsToRemember.charAt(0))) {
+                g.drawImage(u1w, u1b_x_position, u1b_y_position, this);
+            }
+            if (allowedChars.contains(thingsToRemember.charAt(1))) {
+                g.drawImage(u2w, u2b_x_position, u2b_y_position, this);
+            }
+            if (allowedChars.contains(thingsToRemember.charAt(2))) {
+                g.drawImage(u3w, u3b_x_position, u3b_y_position, this);
+            }
+
+            g.drawImage(d1b, d1b_x_position, d1b_y_position, this);
+            g.drawImage(d2b, d2b_x_position, d2b_y_position, this);
+            g.drawImage(d3b, d3b_x_position, d3b_y_position, this);
+
+            if (allCorrectInTheEnd) {
+                if (allowedChars.contains(thingsToRemember.charAt(3))) {
+                    g.drawImage(d1w, d1b_x_position, d1b_y_position, this);
+                }
+                if (allowedChars.contains(thingsToRemember.charAt(4))) {
+                    g.drawImage(d2w, d2b_x_position, d2b_y_position, this);
+                }
+                if (allowedChars.contains(thingsToRemember.charAt(5))) {
+                    g.drawImage(d3w, d3b_x_position, d3b_y_position, this);
+                }
+                video = VideoType.TWO_CHOSEN_CORRECTLY;
+                nextState = GameState.VIDEO_TRANSITION;
+            }
+        }
+        if (!currentlyAllCorrect) {
+            video = VideoType.WRONG_CHOICE;
+            nextState = GameState.VIDEO_TRANSITION;
+        }
+        repaint();
+
+        if (nextState != gameState) {
+            System.out.println("------ State change from " + gameState + " to " + nextState);
+            gameState = nextState;
+            constructFrames(gameState);
+            repaint();
+        }
+    }
+
+    private void paintSkiGame(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(bg, 0, 0, null);
+
+
+        Thread Cloud = new CloudThread(this);
+        if (!Cloud.isAlive()) {
+            Cloud.start();
+        }
+
+        Thread Tr1 = new Tree1Thread(this);
+        if (!Tr1.isAlive()) {
+            Tr1.start();
+        }
+        Thread Tr2 = new Tree2Thread(this);
+        if (!Tr2.isAlive()) {
+            Tr2.start();
+        }
+        Thread Tr3 = new Tree3Thread(this);
+        if (!Tr3.isAlive()) {
+            Tr3.start();
+        }
+        Thread Tr4 = new Tree4Thread(this);
+        if (!Tr4.isAlive()) {
+            Tr4.start();
+        }
+        Thread Tr5 = new Tree5Thread(this);
+        if (!Tr5.isAlive()) {
+            Tr5.start();
+        }
+        Thread Tr6 = new Tree6Thread(this);
+        if (!Tr6.isAlive()) {
+            Tr6.start();
+        }
+        Thread Tr7 = new Tree7Thread(this);
+        if (!Tr7.isAlive()) {
+            Tr7.start();
+        }
+        Thread Tr8 = new Tree8Thread(this);
+        if (!Tr8.isAlive()) {
+            Tr8.start();
+        }
+
+        // finally drawing the graphical decorations:
+        g.drawImage(cloud, cloud_x_position, cloud_y_position, this);
+        g.drawImage(possibleTree1, possibleTree1_x_position, possibleTree1_y_position, this);
+        g.drawImage(possibleTree2, possibleTree2_x_position, possibleTree2_y_position, this);
+        g.drawImage(possibleTree3, possibleTree3_x_position, possibleTree3_y_position, this);
+        g.drawImage(possibleTree4, possibleTree4_x_position, possibleTree4_y_position, this);
+        g.drawImage(possibleTree5, possibleTree5_x_position, possibleTree5_y_position, this);
+        g.drawImage(possibleTree6, possibleTree6_x_position, possibleTree6_y_position, this);
+        g.drawImage(possibleTree7, possibleTree7_x_position, possibleTree7_y_position, this);
+        g.drawImage(possibleTree8, possibleTree8_x_position, possibleTree8_y_position, this);
+
+        Set<String> ignored = Set.of("E", "S", "F");
+        if (ignored.contains(currentHazardOrMoney1)) currentHazardOrMoney1_image = null;
+        if (ignored.contains(currentHazardOrMoney2)) currentHazardOrMoney2_image = null;
+        if (ignored.contains(currentHazardOrMoney3)) currentHazardOrMoney3_image = null;
+        if (ignored.contains(currentHazardOrMoney4)) currentHazardOrMoney4_image = null;
+
+        Map<String, String> hazardPaths = Map.of(
+                "M", "res/money.png",
+                "8", "res/enemy_snowman.png",
+                "o", "res/enemy_snowball.png",
+                "Q", "res/enemy_bomb.png",
+                "B", "res/enemy_beaver_masi.png"
+        );
+        String path_of_hazard_1 = hazardPaths.getOrDefault(currentHazardOrMoney1, "");
+        String path_of_hazard_2 = hazardPaths.getOrDefault(currentHazardOrMoney2, "");
+        String path_of_hazard_3 = hazardPaths.getOrDefault(currentHazardOrMoney3, "");
+        String path_of_hazard_4 = hazardPaths.getOrDefault(currentHazardOrMoney4, "");
+        if (currentHazardOrMoney1.equals("1")) {
+            path_of_hazard_2 = "";
+            currentHazardOrMoney2_image = null;
+            path_of_hazard_3 = "";
+            currentHazardOrMoney3_image = null;
+            path_of_hazard_4 = "";
+            currentHazardOrMoney4_image = null;
+            Map<Character, String> hazardMap = Map.of(
+                    'A', "res/remember_A_asterisk.png",
+                    'B', "res/remember_B_bell.png",
+                    'C', "res/remember_C_clock.png",
+                    'D', "res/remember_D_diamond.png",
+                    'H', "res/remember_H_hash.png",
+                    'S', "res/remember_S_star.png"
+            );
+
+            for (int i = 0; i < 3; i++) {
+                char c = thingsToRemember.charAt(i);
+                if (hazardMap.containsKey(c)) {
+                    path_of_hazard_1 = hazardMap.get(c);
+                }
+            }
+        }
+        if (currentHazardOrMoney1.equals("2")) {
+            path_of_hazard_2 = "";
+            currentHazardOrMoney2_image = null;
+            path_of_hazard_3 = "";
+            currentHazardOrMoney3_image = null;
+            path_of_hazard_4 = "";
+            currentHazardOrMoney4_image = null;
+            for (int i = 3; i < 6; i++) {
+                if (thingsToRemember.charAt(i) == 'A') {
+                    path_of_hazard_1 = "res/remember_A_asterisk.png";
+                }
+                if (thingsToRemember.charAt(i) == 'B') {
+                    path_of_hazard_1 = "res/remember_B_bell.png";
+                }
+                if (thingsToRemember.charAt(i) == 'C') {
+                    path_of_hazard_1 = "res/remember_C_clock.png";
+                }
+                if (thingsToRemember.charAt(i) == 'D') {
+                    path_of_hazard_1 = "res/remember_D_diamond.png";
+                }
+                if (thingsToRemember.charAt(i) == 'H') {
+                    path_of_hazard_1 = "res/remember_H_hash.png";
+                }
+                if (thingsToRemember.charAt(i) == 'S') {
+                    path_of_hazard_1 = "res/remember_S_star.png";
+                }
+            }
+        }
+        // file names should remain exactly original
+
+        if (!"".equals(path_of_hazard_1)) {
+            ImageIcon currentHazardOrMoney_1 = new ImageIcon(path_of_hazard_1);
+            currentHazardOrMoney_1.setImage(currentHazardOrMoney_1.getImage()
+                    .getScaledInstance(currentHazardOrMoney1w, currentHazardOrMoney1h, Image.SCALE_DEFAULT));
+            currentHazardOrMoney1_image = currentHazardOrMoney_1.getImage();
+        }
+        if (!"".equals(path_of_hazard_2)) {
+            ImageIcon currentHazardOrMoney_2 = new ImageIcon(path_of_hazard_2);
+            currentHazardOrMoney_2.setImage(currentHazardOrMoney_2.getImage()
+                    .getScaledInstance(currentHazardOrMoney2w, currentHazardOrMoney2h, Image.SCALE_DEFAULT));
+            currentHazardOrMoney2_image = currentHazardOrMoney_2.getImage();
+        }
+        if (!"".equals(path_of_hazard_3)) {
+            ImageIcon currentHazardOrMoney_3 = new ImageIcon(path_of_hazard_3);
+            currentHazardOrMoney_3.setImage(currentHazardOrMoney_3.getImage()
+                    .getScaledInstance(currentHazardOrMoney3w, currentHazardOrMoney3h, Image.SCALE_DEFAULT));
+            currentHazardOrMoney3_image = currentHazardOrMoney_3.getImage();
+        }
+        if (!"".equals(path_of_hazard_4)) {
+            ImageIcon currentHazardOrMoney_4 = new ImageIcon(path_of_hazard_4);
+            currentHazardOrMoney_4.setImage(currentHazardOrMoney_4.getImage()
+                    .getScaledInstance(currentHazardOrMoney4w, currentHazardOrMoney4h, Image.SCALE_DEFAULT));
+            currentHazardOrMoney4_image = currentHazardOrMoney_4.getImage();
+        }
+
+        String onesToDraw_path = "res/numbers" + (ones) + ".png";
+        String tensToDraw_path = "res/numbers" + (tens) + ".png";
+        String hundredsToDraw_path = "res/numbers" + (hundreds) + ".png";
+        String thousandsToDraw_path = "res/numbers" + (thousands) + ".png";
+        String tenThousandsToDraw_path = "res/numbers" + (tenThousands) + ".png";
+        String hundredThousandsToDraw_path = "res/numbers" + (hundredThousands) + ".png";
+
+        digitFromLeft1_x_position = (int) ((int) d.getWidth() / 2);
+        digitFromLeft1_y_position = (int) ((int) d.getHeight() / 1.27);
+        ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
+        int digitFromLeft1w = digitFromLeft1.getIconWidth();
+        int digitFromLeft1h = digitFromLeft1.getIconHeight();
+        digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
+        digitFromLeft1image = digitFromLeft1.getImage();
+
+        digitFromLeft2_x_position = (int) ((int) d.getWidth() / 2) + 45;
+        digitFromLeft2_y_position = (int) ((int) d.getHeight() / 1.27);
+        ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
+        int digitFromLeft2w = digitFromLeft2.getIconWidth();
+        int digitFromLeft2h = digitFromLeft2.getIconHeight();
+        digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
+        digitFromLeft2image = digitFromLeft2.getImage();
+
+        digitFromLeft3_x_position = (int) ((int) d.getWidth() / 2) + 90;
+        digitFromLeft3_y_position = (int) ((int) d.getHeight() / 1.27);
+        ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
+        int digitFromLeft3w = digitFromLeft3.getIconWidth();
+        int digitFromLeft3h = digitFromLeft3.getIconHeight();
+        digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
+        digitFromLeft3image = digitFromLeft3.getImage();
+
+        digitFromLeft4_x_position = (int) ((int) d.getWidth() / 2) + 135;
+        digitFromLeft4_y_position = (int) ((int) d.getHeight() / 1.27);
+        ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
+        int digitFromLeft4w = digitFromLeft4.getIconWidth();
+        int digitFromLeft4h = digitFromLeft4.getIconHeight();
+        digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
+        digitFromLeft4image = digitFromLeft4.getImage();
+
+        digitFromLeft5_x_position = (int) ((int) d.getWidth() / 2) + 180;
+        digitFromLeft5_y_position = (int) ((int) d.getHeight() / 1.27);
+        ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
+        int digitFromLeft5w = digitFromLeft5.getIconWidth();
+        int digitFromLeft5h = digitFromLeft5.getIconHeight();
+        digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
+        digitFromLeft5image = digitFromLeft5.getImage();
+
+        digitFromLeft6_x_position = (int) ((int) d.getWidth() / 2) + 225;
+        digitFromLeft6_y_position = (int) ((int) d.getHeight() / 1.27);
+        ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
+        int digitFromLeft6w = digitFromLeft6.getIconWidth();
+        int digitFromLeft6h = digitFromLeft6.getIconHeight();
+        digitFromLeft6.setImage(digitFromLeft6.getImage().getScaledInstance(digitFromLeft6w, digitFromLeft6h, Image.SCALE_DEFAULT));
+        digitFromLeft6image = digitFromLeft6.getImage();
+
+        Thread HAZ1 = new HAZ1Thread(this);
+        if (!HAZ1.isAlive()) {
+            HAZ1.start();
+        }
+        if (hugoSkiing.currentStateAtTheLevel > -2) {
+            g.drawImage(currentHazardOrMoney1_image, currentHazardOrMoney1_x_position, currentHazardOrMoney1_y_position, this);
+        }
+
+        Thread HAZ2 = new HAZ2Thread(this);
+        if (!HAZ2.isAlive()) {
+            HAZ2.start();
+        }
+        if (hugoSkiing.currentStateAtTheLevel > -2) {
+            g.drawImage(currentHazardOrMoney2_image, currentHazardOrMoney2_x_position, currentHazardOrMoney2_y_position, this);
+        }
+
+        Thread HAZ3 = new HAZ3Thread(this);
+        if (!HAZ3.isAlive()) {
+            HAZ3.start();
+        }
+        if (hugoSkiing.currentStateAtTheLevel > -2) {
+            g.drawImage(currentHazardOrMoney3_image, currentHazardOrMoney3_x_position, currentHazardOrMoney3_y_position, this);
+        }
+
+        Thread HAZ4 = new HAZ4Thread(this);
+        if (!HAZ4.isAlive()) {
+            HAZ4.start();
+        }
+        if (hugoSkiing.currentStateAtTheLevel > -2) {
+            g.drawImage(currentHazardOrMoney4_image, currentHazardOrMoney4_x_position, currentHazardOrMoney4_y_position, this);
+        }
+
+        g.drawImage(scorebar, scorebar_x_position, scorebar_y_position, this);
+
+        if (hundredThousandsVisible)
+            g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
+        if (tenThousandsVisible)
+            g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
+        if (thousandsVisible)
+            g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
+        if (hundredsVisible)
+            g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
+        if (tensVisible)
+            g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
+        if (onesVisible)
+            g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
+
+        repaint();
+
+        if ((double) number_of_lives > 1.5) {
+            g.drawImage(hugolife1, hugolife1_x_position, hugolife1_y_position, this);
+        }
+        if ((double) number_of_lives > 2.5) {
+            g.drawImage(hugolife2, hugolife2_x_position, hugolife2_y_position, this);
+        }
+        if ((double) number_of_lives > 3.5) {
+            g.drawImage(hugolife3, hugolife3_x_position, hugolife3_y_position, this);
+        }
+
+        if (currentGrid < 2) { // Hugo ski animation
+            Thread GRIDS01 = new GridS01Thread(this);
+            if (!GRIDS01.isAlive()) {
+                GRIDS01.start();
+            }
+            if (currentGrid == 0) {
+                g.drawImage(sprite_L2, x, y, this);
+            } else {
+                g.drawImage(sprite_L, x, y, this);
+            }
+        } else {
+            Thread GRIDS23 = new GridS23Thread(this);
+            if (!GRIDS23.isAlive()) {
+                GRIDS23.start();
+            }
+            if (currentGrid == 3) {
+                g.drawImage(sprite_R2, x, y, this);
+            } else {
+                g.drawImage(sprite_R, x, y, this);
+            }
+        }
+
+        // Order matters,
+        if (gamePaused) { // pause should be written last because it should always be on top of everything.
+            if (pausedWithEnter) {
+                g.drawImage(pause, pause_x_position, pause_y_position, this);
+            }
+        }
+
+        if (nextState != gameState) {
+            System.out.println("------ State change from " + gameState + " to " + nextState);
+            gameState = nextState;
+            constructFrames(gameState);
+            repaint();
+
+        }
+    }
+
+    private void paintShowingVideo(Graphics g) {
+        super.paintComponent(g);
+
+        if (useMP4) { // If you think that ".aiff + .gif" is not a good combination
+            String pathMP4 = getResourceAudioVideo(video, ".mp4");
+
+            File video_source = new File(pathMP4);
+            try {
+                Desktop.getDesktop().open(video_source); // opens Windows Media Player for instance
+            } catch (IOException ex) {                   // not the best way to display mp4s
+                Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            String pathGif = getResourceAudioVideo(video, "_s.gif");
+
+            videoIMGicon = new ImageIcon(pathGif);
+            super.paintComponent(g);
+            videoimg = null; // .gif
+            videoimg = videoIMGicon.getImage();
+            int wi = (int) (d.getWidth());
+            int he = (int) (d.getHeight() - 40);
+            videoimg.setAccelerationPriority((float) 1.0); // from 0-> lowest to 1-> highest
+
+            g.drawImage(videoimg, 0, 0, wi, he, null);
+            for (int i = 0; i < 30000; i++) {
+                repaint(); // Important repaint lines
+            }
+        }
+
+        if (nextState != gameState) {
+            System.out.println("------ State change from " + gameState + " to " + nextState);
+            gameState = nextState;
+
+            constructFrames(gameState);
+            repaint();
+        }
+    }
+
+    private void paintTitleScreen(Graphics g) {
+        super.paintComponent(g);
+        if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
+            g.drawImage(creditsScreen, 0, 0, this);
+            repaint();
+        } else {
+            g.drawImage(titleScreen, 0, 0, this);
+            repaint();
+        }
+
+        if (nextState != gameState) {
+            System.out.println("------ State change from " + gameState + " to " + nextState);
+            gameState = nextState;
+            constructFrames(gameState);
+            repaint();
+
+        }
+    }
+
+    private void paintPreTitle(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(theVeryFirst, 0, 0, this);
+        repaint();
+
+        if (nextState != gameState) {
+            System.out.println("------ State change from " + gameState + " to " + nextState);
+            gameState = nextState;
             constructFrames(gameState);
             repaint();
         }
@@ -2111,4 +1720,5 @@ public final class GameDisplay extends JPanel {
             this.mediaPlayer.stop();
         }
     }
+
 }

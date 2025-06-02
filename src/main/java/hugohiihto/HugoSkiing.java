@@ -137,9 +137,9 @@ public class HugoSkiing {
     String rem = null;
     boolean gameOver = true;
     boolean hasAchievedMaxScore = false;
-    int currentStateAtTheLevel = -5; // -5   So the game does not start with a surprise attack.
+    public int currentStateAtTheLevel = -5; // -5   So the game does not start with a surprise attack.
     int theFurthestThePlayerHasGot = -4; // -4   (-5 +1)   This is necessary because of the pause feature.
-    boolean tic = true;
+    public boolean tic = true;
     // There is no clear logic in what class file the variables should belong to, there are only 2 Java classes used anyway.
 
     /**
