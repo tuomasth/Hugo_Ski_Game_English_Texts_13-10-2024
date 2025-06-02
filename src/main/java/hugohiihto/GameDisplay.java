@@ -275,15 +275,10 @@ public final class GameDisplay extends JPanel {
     int scorebar_x_position;
     int scorebar_y_position;
 
-    Image hugolife1;
-    int hugolife1_x_position;
-    int hugolife1_y_position;
-    Image hugolife2;
-    int hugolife2_x_position;
-    int hugolife2_y_position;
-    Image hugolife3;
-    int hugolife3_x_position;
-    int hugolife3_y_position;
+    Sprite hugolife1Sprite = new Sprite();
+    Sprite hugolife2Sprite = new Sprite();
+    Sprite hugolife3Sprite = new Sprite();
+
     Image digitFromLeft1image;
     int digitFromLeft1_x_position;
     int digitFromLeft1_y_position;
@@ -421,14 +416,6 @@ public final class GameDisplay extends JPanel {
     Sprite tree6Sprite = new Sprite();
     Sprite tree7Sprite = new Sprite();
     Sprite tree8Sprite = new Sprite();
-
-    Sprite haz1Sprite = new Sprite();
-    Sprite haz2Sprite = new Sprite();
-    Sprite haz3Sprite = new Sprite();
-    Sprite haz4Sprite = new Sprite();
-
-    Sprite grids01Sprite = new Sprite();
-    Sprite grids23Sprite = new Sprite();
 
     public final HugoSkiing hugoSkiing;
 
@@ -838,7 +825,6 @@ public final class GameDisplay extends JPanel {
         east.setImage(east.getImage().getScaledInstance(e_width, e_height, Image.SCALE_DEFAULT));
         sprite_R2 = east.getImage();
 
-
         ImageIcon j = new ImageIcon("res/background1.gif");
         int wi = (int) d.getWidth() - 10;
         int he = (int) d.getHeight() - 35;
@@ -851,41 +837,21 @@ public final class GameDisplay extends JPanel {
         y = (int) ((int) d.getHeight() / 2.67);
 
         cloudSprite.load("res/cloud.png", (int) d.getWidth() / 3, (int) d.getHeight() / 25);
-        tree1Sprite.load("res/trees2.png", (d.width / 5) - 40,  (d.height / 17) + 20);
-        tree2Sprite.load("res/trees0.png", (d.width / 5) - 40,  (d.height / 17) + 20);
-        tree3Sprite.load("res/trees1.png", (d.width / 5) - 40,  (d.height / 17) + 20);
-        tree4Sprite.load("res/trees2.png", (int)(d.getWidth() / 2) + 70,  (int) (d.getHeight() / 4) - 90);
-        tree5Sprite.load("res/trees0.png", ((int) d.getWidth() / 2) + 7,  ((int) d.getHeight() / 4) - 90);
-        tree6Sprite.load("res/trees1.png", ((int) d.getWidth() / 2) + 70,  ((int) d.getHeight() / 4) - 90);
-        tree7Sprite.load("res/trees2.png", ((int) d.getWidth() / 2) + 72,  ((int) d.getHeight() / 4) - 92);
-        tree8Sprite.load("res/trees1.png", (d.width / 5) - 42,  (d.height / 17) + 22);
+        tree1Sprite.load("res/trees2.png", (d.width / 5) - 40, (d.height / 17) + 20);
+        tree2Sprite.load("res/trees0.png", (d.width / 5) - 40, (d.height / 17) + 20);
+        tree3Sprite.load("res/trees1.png", (d.width / 5) - 40, (d.height / 17) + 20);
+        tree4Sprite.load("res/trees2.png", (int) (d.getWidth() / 2) + 70, (int) (d.getHeight() / 4) - 90);
+        tree5Sprite.load("res/trees0.png", ((int) d.getWidth() / 2) + 7, ((int) d.getHeight() / 4) - 90);
+        tree6Sprite.load("res/trees1.png", ((int) d.getWidth() / 2) + 70, ((int) d.getHeight() / 4) - 90);
+        tree7Sprite.load("res/trees2.png", ((int) d.getWidth() / 2) + 72, ((int) d.getHeight() / 4) - 92);
+        tree8Sprite.load("res/trees1.png", (d.width / 5) - 42, (d.height / 17) + 22);
 
-        hugolife1_x_position = (int) ((int) d.getWidth() / 55);
-        hugolife1_y_position = (int) ((int) d.getHeight() / 1.3);
-        ImageIcon life1 = new ImageIcon("res/hugo_life.png");
-        int life1w = life1.getIconWidth();
-        int life1h = life1.getIconHeight();
-        life1.setImage(life1.getImage().getScaledInstance(life1w, life1h, Image.SCALE_DEFAULT));
-        hugolife1 = life1.getImage();
+        hugolife1Sprite.load("res/hugo_life.png", ((int) d.getWidth() / 55), (int) ((int) d.getHeight() / 1.3));
+        hugolife2Sprite.load("res/hugo_life.png", ((int) d.getWidth() / 55) + 80, (int) ((int) d.getHeight() / 1.3));
+        hugolife3Sprite.load("res/hugo_life.png", ((int) d.getWidth() / 55) + 160, (int) ((int) d.getHeight() / 1.3));
 
-        hugolife2_x_position = (int) ((int) d.getWidth() / 55) + 80;
-        hugolife2_y_position = (int) ((int) d.getHeight() / 1.3);
-        ImageIcon life2 = new ImageIcon("res/hugo_life.png");
-        int life2w = life2.getIconWidth();
-        int life2h = life2.getIconHeight();
-        life2.setImage(life2.getImage().getScaledInstance(life2w, life2h, Image.SCALE_DEFAULT));
-        hugolife2 = life2.getImage();
-
-        hugolife3_x_position = (int) ((int) d.getWidth() / 55) + 160;
-        hugolife3_y_position = (int) ((int) d.getHeight() / 1.3);
-        ImageIcon life3 = new ImageIcon("res/hugo_life.png");
-        int life3w = life3.getIconWidth();
-        int life3h = life3.getIconHeight();
-        life3.setImage(life3.getImage().getScaledInstance(life3w, life3h, Image.SCALE_DEFAULT));
-        hugolife3 = life3.getImage();
-
-        pause_x_position = (int) ((int) d.getWidth() / 6);
-        pause_y_position = (int) ((int) d.getHeight() / 3);
+        pause_x_position = ((int) d.getWidth() / 6);
+        pause_y_position = ((int) d.getHeight() / 3);
         ImageIcon pauseicon = new ImageIcon("res/pause.png");
         int pausew = pauseicon.getIconWidth();
         int pauseh = pauseicon.getIconHeight();
@@ -930,7 +896,7 @@ public final class GameDisplay extends JPanel {
             gamePaused = true;
         }
 
-        if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
+        if (hugoSkiing.currentStateAtTheLevel >= 71 && !hugoSkiing.gameOver) {
             ImageIcon credits_icon = new ImageIcon("res/credits_screen.png");
             int wi = (int) d.getWidth() - 2;
             int he = (int) d.getHeight() - 37;
@@ -1185,37 +1151,37 @@ public final class GameDisplay extends JPanel {
         super.paintComponent(g);
         g.drawImage(bg, 0, 0, null);
 
-        Thread Cloud = new Thread(()->{
-                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                if (System.currentTimeMillis() % 19 == 0) {
-                    if (leftWind) {
-                        cloudSprite.x--;
-                    } else {
-                        cloudSprite.x++;
-                    }
+        Thread Cloud = new Thread(() -> {
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (System.currentTimeMillis() % 19 == 0) {
+                if (leftWind) {
+                    cloudSprite.x--;
+                } else {
+                    cloudSprite.x++;
                 }
-                if (cloudSprite.getX() < -300 && leftWind) {
-                    cloudSprite.setX(d.width);
-                }
-                if (cloudSprite.getX() > 700 && !leftWind) {
-                    cloudSprite.setX(cloudSprite.getX() - 1000);
-                }
+            }
+            if (cloudSprite.getX() < -300 && leftWind) {
+                cloudSprite.setX(d.width);
+            }
+            if (cloudSprite.getX() > 700 && !leftWind) {
+                cloudSprite.setX(cloudSprite.getX() - 1000);
+            }
         });
         if (!Cloud.isAlive()) {
             Cloud.start();
         }
 
         Thread Tr1 = new Thread(() -> {
-                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                if (!gamePaused) {
-                    if (System.currentTimeMillis() % 2 == 0) {
-                        tree1Sprite.x -= 2;
-                        tree1Sprite.y++;
-                    }
-                    if (tree1Sprite.x < -340) {
-                        tree1Sprite.x = (d.width / 8) - 7;
-                        tree1Sprite.y = (d.height / 12) + 20;
-                    }
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            if (!gamePaused) {
+                if (System.currentTimeMillis() % 2 == 0) {
+                    tree1Sprite.x -= 2;
+                    tree1Sprite.y++;
+                }
+                if (tree1Sprite.x < -340) {
+                    tree1Sprite.x = (d.width / 8) - 7;
+                    tree1Sprite.y = (d.height / 12) + 20;
+                }
             }
         });
         if (!Tr1.isAlive()) {
@@ -1223,7 +1189,7 @@ public final class GameDisplay extends JPanel {
         }
 
 
-        Thread Tr2 = new Thread(()->{
+        Thread Tr2 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1239,7 +1205,7 @@ public final class GameDisplay extends JPanel {
         if (!Tr2.isAlive()) {
             Tr2.start();
         }
-        Thread Tr3 = new Thread(()->{
+        Thread Tr3 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1255,7 +1221,7 @@ public final class GameDisplay extends JPanel {
         if (!Tr3.isAlive()) {
             Tr3.start();
         }
-        Thread Tr4 = new Thread(()->{
+        Thread Tr4 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1271,7 +1237,7 @@ public final class GameDisplay extends JPanel {
         if (!Tr4.isAlive()) {
             Tr4.start();
         }
-        Thread Tr5 = new Thread(()->{
+        Thread Tr5 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1287,7 +1253,7 @@ public final class GameDisplay extends JPanel {
         if (!Tr5.isAlive()) {
             Tr5.start();
         }
-        Thread Tr6 = new Thread(()->{
+        Thread Tr6 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1303,7 +1269,7 @@ public final class GameDisplay extends JPanel {
         if (!Tr6.isAlive()) {
             Tr6.start();
         }
-        Thread Tr7 = new Thread(()->{
+        Thread Tr7 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1319,7 +1285,7 @@ public final class GameDisplay extends JPanel {
         if (!Tr7.isAlive()) {
             Tr7.start();
         }
-        Thread Tr8 = new Thread(()->{
+        Thread Tr8 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
                 if (System.currentTimeMillis() % 2 == 0) {
@@ -1547,14 +1513,14 @@ public final class GameDisplay extends JPanel {
 
         repaint();
 
-        if ((double) number_of_lives > 1.5) {
-            g.drawImage(hugolife1, hugolife1_x_position, hugolife1_y_position, this);
+        if (number_of_lives > 1.5) {
+            g.drawImage(hugolife1Sprite.getImage(), hugolife1Sprite.getX(), hugolife1Sprite.getY(), this);
         }
-        if ((double) number_of_lives > 2.5) {
-            g.drawImage(hugolife2, hugolife2_x_position, hugolife2_y_position, this);
+        if (number_of_lives > 2.5) {
+            g.drawImage(hugolife2Sprite.getImage(), hugolife2Sprite.getX(), hugolife2Sprite.getY(), this);
         }
-        if ((double) number_of_lives > 3.5) {
-            g.drawImage(hugolife3, hugolife3_x_position, hugolife3_y_position, this);
+        if (number_of_lives > 3.5) {
+            g.drawImage(hugolife3Sprite.getImage(), hugolife3Sprite.getX(), hugolife3Sprite.getY(), this);
         }
 
         if (currentGrid < 2) { // Hugo ski animation
@@ -1636,7 +1602,7 @@ public final class GameDisplay extends JPanel {
 
     private void paintTitleScreen(Graphics g) {
         super.paintComponent(g);
-        if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
+        if (hugoSkiing.currentStateAtTheLevel >= 71 && !hugoSkiing.gameOver) {
             g.drawImage(creditsScreen, 0, 0, this);
             repaint();
         } else {
