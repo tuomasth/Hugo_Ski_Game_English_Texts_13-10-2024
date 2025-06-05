@@ -416,66 +416,65 @@ public final class GameDisplay extends JPanel {
         cave_x = 1;
         cave_y = 1;
 
+        int baseX = (int) d.getWidth() / 6;
+        int baseY = (int) d.getHeight() / 19 + 90;
+
+        // Arrays for positions and height levels
+        int[] positions = {position1, position2, position3};
+        int[] heightLevels = {heightLevel1, heightLevel1, heightLevel1, heightLevel2, heightLevel2, heightLevel2};
+
+        // Arrays of sprites for easier iteration
+        Sprite[] blackSprites = {u1bSprite, u2bSprite, u3bSprite, d1bSprite, d2bSprite, d3bSprite};
+        Sprite[] whiteSprites = {u1wSprite, u2wSprite, u3wSprite, d1wSprite, d2wSprite, d3wSprite};
+
         for (int i = 0; i < 6; i++) {
-            int pos = 0;
-            int hei = 0;
-            if (i == 0) {
-                pos = position1;
-                hei = heightLevel1;
-                u1bSprite.load("res/num_select1.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-                u1wSprite.load("res/num_selected1.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-            }
-            if (i == 1) {
-                pos = position2;
-                hei = heightLevel1;
-                u2bSprite.load("res/num_select2.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-                u2wSprite.load("res/num_selected2.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-            }
-            if (i == 2) {
-                pos = position3;
-                hei = heightLevel1;
-                u3bSprite.load("res/num_select3.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-                u3wSprite.load("res/num_selected3.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-            }
-            if (i == 3) {
-                pos = position1;
-                hei = heightLevel2;
-                d1bSprite.load("res/num_select1.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-                d1wSprite.load("res/num_selected1.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-            }
-            if (i == 4) {
-                pos = position2;
-                hei = heightLevel2;
-                d2bSprite.load("res/num_select2.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-                d2wSprite.load("res/num_selected2.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-            }
-            if (i == 5) {
-                pos = position3;
-                hei = heightLevel2;
-                d3bSprite.load("res/num_select3.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-                d3wSprite.load("res/num_selected3.png", ((int) d.getWidth() / 6) + (pos - 2), ((int) d.getHeight() / 19) + (hei + 90));
-            }
+            int posIndex = i % 3; // 0,1,2 index for positions
+            int pos = positions[posIndex];
+            int height = heightLevels[i];
 
-            if (thingsToRemember.charAt(i) == 'a' || thingsToRemember.charAt(i) == 'A') {
-                asteriskSprite.load("res/remember_A_asterisk.png", ((int) d.getWidth() / 6) + (pos), ((int) d.getHeight() / 19) + (hei));
-            }
-            if (thingsToRemember.charAt(i) == 'b' || thingsToRemember.charAt(i) == 'B') {
-                bellSprite.load("res/remember_B_bell.png", ((int) d.getWidth() / 6) + (pos), ((int) d.getHeight() / 19) + (hei));
-            }
-            if (thingsToRemember.charAt(i) == 'c' || thingsToRemember.charAt(i) == 'C') {
-                clockSprite.load("res/remember_C_clock.png", ((int) d.getWidth() / 6) + (pos), ((int) d.getHeight() / 19) + (hei));
-            }
-            if (thingsToRemember.charAt(i) == 'd' || thingsToRemember.charAt(i) == 'D') {
-                diamondSprite.load("res/remember_D_diamond.png", ((int) d.getWidth() / 6) + (pos), ((int) d.getHeight() / 19) + (hei));
-            }
-            if (thingsToRemember.charAt(i) == 'h' || thingsToRemember.charAt(i) == 'H') {
-                hashTagSprite.load("res/remember_H_hash.png", ((int) d.getWidth() / 6) + (pos), ((int) d.getHeight() / 19) + (hei));
-            }
-            if (thingsToRemember.charAt(i) == 's' || thingsToRemember.charAt(i) == 'S') {
-                starSprite.load("res/remember_S_star.png", ((int) d.getWidth() / 6) + (pos), ((int) d.getHeight() / 19) + (hei));
-            }
+            // Construct image paths based on index
+            String selectPath = "res/num_select" + (posIndex + 1) + ".png";
+            String selectedPath = "res/num_selected" + (posIndex + 1) + ".png";
 
+            int x = baseX + (pos - 2);
+            int y = baseY + height;
+
+            // Load the sprites
+            blackSprites[i].load(selectPath, x, y);
+            whiteSprites[i].load(selectedPath, x, y);
+
+            // Position for the reminder icon
+            int iconX = baseX + pos;
+            int iconY = (int) d.getHeight() / 19 + height;
+
+            // Get the uppercase character to simplify switch-case
+            char reminderChar = Character.toUpperCase(thingsToRemember.charAt(i));
+
+            switch (reminderChar) {
+                case 'A':
+                    asteriskSprite.load("res/remember_A_asterisk.png", iconX, iconY);
+                    break;
+                case 'B':
+                    bellSprite.load("res/remember_B_bell.png", iconX, iconY);
+                    break;
+                case 'C':
+                    clockSprite.load("res/remember_C_clock.png", iconX, iconY);
+                    break;
+                case 'D':
+                    diamondSprite.load("res/remember_D_diamond.png", iconX, iconY);
+                    break;
+                case 'H':
+                    hashTagSprite.load("res/remember_H_hash.png", iconX, iconY);
+                    break;
+                case 'S':
+                    starSprite.load("res/remember_S_star.png", iconX, iconY);
+                    break;
+                default:
+                    // No icon to load
+                    break;
+            }
         }
+
     }
 
     private void skiGame() {
@@ -849,7 +848,6 @@ public final class GameDisplay extends JPanel {
             Tr1.start();
         }
 
-
         Thread Tr2 = new Thread(() -> {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             if (!gamePaused) {
@@ -966,7 +964,7 @@ public final class GameDisplay extends JPanel {
         // finally drawing the graphical decorations:
         drawSprite(g, cloudSprite);
 
-        drawSprite(g,tree1Sprite);
+        drawSprite(g, tree1Sprite);
         drawSprite(g, tree2Sprite);
         drawSprite(g, tree3Sprite);
         drawSprite(g, tree4Sprite);
@@ -1023,25 +1021,32 @@ public final class GameDisplay extends JPanel {
             path_of_hazard_4 = "";
             currentHazardOrMoney4_image = null;
             for (int i = 3; i < 6; i++) {
-                if (thingsToRemember.charAt(i) == 'A') {
-                    path_of_hazard_1 = "res/remember_A_asterisk.png";
-                }
-                if (thingsToRemember.charAt(i) == 'B') {
-                    path_of_hazard_1 = "res/remember_B_bell.png";
-                }
-                if (thingsToRemember.charAt(i) == 'C') {
-                    path_of_hazard_1 = "res/remember_C_clock.png";
-                }
-                if (thingsToRemember.charAt(i) == 'D') {
-                    path_of_hazard_1 = "res/remember_D_diamond.png";
-                }
-                if (thingsToRemember.charAt(i) == 'H') {
-                    path_of_hazard_1 = "res/remember_H_hash.png";
-                }
-                if (thingsToRemember.charAt(i) == 'S') {
-                    path_of_hazard_1 = "res/remember_S_star.png";
+                char ch = Character.toUpperCase(thingsToRemember.charAt(i));
+                switch (ch) {
+                    case 'A':
+                        path_of_hazard_1 = "res/remember_A_asterisk.png";
+                        break;
+                    case 'B':
+                        path_of_hazard_1 = "res/remember_B_bell.png";
+                        break;
+                    case 'C':
+                        path_of_hazard_1 = "res/remember_C_clock.png";
+                        break;
+                    case 'D':
+                        path_of_hazard_1 = "res/remember_D_diamond.png";
+                        break;
+                    case 'H':
+                        path_of_hazard_1 = "res/remember_H_hash.png";
+                        break;
+                    case 'S':
+                        path_of_hazard_1 = "res/remember_S_star.png";
+                        break;
+                    default:
+                        // Unknown character – you can handle it here if needed
+                        break;
                 }
             }
+
         }
         // file names should remain exactly original
 

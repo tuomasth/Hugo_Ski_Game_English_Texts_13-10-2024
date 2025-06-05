@@ -119,7 +119,7 @@ import java.util.TimerTask;
  * ----
  * <p>
  * <p>
- * Computations and methods not included in the user interface / game display Java source code file.
+ * Computations and methods aren't included in the user interface / game display Java source code file.
  * Comments and names are sometimes in Finnish but tried to use English mostly.
  * <p>
  * Tested with Microsoft Windows 11
@@ -158,7 +158,7 @@ public class HugoSkiing {
 
     /**
      * Resetting the game or beginning a new game.
-     * The game speed integer is in milliseconds, for example 1800 = 1.8 seconds.
+     * The game speed integer is in milliseconds, for example, 1800 = 1.8 seconds.
      * Does not edit how fast the graphics will show on the screen though!
      *
      * @param gameSpeed
