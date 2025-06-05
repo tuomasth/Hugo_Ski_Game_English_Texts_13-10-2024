@@ -24,10 +24,4 @@ public enum VideoType {
         return this.ordinal();
     }
 
-    public static VideoType fromIndex(int index) {
-        if (index < 0 || index >= values().length) {
-            throw new IllegalArgumentException("Invalid video index: " + index);
-        }
-        return values()[index];
-    }
 }

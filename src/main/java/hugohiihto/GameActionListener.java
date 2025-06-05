@@ -97,29 +97,16 @@ public class GameActionListener extends KeyAdapter {
     private void handleRememberItems(int keyCode) {
         if (keyCode == KeyEvent.VK_NUMPAD1 || keyCode == KeyEvent.VK_1) { // 1
             if (!gameDisplay.secondPhase) {
-                if (gameDisplay.thingsToRemember.charAt(0) == 'A' || // if caps, then correct
-                        gameDisplay.thingsToRemember.charAt(0) == 'B' ||
-                        gameDisplay.thingsToRemember.charAt(0) == 'C' ||
-                        gameDisplay.thingsToRemember.charAt(0) == 'D' ||
-                        gameDisplay.thingsToRemember.charAt(0) == 'H' ||
-                        gameDisplay.thingsToRemember.charAt(0) == 'S') {
-                    //currentlyAllCorrect = true;
-                } else {
+                char ch0 = gameDisplay.thingsToRemember.charAt(0);
+                if ("ABCDHS".indexOf(ch0) < 0) { // if is not caps, then incorrect
                     gameDisplay.currentlyAllCorrect = false;
                 }
                 gameDisplay.secondPhase = true;
             } else {
-                if (gameDisplay.thingsToRemember.charAt(3) == 'A' || // if caps, then correct
-                        gameDisplay.thingsToRemember.charAt(3) == 'B' ||
-                        gameDisplay.thingsToRemember.charAt(3) == 'C' ||
-                        gameDisplay.thingsToRemember.charAt(3) == 'D' ||
-                        gameDisplay.thingsToRemember.charAt(3) == 'H' ||
-                        gameDisplay.thingsToRemember.charAt(3) == 'S') {
-                    //currentlyAllCorrect = true;
-                } else {
+                char ch3 = gameDisplay.thingsToRemember.charAt(3);
+                if ("ABCDHS".indexOf(ch3) < 0) { // if is not caps, then incorrect
                     gameDisplay.currentlyAllCorrect = false;
                 }
-                //secondPhase = false;
                 if (gameDisplay.currentlyAllCorrect) {
                     gameDisplay.allCorrectInTheEnd = true;
                     System.out.println("Both correct!");
@@ -128,29 +115,16 @@ public class GameActionListener extends KeyAdapter {
         }
         if (keyCode == KeyEvent.VK_NUMPAD2 || keyCode == KeyEvent.VK_2) { // 2
             if (!gameDisplay.secondPhase) {
-                if (gameDisplay.thingsToRemember.charAt(1) == 'A' || // if caps, then correct
-                        gameDisplay.thingsToRemember.charAt(1) == 'B' ||
-                        gameDisplay.thingsToRemember.charAt(1) == 'C' ||
-                        gameDisplay.thingsToRemember.charAt(1) == 'D' ||
-                        gameDisplay.thingsToRemember.charAt(1) == 'H' ||
-                        gameDisplay.thingsToRemember.charAt(1) == 'S') {
-                    //currentlyAllCorrect = true;
-                } else {
+                char ch1 = gameDisplay.thingsToRemember.charAt(1);
+                if ("ABCDHS".indexOf(ch1) < 0) { // if is not caps, then incorrect
                     gameDisplay.currentlyAllCorrect = false;
                 }
                 gameDisplay.secondPhase = true;
             } else {
-                if (gameDisplay.thingsToRemember.charAt(4) == 'A' || // if caps, then correct
-                        gameDisplay.thingsToRemember.charAt(4) == 'B' ||
-                        gameDisplay.thingsToRemember.charAt(4) == 'C' ||
-                        gameDisplay.thingsToRemember.charAt(4) == 'D' ||
-                        gameDisplay.thingsToRemember.charAt(4) == 'H' ||
-                        gameDisplay.thingsToRemember.charAt(4) == 'S') {
-                    //currentlyAllCorrect = true;
-                } else {
+                char ch4 = gameDisplay.thingsToRemember.charAt(4);
+                if ("ABCDHS".indexOf(ch4) < 0) { // if is not caps, then incorrect
                     gameDisplay.currentlyAllCorrect = false;
                 }
-                //secondPhase = false;
                 if (gameDisplay.currentlyAllCorrect) {
                     gameDisplay.allCorrectInTheEnd = true;
                     System.out.println("Both correct!");
@@ -159,29 +133,16 @@ public class GameActionListener extends KeyAdapter {
         }
         if (keyCode == KeyEvent.VK_NUMPAD3 || keyCode == KeyEvent.VK_3) { // 3
             if (!gameDisplay.secondPhase) {
-                if (gameDisplay.thingsToRemember.charAt(2) == 'A' || // if caps, then correct
-                        gameDisplay.thingsToRemember.charAt(2) == 'B' ||
-                        gameDisplay.thingsToRemember.charAt(2) == 'C' ||
-                        gameDisplay.thingsToRemember.charAt(2) == 'D' ||
-                        gameDisplay.thingsToRemember.charAt(2) == 'H' ||
-                        gameDisplay.thingsToRemember.charAt(2) == 'S') {
-                    //currentlyAllCorrect = true;
-                } else {
+                char ch2 = gameDisplay.thingsToRemember.charAt(2);
+                if ("ABCDHS".indexOf(ch2) < 0) { // if is not caps, then incorrect
                     gameDisplay.currentlyAllCorrect = false;
                 }
                 gameDisplay.secondPhase = true;
             } else {
-                if (gameDisplay.thingsToRemember.charAt(5) == 'A' || // if caps, then correct
-                        gameDisplay.thingsToRemember.charAt(5) == 'B' ||
-                        gameDisplay.thingsToRemember.charAt(5) == 'C' ||
-                        gameDisplay.thingsToRemember.charAt(5) == 'D' ||
-                        gameDisplay.thingsToRemember.charAt(5) == 'H' ||
-                        gameDisplay.thingsToRemember.charAt(5) == 'S') {
-                    //currentlyAllCorrect = true;
-                } else {
+                char ch5 = gameDisplay.thingsToRemember.charAt(5);
+                if ("ABCDHS".indexOf(ch5) < 0) { // if is not caps, then incorrect
                     gameDisplay.currentlyAllCorrect = false;
                 }
-                //secondPhase = false;
                 if (gameDisplay.currentlyAllCorrect) {
                     gameDisplay.allCorrectInTheEnd = true;
                     System.out.println("Both correct!");
@@ -255,7 +216,7 @@ public class GameActionListener extends KeyAdapter {
         if (gameDisplay.video == VideoType.SCYLLA_INTRO) {
             if (keyCode == KeyEvent.VK_ENTER) {
 
-                if (hugoSkiing.currentStateAtTheLevel >= 71 && hugoSkiing.gameOver == false) {
+                if (hugoSkiing.currentStateAtTheLevel >= 71 && !hugoSkiing.gameOver) {
                     playSound(gameDisplay.fileGameMusic2, clip -> gameDisplay.clip3 = clip, -0.0f);
                 } else {
                     playSound(gameDisplay.fileGameMusic0, clip -> gameDisplay.clip0 = clip, -0.0f);
