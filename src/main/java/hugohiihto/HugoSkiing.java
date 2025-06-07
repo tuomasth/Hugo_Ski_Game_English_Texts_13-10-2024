@@ -1,5 +1,6 @@
 package hugohiihto;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TimerTask;
@@ -163,8 +164,8 @@ public class HugoSkiing {
      *
      * @param gameSpeed
      */
-    public void gameReset(int gameSpeed) {
-        if (gameSpeed > 1000 && gameSpeed < 3000 && gameOver) {
+    public void gameReset(Duration gameSpeed) {
+        if (gameSpeed.toMillis() > 1000 && gameSpeed.toMillis() < 3000 && gameOver) {
             System.out.println("Game reset called");
             gameSpeed = GameDisplay.GAMESPEED;
             System.gc(); // run Java garbage collector
@@ -177,10 +178,10 @@ public class HugoSkiing {
 
             gameDisplay.thingsToRemember = this.getREM();
             timerTask = new GameLoop(this, gameDisplay);  // Game loop handles the stage hazards with time tasks and
-            java.util.Timer ti = new java.util.Timer(true);   // processes them, different than the game display itself.
-            ti.scheduleAtFixedRate(timerTask, 0, gameSpeed);  // For example, 1800 = 1.8 sec (affects the game speed, not graphics)
+            java.util.Timer ti = new java.util.Timer(true);   // processes them, different from the game display itself.
+            ti.scheduleAtFixedRate(timerTask, 0, gameSpeed.toMillis());  // For example, 1800 = 1.8 sec (affects the game speed, not graphics)
         } else {
-            gameSpeed = 1700;
+            gameSpeed = GameDisplay.GAMESPEED;
             gameOver = true;
             gameReset(gameSpeed);
         }

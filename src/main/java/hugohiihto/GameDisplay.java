@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -153,7 +154,7 @@ import javax.swing.*;
  */
 public final class GameDisplay extends JPanel {
     public static final String VERSION = "1.1.ENG";
-    public static final int GAMESPEED = 1700;      // in milliseconds
+    public static final Duration GAMESPEED = Duration.ofMillis(1700);      // in milliseconds
 
     // does not update graphics!
     GameState gameState = GameState.PRE_TITLE;
