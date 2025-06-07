@@ -511,7 +511,7 @@ public final class GameDisplay extends JPanel {
         hugolife3Sprite.load("res/hugo_life.png", ((int) d.getWidth() / 55) + 160, (int) ((int) d.getHeight() / 1.3));
 
         pauseSprite.load("res/pause.png", (int) d.getWidth() / 6, (int) d.getHeight() / 3);
-        scoreBarSprite.load("res/score-life-bar.png.png", 0, (int) ((int) d.getHeight() / 1.35));
+        scoreBarSprite.load("res/score-life-bar.png", 0, (int) ((int) d.getHeight() / 1.35));
     }
 
     private void showingVideo() {
@@ -1127,7 +1127,6 @@ public final class GameDisplay extends JPanel {
             gameState = nextState;
             constructFrames(gameState);
             repaint();
-
         }
     }
 
@@ -1281,48 +1280,72 @@ public final class GameDisplay extends JPanel {
      * Resets the positions of 4 ski track objects.
      */
     public void reset4positions() {
-        if (hugoSkiing.tic) {
-            currentHazardOrMoney1_x_position = (d.width / 3) + 35;
-            currentHazardOrMoney1_y_position = d.height / 3;
-            if (hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25) {
-                if (!pausedWithEnter) {
-                    currentHazardOrMoney1_x_position = 20;
-                    currentHazardOrMoney1_y_position = 30;
-                }
-            }
-            currentHazardOrMoney2_x_position = (d.width / 3) + 58;
-            currentHazardOrMoney2_y_position = (int) (d.height / 3.1);
-            currentHazardOrMoney3_x_position = (d.width / 3) + 88;
-            currentHazardOrMoney3_y_position = (int) (d.height / 3.1);
-            currentHazardOrMoney4_x_position = (d.width / 3) + 130;
-            currentHazardOrMoney4_y_position = (int) (d.height / 3.1);
-            currentHazardOrMoney1w = 1;
-            currentHazardOrMoney1h = 1;
-            currentHazardOrMoney2w = 1;
-            currentHazardOrMoney2h = 1;
-            currentHazardOrMoney3w = 1;
-            currentHazardOrMoney3h = 1;
-            currentHazardOrMoney4w = 1;
-            currentHazardOrMoney4h = 1;
-            if (currentHazardOrMoney1_y_position > y && (hugoSkiing.currentStateAtTheLevel != 14
-                    && hugoSkiing.currentStateAtTheLevel != 25)) {
+        if (!hugoSkiing.tic) return;
+
+        setInitialPositions();
+
+        // Override position for special states
+        if ((hugoSkiing.currentStateAtTheLevel == 14 || hugoSkiing.currentStateAtTheLevel == 25) && !pausedWithEnter) {
+            currentHazardOrMoney1_x_position = 20;
+            currentHazardOrMoney1_y_position = 30;
+        }
+
+        setDimensionsToOne();
+
+        hideIfBelowY(currentHazardOrMoney1_y_position, () -> {
+            if (hugoSkiing.currentStateAtTheLevel != 14 && hugoSkiing.currentStateAtTheLevel != 25) {
                 currentHazardOrMoney1_y_position += 1000;
                 currentHazardOrMoney1_x_position += 1000;
             }
-            if (currentHazardOrMoney2_y_position > y) {
-                currentHazardOrMoney2_y_position += 1000;
-                currentHazardOrMoney2_x_position += 1000;
-            }
-            if (currentHazardOrMoney3_y_position > y) {
-                currentHazardOrMoney3_y_position += 1000;
-                currentHazardOrMoney3_x_position += 1000;
-            }
-            if (currentHazardOrMoney4_y_position > y) {
-                currentHazardOrMoney4_y_position += 1000;
-                currentHazardOrMoney4_x_position += 1000;
-            }
+        });
+
+        hideIfBelowY(currentHazardOrMoney2_y_position, () -> {
+            currentHazardOrMoney2_y_position += 1000;
+            currentHazardOrMoney2_x_position += 1000;
+        });
+
+        hideIfBelowY(currentHazardOrMoney3_y_position, () -> {
+            currentHazardOrMoney3_y_position += 1000;
+            currentHazardOrMoney3_x_position += 1000;
+        });
+
+        hideIfBelowY(currentHazardOrMoney4_y_position, () -> {
+            currentHazardOrMoney4_y_position += 1000;
+            currentHazardOrMoney4_x_position += 1000;
+        });
+    }
+
+    private void setInitialPositions() {
+        int baseX = d.width / 3;
+        int baseY = d.height / 3;
+
+        currentHazardOrMoney1_x_position = baseX + 35;
+        currentHazardOrMoney1_y_position = baseY;
+
+        int y31 = (int) (d.height / 3.1);
+        currentHazardOrMoney2_x_position = baseX + 58;
+        currentHazardOrMoney2_y_position = y31;
+
+        currentHazardOrMoney3_x_position = baseX + 88;
+        currentHazardOrMoney3_y_position = y31;
+
+        currentHazardOrMoney4_x_position = baseX + 130;
+        currentHazardOrMoney4_y_position = y31;
+    }
+
+    private void setDimensionsToOne() {
+        currentHazardOrMoney1w = currentHazardOrMoney1h = 1;
+        currentHazardOrMoney2w = currentHazardOrMoney2h = 1;
+        currentHazardOrMoney3w = currentHazardOrMoney3h = 1;
+        currentHazardOrMoney4w = currentHazardOrMoney4h = 1;
+    }
+
+    private void hideIfBelowY(int currentY, Runnable action) {
+        if (currentY > y) {
+            action.run();
         }
     }
+
 
     /**
      * Set lives, max is 4 in this version (1.1).
