@@ -171,7 +171,7 @@ public class GameLoop extends TimerTask {
                                 }
                                 FloatControl gainControl =
                                         (FloatControl) gameDisplay.clip1.getControl(FloatControl.Type.MASTER_GAIN);
-                                gainControl.setValue(-15.0f); // volume for music, decreasing volume so Hugo's words can be heard
+                                gainControl.setValue(-15.0f); // volume for music, decreasing volume, so Hugo's words can be heard
                                 gameDisplay.clip1.start();
                             }
                         }

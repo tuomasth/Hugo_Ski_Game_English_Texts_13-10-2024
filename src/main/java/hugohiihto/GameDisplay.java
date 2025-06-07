@@ -7,6 +7,7 @@ import hugohiihto.thread.hazard.HAZ2Thread;
 import hugohiihto.thread.hazard.HAZ3Thread;
 import hugohiihto.thread.hazard.HAZ4Thread;
 import hugohiihto.type.GameState;
+import hugohiihto.type.RememberType;
 import hugohiihto.type.VideoType;
 
 import java.awt.*;
@@ -225,7 +226,7 @@ public final class GameDisplay extends JPanel {
     int e_height = (int) d.getHeight() / 3;
 
     public int x, y;
-    public int currentGrid = 0; // or line, should be 0, 1, 2 or 3, nothing else
+    public int currentGrid = 0; // or line should be 0, 1, 2 or 3, nothing else
     // Hugo will always go forward and <- & -> change the line on the current phase
 
     Image theVeryFirst;
@@ -247,24 +248,12 @@ public final class GameDisplay extends JPanel {
     Sprite hugolife2Sprite = new Sprite();
     Sprite hugolife3Sprite = new Sprite();
 
-    Image digitFromLeft1image;
-    int digitFromLeft1_x_position;
-    int digitFromLeft1_y_position;
-    Image digitFromLeft2image;
-    int digitFromLeft2_x_position;
-    int digitFromLeft2_y_position;
-    Image digitFromLeft3image;
-    int digitFromLeft3_x_position;
-    int digitFromLeft3_y_position;
-    Image digitFromLeft4image;
-    int digitFromLeft4_x_position;
-    int digitFromLeft4_y_position;
-    Image digitFromLeft5image;
-    int digitFromLeft5_x_position;
-    int digitFromLeft5_y_position;
-    Image digitFromLeft6image;
-    int digitFromLeft6_x_position;
-    int digitFromLeft6_y_position;
+    Sprite digitFromLeft1 = new Sprite();
+    Sprite digitFromLeft2 = new Sprite();
+    Sprite digitFromLeft3 = new Sprite();
+    Sprite digitFromLeft4 = new Sprite();
+    Sprite digitFromLeft5 = new Sprite();
+    Sprite digitFromLeft6 = new Sprite();
 
     public boolean vanish4Faster = false;
     Image currentHazardOrMoney1_image;
@@ -447,30 +436,27 @@ public final class GameDisplay extends JPanel {
             int iconX = baseX + pos;
             int iconY = (int) d.getHeight() / 19 + height;
 
-            // Get the uppercase character to simplify switch-case
+            // Get the uppercase character to simplify a switch-case
             char reminderChar = Character.toUpperCase(thingsToRemember.charAt(i));
-
-            switch (reminderChar) {
-                case 'A':
+            RememberType rememberType = RememberType.fromSymbol(reminderChar);
+            switch (rememberType) {
+                case ASTERISK:
                     asteriskSprite.load("res/remember_A_asterisk.png", iconX, iconY);
                     break;
-                case 'B':
+                case BELL:
                     bellSprite.load("res/remember_B_bell.png", iconX, iconY);
                     break;
-                case 'C':
+                case CLOCK:
                     clockSprite.load("res/remember_C_clock.png", iconX, iconY);
                     break;
-                case 'D':
+                case DIAMOND:
                     diamondSprite.load("res/remember_D_diamond.png", iconX, iconY);
                     break;
-                case 'H':
+                case HASH:
                     hashTagSprite.load("res/remember_H_hash.png", iconX, iconY);
                     break;
-                case 'S':
+                case STAR:
                     starSprite.load("res/remember_S_star.png", iconX, iconY);
-                    break;
-                default:
-                    // No icon to load
                     break;
             }
         }
@@ -621,7 +607,7 @@ public final class GameDisplay extends JPanel {
 
         cheatBackflip180 = false;
         key12 = false; // Even if something else was pressed when inputting the 12 numbers, it does not matter.
-        key11 = false; // You may press for example "9700  2  4954 4744" where 2 is an unnecessary extra press.
+        key11 = false; // You may press, for example, "9700  2  4954 4744" where 2 is an unnecessary extra press.
         key10 = false;
         key9 = false;
         key8 = false;
@@ -640,59 +626,15 @@ public final class GameDisplay extends JPanel {
         String tenThousandsToDraw_path = "res/numbers" + tenThousands + ".png";
         String hundredThousandsToDraw_path = "res/numbers" + hundredThousands + ".png";
 
-        digitFromLeft1_x_position = (int) d.getWidth() / 11;
-        digitFromLeft1_y_position = (int) ((int) d.getHeight() / 2.2);
-        ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
-        int digitFromLeft1w = digitFromLeft1.getIconWidth();
-        int digitFromLeft1h = digitFromLeft1.getIconHeight();
-        digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(
-                digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
-        digitFromLeft1image = digitFromLeft1.getImage();
+        int digitFromLeft1_x_position = ((int) d.getWidth() / 11);
+        int digitFromLeft1_y_position = (int) ((int) d.getHeight() / 2.2);
 
-        digitFromLeft2_x_position = ((int) d.getWidth() / 11) + 50;
-        digitFromLeft2_y_position = (int) ((int) d.getHeight() / 2.2);
-        ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
-        int digitFromLeft2w = digitFromLeft2.getIconWidth();
-        int digitFromLeft2h = digitFromLeft2.getIconHeight();
-        digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(
-                digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
-        digitFromLeft2image = digitFromLeft2.getImage();
-
-        digitFromLeft3_x_position = ((int) d.getWidth() / 11) + 100;
-        digitFromLeft3_y_position = (int) ((int) d.getHeight() / 2.2);
-        ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
-        int digitFromLeft3w = digitFromLeft3.getIconWidth();
-        int digitFromLeft3h = digitFromLeft3.getIconHeight();
-        digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(
-                digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
-        digitFromLeft3image = digitFromLeft3.getImage();
-
-        digitFromLeft4_x_position = ((int) d.getWidth() / 11) + 150;
-        digitFromLeft4_y_position = (int) ((int) d.getHeight() / 2.2);
-        ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
-        int digitFromLeft4w = digitFromLeft4.getIconWidth();
-        int digitFromLeft4h = digitFromLeft4.getIconHeight();
-        digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(
-                digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
-        digitFromLeft4image = digitFromLeft4.getImage();
-
-        digitFromLeft5_x_position = ((int) d.getWidth() / 11) + 200;
-        digitFromLeft5_y_position = (int) ((int) d.getHeight() / 2.2);
-        ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
-        int digitFromLeft5w = digitFromLeft5.getIconWidth();
-        int digitFromLeft5h = digitFromLeft5.getIconHeight();
-        digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(
-                digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
-        digitFromLeft5image = digitFromLeft5.getImage();
-
-        digitFromLeft6_x_position = ((int) d.getWidth() / 11) + 250;
-        digitFromLeft6_y_position = (int) ((int) d.getHeight() / 2.2);
-        ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
-        int digitFromLeft6w = digitFromLeft6.getIconWidth();
-        int digitFromLeft6h = digitFromLeft6.getIconHeight();
-        digitFromLeft6.setImage(digitFromLeft6.getImage().getScaledInstance(
-                digitFromLeft6w, digitFromLeft6h, Image.SCALE_DEFAULT));
-        digitFromLeft6image = digitFromLeft6.getImage();
+        digitFromLeft1.load(hundredThousandsToDraw_path, digitFromLeft1_x_position, digitFromLeft1_y_position);
+        digitFromLeft2.load(tenThousandsToDraw_path, digitFromLeft1_x_position+50, digitFromLeft1_y_position);
+        digitFromLeft3.load(thousandsToDraw_path, digitFromLeft1_x_position+100, digitFromLeft1_y_position);
+        digitFromLeft4.load(hundredsToDraw_path, digitFromLeft1_x_position+150, digitFromLeft1_y_position);
+        digitFromLeft5.load(tensToDraw_path, digitFromLeft1_x_position+200, digitFromLeft1_y_position);
+        digitFromLeft6.load(onesToDraw_path, digitFromLeft1_x_position+250, digitFromLeft1_y_position);
 
         g.drawImage(scoreBGSprite.getImage(), -10, -18, null);
         repaint();
@@ -723,17 +665,17 @@ public final class GameDisplay extends JPanel {
         }
 
         if (hundredThousandsVisible)
-            g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
+            digitFromLeft1.drawImage(g,this);
         if (tenThousandsVisible)
-            g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
+            digitFromLeft2.drawImage(g,this);
         if (thousandsVisible)
-            g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
+            digitFromLeft3.drawImage(g,this);
         if (hundredsVisible)
-            g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
+            digitFromLeft4.drawImage(g,this);
         if (tensVisible)
-            g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
+            digitFromLeft5.drawImage(g,this);
         if (onesVisible)
-            g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
+            digitFromLeft6.drawImage(g,this);
 
         repaint();
 
@@ -750,44 +692,44 @@ public final class GameDisplay extends JPanel {
 
         g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
 
-        drawSprite(g, asteriskSprite);
-        drawSprite(g, bellSprite);
-        drawSprite(g, clockSprite);
-        drawSprite(g, diamondSprite);
-        drawSprite(g, hashTagSprite);
-        drawSprite(g, starSprite);
+        asteriskSprite.drawImage(g, this);
+        bellSprite.drawImage(g, this);
+        clockSprite.drawImage(g, this);
+        diamondSprite.drawImage(g, this);
+        hashTagSprite.drawImage(g, this);
+        starSprite.drawImage(g, this);
 
         if (currentlyAllCorrect) {
-            drawSprite(g, u1bSprite);
-            drawSprite(g, u2bSprite);
-            drawSprite(g, u3bSprite);
+            u1bSprite.drawImage(g, this);
+            u2bSprite.drawImage(g, this);
+            u3bSprite.drawImage(g, this);
         }
 
-        Set<Character> allowedChars = Set.of('A', 'B', 'C', 'D', 'H', 'S');
+        Set<Character> allowedChars = RememberType.getSymbols();
         if (secondPhase && currentlyAllCorrect) {
             if (allowedChars.contains(thingsToRemember.charAt(0))) {
-                drawSprite(g, u1wSprite);
+                u1wSprite.drawImage(g, this);
             }
             if (allowedChars.contains(thingsToRemember.charAt(1))) {
-                drawSprite(g, u2wSprite);
+                u2wSprite.drawImage(g, this);
             }
             if (allowedChars.contains(thingsToRemember.charAt(2))) {
-                drawSprite(g, u3wSprite);
+                u3wSprite.drawImage(g, this);
             }
 
-            drawSprite(g, d1bSprite);
-            drawSprite(g, d2bSprite);
-            drawSprite(g, d3bSprite);
+            d1bSprite.drawImage(g, this);
+            d2bSprite.drawImage(g, this);
+            d3bSprite.drawImage(g, this);
 
             if (allCorrectInTheEnd) {
                 if (allowedChars.contains(thingsToRemember.charAt(3))) {
-                    drawSprite(g, d1wSprite);
+                    d1wSprite.drawImage(g, this);
                 }
                 if (allowedChars.contains(thingsToRemember.charAt(4))) {
-                    drawSprite(g, d2wSprite);
+                    d2wSprite.drawImage(g, this);
                 }
                 if (allowedChars.contains(thingsToRemember.charAt(5))) {
-                    drawSprite(g, d3wSprite);
+                    d3wSprite.drawImage(g, this);
                 }
                 video = VideoType.TWO_CHOSEN_CORRECTLY;
                 nextState = GameState.VIDEO_TRANSITION;
@@ -961,17 +903,16 @@ public final class GameDisplay extends JPanel {
             Tr8.start();
         }
 
-        // finally drawing the graphical decorations:
-        drawSprite(g, cloudSprite);
-
-        drawSprite(g, tree1Sprite);
-        drawSprite(g, tree2Sprite);
-        drawSprite(g, tree3Sprite);
-        drawSprite(g, tree4Sprite);
-        drawSprite(g, tree5Sprite);
-        drawSprite(g, tree6Sprite);
-        drawSprite(g, tree7Sprite);
-        drawSprite(g, tree8Sprite);
+        // finally, drawing the graphical decorations:
+        cloudSprite.drawImage(g, this);
+        tree1Sprite.drawImage(g, this);
+        tree2Sprite.drawImage(g, this);
+        tree3Sprite.drawImage(g, this);
+        tree4Sprite.drawImage(g, this);
+        tree5Sprite.drawImage(g, this);
+        tree6Sprite.drawImage(g, this);
+        tree7Sprite.drawImage(g, this);
+        tree8Sprite.drawImage(g, this);
 
         Set<String> ignored = Set.of("E", "S", "F");
         if (ignored.contains(currentHazardOrMoney1)) currentHazardOrMoney1_image = null;
@@ -1021,24 +962,24 @@ public final class GameDisplay extends JPanel {
             path_of_hazard_4 = "";
             currentHazardOrMoney4_image = null;
             for (int i = 3; i < 6; i++) {
-                char ch = Character.toUpperCase(thingsToRemember.charAt(i));
-                switch (ch) {
-                    case 'A':
+                RememberType rememberType = RememberType.fromSymbol(thingsToRemember.charAt(i));
+                switch (rememberType) {
+                    case ASTERISK:
                         path_of_hazard_1 = "res/remember_A_asterisk.png";
                         break;
-                    case 'B':
+                    case BELL:
                         path_of_hazard_1 = "res/remember_B_bell.png";
                         break;
-                    case 'C':
+                    case CLOCK:
                         path_of_hazard_1 = "res/remember_C_clock.png";
                         break;
-                    case 'D':
+                    case DIAMOND:
                         path_of_hazard_1 = "res/remember_D_diamond.png";
                         break;
-                    case 'H':
+                    case HASH:
                         path_of_hazard_1 = "res/remember_H_hash.png";
                         break;
-                    case 'S':
+                    case STAR:
                         path_of_hazard_1 = "res/remember_S_star.png";
                         break;
                     default:
@@ -1082,53 +1023,15 @@ public final class GameDisplay extends JPanel {
         String tenThousandsToDraw_path = "res/numbers" + (tenThousands) + ".png";
         String hundredThousandsToDraw_path = "res/numbers" + (hundredThousands) + ".png";
 
-        digitFromLeft1_x_position = (int) d.getWidth() / 2;
-        digitFromLeft1_y_position = (int) ((int) d.getHeight() / 1.27);
-        ImageIcon digitFromLeft1 = new ImageIcon(hundredThousandsToDraw_path);
-        int digitFromLeft1w = digitFromLeft1.getIconWidth();
-        int digitFromLeft1h = digitFromLeft1.getIconHeight();
-        digitFromLeft1.setImage(digitFromLeft1.getImage().getScaledInstance(digitFromLeft1w, digitFromLeft1h, Image.SCALE_DEFAULT));
-        digitFromLeft1image = digitFromLeft1.getImage();
+        int digitFromLeft1_x_position = ((int) d.getWidth() / 2);
+        int digitFromLeft1_y_position = (int)((int) d.getHeight() / 1.27);
 
-        digitFromLeft2_x_position = ((int) d.getWidth() / 2) + 45;
-        digitFromLeft2_y_position = (int) ((int) d.getHeight() / 1.27);
-        ImageIcon digitFromLeft2 = new ImageIcon(tenThousandsToDraw_path);
-        int digitFromLeft2w = digitFromLeft2.getIconWidth();
-        int digitFromLeft2h = digitFromLeft2.getIconHeight();
-        digitFromLeft2.setImage(digitFromLeft2.getImage().getScaledInstance(digitFromLeft2w, digitFromLeft2h, Image.SCALE_DEFAULT));
-        digitFromLeft2image = digitFromLeft2.getImage();
-
-        digitFromLeft3_x_position = ((int) d.getWidth() / 2) + 90;
-        digitFromLeft3_y_position = (int) ((int) d.getHeight() / 1.27);
-        ImageIcon digitFromLeft3 = new ImageIcon(thousandsToDraw_path);
-        int digitFromLeft3w = digitFromLeft3.getIconWidth();
-        int digitFromLeft3h = digitFromLeft3.getIconHeight();
-        digitFromLeft3.setImage(digitFromLeft3.getImage().getScaledInstance(digitFromLeft3w, digitFromLeft3h, Image.SCALE_DEFAULT));
-        digitFromLeft3image = digitFromLeft3.getImage();
-
-        digitFromLeft4_x_position = ((int) d.getWidth() / 2) + 135;
-        digitFromLeft4_y_position = (int) ((int) d.getHeight() / 1.27);
-        ImageIcon digitFromLeft4 = new ImageIcon(hundredsToDraw_path);
-        int digitFromLeft4w = digitFromLeft4.getIconWidth();
-        int digitFromLeft4h = digitFromLeft4.getIconHeight();
-        digitFromLeft4.setImage(digitFromLeft4.getImage().getScaledInstance(digitFromLeft4w, digitFromLeft4h, Image.SCALE_DEFAULT));
-        digitFromLeft4image = digitFromLeft4.getImage();
-
-        digitFromLeft5_x_position = ((int) d.getWidth() / 2) + 180;
-        digitFromLeft5_y_position = (int) ((int) d.getHeight() / 1.27);
-        ImageIcon digitFromLeft5 = new ImageIcon(tensToDraw_path);
-        int digitFromLeft5w = digitFromLeft5.getIconWidth();
-        int digitFromLeft5h = digitFromLeft5.getIconHeight();
-        digitFromLeft5.setImage(digitFromLeft5.getImage().getScaledInstance(digitFromLeft5w, digitFromLeft5h, Image.SCALE_DEFAULT));
-        digitFromLeft5image = digitFromLeft5.getImage();
-
-        digitFromLeft6_x_position = ((int) d.getWidth() / 2) + 225;
-        digitFromLeft6_y_position = (int) ((int) d.getHeight() / 1.27);
-        ImageIcon digitFromLeft6 = new ImageIcon(onesToDraw_path);
-        int digitFromLeft6w = digitFromLeft6.getIconWidth();
-        int digitFromLeft6h = digitFromLeft6.getIconHeight();
-        digitFromLeft6.setImage(digitFromLeft6.getImage().getScaledInstance(digitFromLeft6w, digitFromLeft6h, Image.SCALE_DEFAULT));
-        digitFromLeft6image = digitFromLeft6.getImage();
+        digitFromLeft1.load(hundredThousandsToDraw_path, digitFromLeft1_x_position, digitFromLeft1_y_position);
+        digitFromLeft2.load(tenThousandsToDraw_path, digitFromLeft1_x_position+45, digitFromLeft1_y_position);
+        digitFromLeft3.load(thousandsToDraw_path, digitFromLeft1_x_position+90, digitFromLeft1_y_position);
+        digitFromLeft4.load(hundredsToDraw_path, digitFromLeft1_x_position+135, digitFromLeft1_y_position);
+        digitFromLeft5.load(tensToDraw_path, digitFromLeft1_x_position+180, digitFromLeft1_y_position);
+        digitFromLeft6.load(onesToDraw_path, digitFromLeft1_x_position+225, digitFromLeft1_y_position);
 
         Thread HAZ1 = new HAZ1Thread(this);
         if (!HAZ1.isAlive()) {
@@ -1165,28 +1068,28 @@ public final class GameDisplay extends JPanel {
         g.drawImage(scoreBarSprite.getImage(), scoreBarSprite.getX(), scoreBarSprite.getY(), this);
 
         if (hundredThousandsVisible)
-            g.drawImage(digitFromLeft1image, digitFromLeft1_x_position, digitFromLeft1_y_position, this);
+            digitFromLeft1.drawImage(g, this);
         if (tenThousandsVisible)
-            g.drawImage(digitFromLeft2image, digitFromLeft2_x_position, digitFromLeft2_y_position, this);
+            digitFromLeft2.drawImage(g, this);
         if (thousandsVisible)
-            g.drawImage(digitFromLeft3image, digitFromLeft3_x_position, digitFromLeft3_y_position, this);
+            digitFromLeft3.drawImage(g, this);
         if (hundredsVisible)
-            g.drawImage(digitFromLeft4image, digitFromLeft4_x_position, digitFromLeft4_y_position, this);
+            digitFromLeft4.drawImage(g, this);
         if (tensVisible)
-            g.drawImage(digitFromLeft5image, digitFromLeft5_x_position, digitFromLeft5_y_position, this);
+            digitFromLeft5.drawImage(g, this);
         if (onesVisible)
-            g.drawImage(digitFromLeft6image, digitFromLeft6_x_position, digitFromLeft6_y_position, this);
+            digitFromLeft6.drawImage(g, this);
 
         repaint();
 
         if (number_of_lives > 1.5) {
-            drawSprite(g, hugolife1Sprite);
+            hugolife1Sprite.drawImage(g, this);
         }
         if (number_of_lives > 2.5) {
-            drawSprite(g, hugolife2Sprite);
+            hugolife2Sprite.drawImage(g, this);
         }
         if (number_of_lives > 3.5) {
-            drawSprite(g, hugolife3Sprite);
+            hugolife3Sprite.drawImage(g, this);
         }
 
         if (currentGrid < 2) { // Hugo ski animation
@@ -1225,10 +1128,6 @@ public final class GameDisplay extends JPanel {
             repaint();
 
         }
-    }
-
-    private void drawSprite(Graphics g, Sprite sprite) {
-        g.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(), this);
     }
 
     private void paintShowingVideo(Graphics g) {
