@@ -2,6 +2,7 @@ package hugohiihto;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
 
 public class Sprite {
     public Image image;
@@ -37,4 +38,9 @@ public class Sprite {
     public void setY(int y) {
         this.y = y;
     }
+
+    public void drawImage(Graphics g, ImageObserver observer) {
+        g.drawImage(image, x, y, observer);
+    }
+
 }
