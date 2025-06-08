@@ -30,9 +30,8 @@ public enum RememberType {
     }
 
     public static RememberType fromSymbol(char symbol) {
-        char upperSymbol = Character.toUpperCase(symbol);
         for (RememberType type : values()) {
-            if (Character.toUpperCase(type.symbol) == upperSymbol) {
+            if (Character.toUpperCase(type.symbol) == Character.toUpperCase(symbol)) {
                 return type;
             }
         }
