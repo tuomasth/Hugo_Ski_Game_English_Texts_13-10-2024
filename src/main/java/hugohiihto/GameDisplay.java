@@ -437,9 +437,7 @@ public final class GameDisplay extends JPanel {
             int iconX = baseX + pos;
             int iconY = (int) d.getHeight() / 19 + height;
 
-            // Get the uppercase character to simplify a switch-case
-            char reminderChar = Character.toUpperCase(thingsToRemember.charAt(i));
-            RememberType rememberType = RememberType.fromSymbol(reminderChar);
+            RememberType rememberType = RememberType.fromSymbol(thingsToRemember.charAt(i));
             switch (rememberType) {
                 case ASTERISK:
                     asteriskSprite.load("res/remember_A_asterisk.png", iconX, iconY);

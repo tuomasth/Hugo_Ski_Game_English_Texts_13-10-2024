@@ -30,11 +30,13 @@ public enum RememberType {
     }
 
     public static RememberType fromSymbol(char symbol) {
+        char upperSymbol = Character.toUpperCase(symbol);
         for (RememberType type : values()) {
-            if (type.symbol == symbol) {
+            if (Character.toUpperCase(type.symbol) == upperSymbol) {
                 return type;
             }
         }
         throw new IllegalArgumentException("Unknown RememberType symbol: " + symbol);
     }
+
 }
