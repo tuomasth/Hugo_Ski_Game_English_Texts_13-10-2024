@@ -437,7 +437,7 @@ public final class GameDisplay extends JPanel {
             int iconX = baseX + pos;
             int iconY = (int) d.getHeight() / 19 + height;
 
-            RememberType rememberType = RememberType.fromSymbol(thingsToRemember.charAt(i));
+            RememberType rememberType = RememberType.fromSymbol(Character.toUpperCase(thingsToRemember.charAt(i)));
             switch (rememberType) {
                 case ASTERISK:
                     asteriskSprite.load("res/remember_A_asterisk.png", iconX, iconY);
@@ -961,7 +961,7 @@ public final class GameDisplay extends JPanel {
             path_of_hazard_4 = "";
             currentHazardOrMoney4_image = null;
             for (int i = 3; i < 6; i++) {
-                RememberType rememberType = RememberType.fromSymbol(thingsToRemember.charAt(i));
+                RememberType rememberType = RememberType.fromSymbol(Character.toUpperCase(thingsToRemember.charAt(i)));
                 switch (rememberType) {
                     case ASTERISK:
                         path_of_hazard_1 = "res/remember_A_asterisk.png";

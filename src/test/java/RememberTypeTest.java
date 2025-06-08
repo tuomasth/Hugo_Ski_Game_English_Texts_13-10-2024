@@ -12,12 +12,12 @@ class RememberTypeTest {
     }
 
     @Test
-    void validLowerCaseRememberType() {
-        assertEquals(RememberType.ASTERISK, RememberType.fromSymbol('a'));
+    void invalidLowerCaseRememberType() {
+        assertThrows(IllegalArgumentException.class, () -> RememberType.fromSymbol('a'));
     }
 
     @Test
-    void invalidRememberType() {
+    void notFoundRememberType() {
         assertThrows(IllegalArgumentException.class, () -> RememberType.fromSymbol('?'));
     }
 
