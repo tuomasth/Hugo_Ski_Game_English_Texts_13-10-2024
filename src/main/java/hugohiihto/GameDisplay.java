@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -437,26 +438,28 @@ public final class GameDisplay extends JPanel {
             int iconX = baseX + pos;
             int iconY = (int) d.getHeight() / 19 + height;
 
-            RememberType rememberType = RememberType.fromSymbol(Character.toUpperCase(thingsToRemember.charAt(i)));
-            switch (rememberType) {
-                case ASTERISK:
-                    asteriskSprite.load("res/remember_A_asterisk.png", iconX, iconY);
-                    break;
-                case BELL:
-                    bellSprite.load("res/remember_B_bell.png", iconX, iconY);
-                    break;
-                case CLOCK:
-                    clockSprite.load("res/remember_C_clock.png", iconX, iconY);
-                    break;
-                case DIAMOND:
-                    diamondSprite.load("res/remember_D_diamond.png", iconX, iconY);
-                    break;
-                case HASH:
-                    hashTagSprite.load("res/remember_H_hash.png", iconX, iconY);
-                    break;
-                case STAR:
-                    starSprite.load("res/remember_S_star.png", iconX, iconY);
-                    break;
+            Optional<RememberType> rememberType = RememberType.fromSymbol(thingsToRemember.charAt(i));
+            if(rememberType.isPresent()) {
+                switch (rememberType.get()) {
+                    case ASTERISK:
+                        asteriskSprite.load("res/remember_A_asterisk.png", iconX, iconY);
+                        break;
+                    case BELL:
+                        bellSprite.load("res/remember_B_bell.png", iconX, iconY);
+                        break;
+                    case CLOCK:
+                        clockSprite.load("res/remember_C_clock.png", iconX, iconY);
+                        break;
+                    case DIAMOND:
+                        diamondSprite.load("res/remember_D_diamond.png", iconX, iconY);
+                        break;
+                    case HASH:
+                        hashTagSprite.load("res/remember_H_hash.png", iconX, iconY);
+                        break;
+                    case STAR:
+                        starSprite.load("res/remember_S_star.png", iconX, iconY);
+                        break;
+                }
             }
         }
 
@@ -961,29 +964,31 @@ public final class GameDisplay extends JPanel {
             path_of_hazard_4 = "";
             currentHazardOrMoney4_image = null;
             for (int i = 3; i < 6; i++) {
-                RememberType rememberType = RememberType.fromSymbol(Character.toUpperCase(thingsToRemember.charAt(i)));
-                switch (rememberType) {
-                    case ASTERISK:
-                        path_of_hazard_1 = "res/remember_A_asterisk.png";
-                        break;
-                    case BELL:
-                        path_of_hazard_1 = "res/remember_B_bell.png";
-                        break;
-                    case CLOCK:
-                        path_of_hazard_1 = "res/remember_C_clock.png";
-                        break;
-                    case DIAMOND:
-                        path_of_hazard_1 = "res/remember_D_diamond.png";
-                        break;
-                    case HASH:
-                        path_of_hazard_1 = "res/remember_H_hash.png";
-                        break;
-                    case STAR:
-                        path_of_hazard_1 = "res/remember_S_star.png";
-                        break;
-                    default:
-                        // Unknown character – you can handle it here if needed
-                        break;
+                Optional<RememberType> rememberType = RememberType.fromSymbol(thingsToRemember.charAt(i));
+                if (rememberType.isPresent()) {
+                    switch (rememberType.get()) {
+                        case ASTERISK:
+                            path_of_hazard_1 = "res/remember_A_asterisk.png";
+                            break;
+                        case BELL:
+                            path_of_hazard_1 = "res/remember_B_bell.png";
+                            break;
+                        case CLOCK:
+                            path_of_hazard_1 = "res/remember_C_clock.png";
+                            break;
+                        case DIAMOND:
+                            path_of_hazard_1 = "res/remember_D_diamond.png";
+                            break;
+                        case HASH:
+                            path_of_hazard_1 = "res/remember_H_hash.png";
+                            break;
+                        case STAR:
+                            path_of_hazard_1 = "res/remember_S_star.png";
+                            break;
+                        default:
+                            // Unknown character – you can handle it here if needed
+                            break;
+                    }
                 }
             }
 

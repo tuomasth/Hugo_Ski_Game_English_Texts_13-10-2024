@@ -1,6 +1,7 @@
 package hugohiihto.type;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public enum RememberType {
@@ -29,13 +30,13 @@ public enum RememberType {
         return symbols;
     }
 
-    public static RememberType fromSymbol(char symbol) {
+    public static Optional<RememberType> fromSymbol(char symbol) {
         for (RememberType type : values()) {
             if (type.symbol == symbol) {
-                return type;
+                return Optional.of(type);
             }
         }
-        throw new IllegalArgumentException("Unknown RememberType symbol: " + symbol);
+        return Optional.empty();
     }
 
 }
