@@ -12,7 +12,7 @@ Instructions:
 4) Double-click "run.bat" or "HugoHiihto.jar". The game should start up if you have a correct JDK. The file "run.bat" has the command "java -jar HugoHiihto.jar". The Operating System might warn you of executing unknown exe and bat files.
 
 On Linux, you might have to make the JAR file executable first: https://askubuntu.com/questions/270172/how-can-i-make-a-jar-file-executable
-The game was tested with Windows 11, Linux and MacOS.
+The game was tested with Windows 11, Linux and MacOS (the JAR file is for Windows users).
 
 ## Linux
 requirements: maven 3+ and java 17+
