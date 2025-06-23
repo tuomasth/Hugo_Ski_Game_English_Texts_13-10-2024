@@ -242,7 +242,6 @@ public final class GameDisplay extends JPanel {
     Image bg;
 
     int cave_x, cave_y;
-    Image bgCave;
 
     public boolean leftWind = false;
 
@@ -692,7 +691,7 @@ public final class GameDisplay extends JPanel {
     private void paintRememberItems(Graphics g) {
         super.paintComponent(g);
 
-        g.drawImage(bgCave, cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
+        g.drawImage(bgCaveSprite.getImage(), cave_x, cave_y, this); // cave image is based on the sledge Hugo game, a classic winter game
 
         asteriskSprite.drawImage(g, this);
         bellSprite.drawImage(g, this);
