@@ -24,7 +24,7 @@ java -jar target/hugoskifx-1.1-SNAPSHOT-jar-with-dependencies.jar
 
 ------
 
-Version 1.1 (2024-2025) - English texts, Finnish voice acting, 
+English texts, Finnish voice acting, 
 Java skiing game - Hugo the Troll fan game, 
 we do not own the Hugo franchise - support the official releases!
 
@@ -42,6 +42,6 @@ New in v1.1, for example:
 
 Google Drive has the JDK (for Windows x64, 64bit) and also the original MP4 cutscenes available: https://drive.google.com/drive/folders/110sPxB1HPm08zQFlkPZfCN3-ZpUfN7zv 
 
-No matter what GitHub informs you, this is made 100-percent with the Java programming language. "Shell" and "Html" came from the "Java Media Framework" library that had been used.
+No matter what GitHub informs you, this is made with the Java programming language only. "Shell" and "Html" came from the "Java Media Framework" library that had been used.
 
 If a video cutscene does not start, please move the mouse cursor on the window. The visuals depend on your own computer. The speed of the graphic objects might be extremely slow or fast, depending on the computer.
