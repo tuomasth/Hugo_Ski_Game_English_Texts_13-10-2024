@@ -33,6 +33,7 @@ Recommended Java Development Kit version: 23 or newer.
 
 "ITE Media" / "5th Planet Games" owns the original Hugo series. Thank the original creators for the Hugo franchise! Some graphics, musics and videos have been copied from the original Hugo series. 
 We own nothing of the original resources. We own the Java files we programmed. They are open-source and can be edited by anyone. 
+
 New in v1.1, for example: 
 - Commodore 64 music by Jens-Christian Huus
 - Old phone sounds with 4 and 6
@@ -44,4 +45,4 @@ Google Drive has the JDK (for Windows x64, 64bit) and also the original MP4 cuts
 
 No matter what GitHub informs you, this is made with the Java programming language only. "Shell" and "Html" came from the "Java Media Framework" library that had been used.
 
-If a video cutscene does not start, please move the mouse cursor on the window. The visuals depend on your own computer. The speed of the graphic objects might be extremely slow or fast, depending on the computer.
+If a video cutscene does not start, please move the mouse cursor on the window (or minimize the window, then restore it). The visuals depend on your own computer. The speed of the graphic objects might be extremely slow or fast, depending on the computer.
